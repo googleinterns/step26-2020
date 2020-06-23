@@ -18,12 +18,17 @@ import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {MaterialComponents} from './material-components';
-import { TestPageComponent } from './test-page/test-page.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {TestPageComponent} from './test-page/test-page.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent, TestPageComponent],
-  imports: [MaterialComponents, BrowserModule, AppRoutingModule, BrowserAnimationsModule],
+  imports: [
+    MaterialComponents,
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

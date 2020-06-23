@@ -1,6 +1,6 @@
 install:
 	npm install --no-package-lock --no-audit
-	printf "#!/bin/sh\n\tcd portfolio && make format && make lint" > .git/hooks/pre-push
+	printf "#!/bin/sh\n\tmake format && make lint" > .git/hooks/pre-push
 	chmod +x .git/hooks/pre-push
 
 format: install

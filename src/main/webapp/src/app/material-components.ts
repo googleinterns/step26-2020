@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component} from '@angular/core';
+import {NgModule} from '@angular/core';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon'
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+@NgModule({
+  exports: [
+    MatToolbarModule,
+    MatIconModule
+  ]
 })
-export class AppComponent {
-  title = 'growpod-client';
-}
+export class MaterialComponents {}

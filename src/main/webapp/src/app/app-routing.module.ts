@@ -15,24 +15,23 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 
-import { AppComponent } from './app.component';
-import { IndexComponent } from './index/index.component';
-import { TestPage1Component } from './test-page1/test-page1.component';
-import { TestPage2Component } from './test-page2/test-page2.component';
+import {IndexComponent} from './index/index.component';
+import {TestPage1Component} from './test-page1/test-page1.component';
+import {TestPage2Component} from './test-page2/test-page2.component';
 
 /**
  * The routing table for all frontend pages
  *
- * Contains a list of objects that associate 
+ * Contains a list of objects that associate
  * URL paths with Angular components.
  *
  */
 const routes: Routes = [
-  { path: 'page/index', component: IndexComponent },
-  { path: 'page/test-page1', component: TestPage1Component },
-  { path: 'page/test-page2', component: TestPage2Component },
+  {path: 'page/index', component: IndexComponent},
+  {path: 'page/test-page1', component: TestPage1Component},
+  {path: 'page/test-page2', component: TestPage2Component},
   /** Defaults to /index */
-  { path: '', redirectTo: '/page/index', pathMatch: 'full' },
+  {path: '', redirectTo: '/page/index', pathMatch: 'full'},
 ];
 
 @NgModule({

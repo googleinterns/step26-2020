@@ -15,11 +15,11 @@
 package com.google.sps.servlets;
 
 import java.io.IOException;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
 
 /** Servlet that returns index.html */
 @WebServlet("/page/*")
@@ -28,14 +28,15 @@ public class PageServlet extends HttpServlet {
   static final long serialVersionUID = 2L;
 
   /**
-   * Processes HTTP GET requests for the /page/* servlet. This returns index.html, and
-   * allows client side routing to show the appropriate client page.
+   * Processes HTTP GET requests for the /page/* servlet. This returns index.html, and allows client
+   * side routing to show the appropriate client page.
    *
    * @param request Information about the GET Request
    * @param response Information about the servlet's response
    */
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  public void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
     response.setContentType("text/html;");
     request.getRequestDispatcher("/index.html").forward(request, response);
   }

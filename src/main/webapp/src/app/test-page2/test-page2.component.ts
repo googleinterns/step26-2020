@@ -12,13 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-test-page2',
   templateUrl: './test-page2.component.html',
-  styleUrls: ['./test-page2.component.css', '../common/growpod-page-styles.css']
+  styleUrls: [
+    './test-page2.component.css',
+    '../common/growpod-page-styles.css',
+  ],
 })
 
 /**
@@ -27,15 +30,14 @@ import {ActivatedRoute} from '@angular/router';
  *
  */
 export class TestPage2Component implements OnInit {
+  argument = '';
 
-  argument: string = '';
-
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     // extract argument parameter
-    let p = this.route.snapshot.paramMap.get('argument');
+    const p = this.route.snapshot.paramMap.get('argument');
     // place into component, and thus into DOM via template variable.
-    this.argument = (p === null) ? 'No parameter passed' : p;
+    this.argument = p === null ? 'No parameter passed' : p;
   }
 }

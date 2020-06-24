@@ -12,30 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   /** Here, I import page-specific styles as well as a common stylesheet. */
-  styleUrls: ['./index.component.css', '../common/growpod-page-styles.css']
+  styleUrls: ['./index.component.css', '../common/growpod-page-styles.css'],
 })
 export class IndexComponent implements OnInit {
+  constructor(private router: Router) {}
 
-  constructor(private router: Router) { }
-
-  ngOnInit(): void {
- 
-  }
+  ngOnInit(): void {}
 
   /**
    * Directs the user to page 'page/test-page2', with the argument
    * 'argument' set to a user-provided value.
-   * 
+   *
    * @param arg the argument to send to 'page/test-page2'
    */
   navPage2(arg: String): void {
-    this.router.navigate(['/page/test-page2', { argument: arg }]);
+    this.router.navigate(['/page/test-page2', {argument: arg}]);
   }
 }

@@ -12,11 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {NgModule} from '@angular/core';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatIconModule} from '@angular/material/icon';
+import { Component, OnInit } from '@angular/core';
 
-@NgModule({
-  exports: [MatToolbarModule, MatIconModule],
+@Component({
+  selector: 'app-test-page1',
+  templateUrl: './test-page1.component.html',
+  styleUrls: ['./test-page1.component.css', '../common/growpod-page-styles.css']
 })
-export class MaterialComponents {}
+export class TestPage1Component implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}

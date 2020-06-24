@@ -1,10 +1,21 @@
-<mat-toolbar color="primary">
+<!-- Template page: these components will appear on
+every page unless they are suppressed. -->
+<mat-toolbar id="growpod-top-bar" color="primary">
   <mat-toolbar-row>
-    <span>GrowPod</span>
+    <a routerLink="/page/index"><span>GrowPod</span></a>
     <span class="growpod-spacer"></span>
-    <mat-icon class="growpod-icon" aria-hidden="false" aria-label="Heart icon"
-      >favorite</mat-icon
-    >
+    <a routerLink="/page/test-page1" routerLinkActive="active">
+      <span class="growpod-link">
+        Test Page 1
+      </span>
+    </a>
+    <a routerLink="/page/test-page2" routerLinkActive="active">
+      <span class="growpod-link">
+        Test Page 2
+      </span>
+    </a>
   </mat-toolbar-row>
 </mat-toolbar>
+
+<!-- Routed page contents -->
 <router-outlet></router-outlet>

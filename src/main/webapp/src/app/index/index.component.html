@@ -1,0 +1,24 @@
+<section class="growpod-main-section">
+  <h1 class="text-center">You've successfully built an Angular page!!</h1>
+  <p>
+    This is a barebones multipage website I've built to provide a basis for
+    building our Angular frontend.
+  </p>
+
+  <p>Visit the other pages below:</p>
+  <ul>
+    <li><a routerLink="/page/test-page1">Test Page 1</a></li>
+    <li><a routerLink="/page/test-page2">Test Page 2</a></li>
+  </ul>
+  <h2>Go to test-page2, but submit an argument</h2>
+  <mat-form-field appearance="standard">
+    <mat-label>test-page2 argument</mat-label>
+    <input
+      #argInput
+      matInput
+      placeholder="Argument text"
+      (keyup.enter)="navPage2(argInput.value)"
+    />
+    <mat-hint>Press enter to go to test-page2</mat-hint>
+  </mat-form-field>
+</section>

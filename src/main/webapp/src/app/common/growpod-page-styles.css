@@ -7,8 +7,7 @@
 }
 
 .growpod-card {
-  background-color: var(--primary-color);
-  border-radius: 32px;
+  background-color: var(--primary-lighter-color);
 }
 
 .text-center {

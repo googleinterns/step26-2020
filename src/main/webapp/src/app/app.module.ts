@@ -23,6 +23,7 @@ import {AppComponent} from './app.component';
 import {IndexComponent} from './index/index.component';
 import {TestPage1Component} from './test-page1/test-page1.component';
 import {TestPage2Component} from './test-page2/test-page2.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import {TestPage2Component} from './test-page2/test-page2.component';
     IndexComponent,
     TestPage1Component,
     TestPage2Component,
+    UserProfileComponent,
   ],
   imports: [
     MaterialComponents,

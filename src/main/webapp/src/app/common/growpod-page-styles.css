@@ -20,15 +20,15 @@
   width: 33%; /* The size you want */
   margin-left: auto;
   margin-right: auto;
-  background-color:#fff;
-  border:16px solid black;    
-  border-radius:50%;
-  -moz-border-radius:50%;
-  -webkit-border-radius:50%;
+  background-color: #fff;
+  border: 16px solid black;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
 }
 
 .profile-pic-container-l:after {
-  content: "";
+  content: '';
   display: block;
   padding-bottom: 100%;
 }
@@ -45,4 +45,3 @@
   object-position: center;
   border-radius: 50%;
 }
-

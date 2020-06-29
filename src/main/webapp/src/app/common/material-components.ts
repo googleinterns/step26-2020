@@ -20,6 +20,12 @@ import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
-  exports: [MatToolbarModule, MatIconModule, MatInputModule, MatCardModule, MatButtonModule],
+  exports: [
+    MatToolbarModule,
+    MatIconModule,
+    MatInputModule,
+    MatCardModule,
+    MatButtonModule,
+  ],
 })
 export class MaterialComponents {}

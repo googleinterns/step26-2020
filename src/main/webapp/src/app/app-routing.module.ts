@@ -21,7 +21,6 @@ import {TestPage2Component} from './test-page2/test-page2.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 
-
 /**
  * The routing table for all frontend pages
  *

@@ -15,3 +15,7 @@ a {
   color: inherit;
   text-decoration: inherit;
 }
+
+mat-toolbar {
+  background-color: #58D68D;
+}

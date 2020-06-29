@@ -1,0 +1,45 @@
+/* Split the screen in half */
+.split {
+  width: 50%;
+  position: fixed;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Control the left side */
+.left {
+  left: 0;
+}
+
+/* Control the right side */
+.right {
+  right: 0;
+}
+
+/* colors */
+/*
+dark green: #12a45f;
+green: #58d68d;
+white: #ffffff;
+
+*/
+.card-padding {
+  padding: 20px;
+}
+
+.button-style {
+  display: block;
+  padding: 0.5em 3em;
+  text-decoration: none;
+  border: none;
+  box-sizing: border-box;
+  box-shadow:inset 0 -0.6em 0 -0.35em #003353;
+  background-color: #005C80;
+  color: white;
+}
+
+.button-style:hover {
+  box-shadow:inset 0 -0.6em 0 -0.35em whitesmoke;
+  background-color: white;
+  color: #005C80;
+}

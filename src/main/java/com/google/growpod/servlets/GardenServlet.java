@@ -14,65 +14,58 @@
 
 package com.google.growpod.servlets;
 
-import com.google.gson.Gson;
 import com.google.growpod.data.Garden;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** 
+/**
  * Servlet that handles garden entities on the server.
  *
- * API DOCUMENTATION:
- *  /garden/{id}
- *  {id} -- A garden UUID
- *  GET: Retrieves the garden data structure for {id}
- *  No parameters
- *  Returns data in JSON format along with (200 OK), otherwise (404 NOT FOUND)
- *  /garden/{id}/plant-list
- *  {id} -- A garden UUID
- *  GET: Retrieves all plants currently on {id} garden
- *  No parameters
- *  Returns data in JSON format along with (200 OK), otherwise (404 NOT FOUND)
- *  /garden/{id}/user-list
- *  {id} -- A garden UUID
- *  GET: Retrieves all users currently on {id} garden
- *  No parameters
- *  Returns data in JSON format along with (200 OK), otherwise (404 NOT FOUND)
- *
+ * <p>API DOCUMENTATION: /garden/{id} {id} -- A garden UUID GET: Retrieves the garden data structure
+ * for {id} No parameters Returns data in JSON format along with (200 OK), otherwise (404 NOT FOUND)
+ * /garden/{id}/plant-list {id} -- A garden UUID GET: Retrieves all plants currently on {id} garden
+ * No parameters Returns data in JSON format along with (200 OK), otherwise (404 NOT FOUND)
+ * /garden/{id}/user-list {id} -- A garden UUID GET: Retrieves all users currently on {id} garden No
+ * parameters Returns data in JSON format along with (200 OK), otherwise (404 NOT FOUND)
  */
 @WebServlet({"/garden", "/garden/*"})
 public class GardenServlet extends HttpServlet {
 
   static final long serialVersionUID = 1L;
 
-  /**
-   * Static test data.
-   */
+  /** Static test data. */
   private static final double newYorkLat = 40.82;
+
   private static final double newYorkLng = -73.93;
   private static final Map<String, Garden> GARDEN_MAP = createGardenMap();
+
   private static Map<String, Garden> createGardenMap() {
     Map<String, Garden> map = new HashMap<String, Garden>();
     map.put("0", new Garden("0", "Flower Garden", newYorkLat, newYorkLng, "0"));
     map.put("1", new Garden("1", "Pea Garden", newYorkLat, newYorkLng, "1"));
     return Collections.unmodifiableMap(map);
   }
+
   private static final Map<String, List<String>> GARDEN_USER_LIST_MAP = createGardenUserListMap();
+
   private static Map<String, List<String>> createGardenUserListMap() {
     Map<String, List<String>> map = new HashMap<String, List<String>>();
     map.put("0", Arrays.asList("0", "1"));
     map.put("1", Arrays.asList("0", "1", "2"));
     return Collections.unmodifiableMap(map);
   }
+
   private static final Map<String, List<String>> GARDEN_PLANT_LIST_MAP = createGardenPlantListMap();
+
   private static Map<String, List<String>> createGardenPlantListMap() {
     Map<String, List<String>> map = new HashMap<String, List<String>>();
     map.put("0", Arrays.asList("0", "1"));
@@ -91,7 +84,7 @@ public class GardenServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     /* uriList will have "" as element 0 */
     String[] uriList = request.getRequestURI().split("/");
-    assert(uriList[1].equals("garden"));
+    assert (uriList[1].equals("garden"));
 
     // Dispatch based on method specified.
     // /garden/{id}
@@ -130,7 +123,8 @@ public class GardenServlet extends HttpServlet {
       }
       // If the uriList does not match the above two methods, fall through.
     }
-    response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
+    response.sendError(
+        HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
   }
 
   /**
@@ -145,8 +139,7 @@ public class GardenServlet extends HttpServlet {
   }
 
   /**
-   * Retrieves a list of garden members.
-   * Returns null if the garden does not exist. 
+   * Retrieves a list of garden members. Returns null if the garden does not exist.
    *
    * @param id the garden's id
    * @return a list of user ids in the garden or null.
@@ -157,8 +150,7 @@ public class GardenServlet extends HttpServlet {
   }
 
   /**
-   * Retrieves a list of garden plants.
-   * Returns null if the garden does not exist. 
+   * Retrieves a list of garden plants. Returns null if the garden does not exist.
    *
    * @param id the garden's id
    * @return a list of plant ids in the garden or null.

@@ -14,38 +14,31 @@
 
 package com.google.growpod.servlets;
 
-import com.google.gson.Gson;
 import com.google.growpod.data.Plant;
+import com.google.gson.Gson;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Map;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** 
+/**
  * Servlet that handles plant entities on the server.
  *
- * API DOCUMENTATION:
- *  /plant/{id}
- *  {id} -- A plant UUID
- *  GET: Retrieves the plant data structure for {id}
- *  No parameters
- *  Returns data in JSON format along with (200 OK), otherwise (404 NOT FOUND)
+ * <p>API DOCUMENTATION: /plant/{id} {id} -- A plant UUID GET: Retrieves the plant data structure
+ * for {id} No parameters Returns data in JSON format along with (200 OK), otherwise (404 NOT FOUND)
  */
 @WebServlet({"/plant", "/plant/*"})
 public class PlantServlet extends HttpServlet {
 
   static final long serialVersionUID = 1L;
 
-  /**
-   * Static test data.
-   */
+  /** Static test data. */
   private static final Map<String, Plant> PLANT_MAP = createPlantMap();
+
   private static Map<String, Plant> createPlantMap() {
     Map<String, Plant> map = new HashMap<String, Plant>();
     map.put("0", new Plant("0", "Flower Plant 1", 4, "0"));
@@ -56,8 +49,8 @@ public class PlantServlet extends HttpServlet {
   }
 
   /**
-   * Processes HTTP GET requests for the /plant servlet. Dispatches functionality based on
-   * structure of GET request.
+   * Processes HTTP GET requests for the /plant servlet. Dispatches functionality based on structure
+   * of GET request.
    *
    * @param request Information about the GET Request
    * @param response Information about the servlet's response
@@ -66,7 +59,7 @@ public class PlantServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     /* uriList will have "" as element 0 */
     String[] uriList = request.getRequestURI().split("/");
-    assert(uriList[1].equals("plant"));
+    assert (uriList[1].equals("plant"));
 
     // Dispatch based on method specified.
     // /plant/{id}
@@ -81,7 +74,8 @@ public class PlantServlet extends HttpServlet {
       return;
     }
 
-    response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
+    response.sendError(
+        HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
   }
 
   /**

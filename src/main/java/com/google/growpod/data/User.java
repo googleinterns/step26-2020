@@ -14,13 +14,12 @@
 
 package com.google.growpod.data;
 
-
 /** User data class. */
 public class User {
 
   public static final int MAX_BIOGRAPHY_LEN = 160;
 
-  /** A unique id, encoded as a URL. */
+  /** A unique id. */
   private String id;
 
   private String email;

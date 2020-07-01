@@ -20,21 +20,6 @@
   padding: 20px;
 }
 
-mat-card {
-  background-color: #58D68D;
-}
-
-.today-event {
-  background-color: #005C80;
-  color: white;
-}
-
-mat-expansion-panel,
-mat-panel-title {
-  background-color: #005C80;
-  color: white;
-}
-
 .button-style {
   display: block;
   padding: 0.5em 3em;
@@ -51,4 +36,3 @@ mat-panel-title {
   background-color: white;
   color: #005C80;
 }
-

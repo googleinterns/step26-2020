@@ -12,30 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {User} from '../model/user.model';
-
-
-@Component({
-  selector: 'app-user-profile',
-  templateUrl: './user-profile.component.html',
-  styleUrls: [
-    './user-profile.component.css',
-    '../common/growpod-page-styles.css',
-  ],
-})
-
 /**
- * This is a component designed to display a user profile, either the
- * logged in user or another user.
+ * User interface that corresponds with design doc specs.
  * 
  */
-export class UserProfileComponent implements OnInit {
-  
-  
-
-  constructor(private route: ActivatedRoute) {}
-
-  ngOnInit(): void {}
+export interface User {
+    id: string;
+    email: string;
+    preferredName: string;
+    biography: string;
+    coarseLocation: string;
 }

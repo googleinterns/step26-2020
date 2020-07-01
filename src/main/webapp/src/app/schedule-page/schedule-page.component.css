@@ -16,19 +16,17 @@
   right: 0;
 }
 
-/* colors */
-/*
-dark green: #12a45f;
-green: #58d68d;
-white: #ffffff;
-
-*/
 .card-padding {
   padding: 20px;
 }
 
 mat-card {
   background-color: #58D68D;
+}
+
+.today-event {
+  background-color: #005C80;
+  color: white;
 }
 
 mat-expansion-panel,
@@ -53,3 +51,4 @@ mat-panel-title {
   background-color: white;
   color: #005C80;
 }
+

@@ -14,12 +14,12 @@
 
 /**
  * User interface that corresponds with design doc specs.
- * 
+ *
  */
 export interface User {
-    id: string;
-    email: string;
-    preferredName: string;
-    biography: string;
-    coarseLocation: string;
+  id: string;
+  email: string;
+  preferredName: string;
+  biography: string;
+  coarseLocation: string;
 }

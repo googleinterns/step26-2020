@@ -14,6 +14,8 @@
 
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import {Observable} from 'rxjs';
 import {User} from '../model/user.model';
 
 @Component({
@@ -29,9 +31,64 @@ import {User} from '../model/user.model';
  * This is a component designed to display a user profile, either the
  * logged in user or another user.
  *
+ * This page takes an argument 'id', the id of the user it requests.
  */
 export class UserProfileComponent implements OnInit {
-  constructor(private route: ActivatedRoute) {}
+
+  displayInfo: User | null;
+  errorMessage = "";
+
+  /**
+   * Initializes the component based on provided arguments
+   *
+   * @param route Contains arguments.
+   */
+  constructor(private route: ActivatedRoute,
+              private httpClient: HttpClient) {
+    const idArg = route.snapshot.paramMap.get('id');
+    const id = idArg === null ? 'current' : idArg;
+    this.createUserProfile(id);
+  }
 
   ngOnInit(): void {}
+
+  /**
+   * Gets user information for the specified user from
+   * the server. Returns an observable HTTP response.
+   *
+   * Performs GET: /user/{user}
+   * 
+   * @param user The user reqested from the server.
+   * @return the http response.
+   */
+  getUserInfo(user: string): Observable<HttpResponse<User>> {
+    return this.httpClient.get<User>(
+      "/user/" + user,
+      {
+        observe: "response",
+        responseType: "json",
+      }
+    );
+  }
+
+  /**
+   * Populates component to create a profile, or shows an
+   * error message if profile does not exist.
+   *
+   * @param user The user requested.
+   */
+  createUserProfile(user: string): void {
+    this.getUserInfo(user).subscribe({
+      next: (response) => {
+        // Successful responses are handled here.
+        this.displayInfo = response.body;
+      },
+      error: (error) => {
+        // Error messages are handled here.
+        this.displayInfo = null;
+        this.errorMessage = "Cannot see user profile for user id: " + user;
+        console.log(new Error(error));
+      },
+    });
+  }
 }

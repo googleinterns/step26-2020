@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import {BrowserModule} from '@angular/platform-browser';
+import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -40,6 +41,7 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
   imports: [
     MaterialComponents,
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatExpansionModule,

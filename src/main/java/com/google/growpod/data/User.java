@@ -29,8 +29,9 @@ public class User {
   private String biography;
   /**
    * We do not wish to keep exact user locations -- this will store some approximate location data.
+   * Unfortunately, this will only work in the US.
    */
-  private String coarseLocation;
+  private String zipCode;
 
   /**
    * Constructs a new User.
@@ -39,16 +40,15 @@ public class User {
    * @param email The user's email.
    * @param preferredName The user's preferred name.
    * @param biography A user-submitted biography truncated to MAX_BIOGRAPHY_LEN.
-   * @param coarseLocation The user's approximate location.
+   * @param zipCode The user's postal code.
    */
-  public User(
-      String id, String email, String preferredName, String biography, String coarseLocation) {
+  public User(String id, String email, String preferredName, String biography, String zipCode) {
     this.id = id;
     this.email = email;
     this.preferredName = preferredName;
     // Truncate biography
     this.biography = biography.substring(0, Math.min(biography.length(), MAX_BIOGRAPHY_LEN));
-    this.coarseLocation = coarseLocation;
+    this.zipCode = zipCode;
   }
 
   /* Getters and setters. */
@@ -95,11 +95,11 @@ public class User {
     this.biography = biography.substring(0, Math.min(biography.length(), MAX_BIOGRAPHY_LEN));
   }
 
-  public String getCoarseLocation() {
-    return coarseLocation;
+  public String getZipCode() {
+    return zipCode;
   }
 
-  public void setCoarseLocation(String location) {
-    this.coarseLocation = location;
+  public void setZipCode(String location) {
+    this.zipCode = location;
   }
 }

@@ -49,14 +49,9 @@ public class UserServlet extends HttpServlet {
   private static Map<String, User> createUserMap() {
     Map<String, User> map = new HashMap<String, User>();
     map.put(
-        "0",
-        new User("0", "ladd@example.com", "David Ladd", "My SSN is: 143-46-6098", "New York, NY"));
-    map.put(
-        "1",
-        new User("1", "caroqliu@google.com", "Caroline Liu", "Plants are fun", "New York, NY"));
-    map.put(
-        "2",
-        new User("2", "friedj@google.com", "Jake Fried", "Plants are fun too", "New York, NY"));
+        "0", new User("0", "ladd@example.com", "David Ladd", "My SSN is: 143-46-6098", "11201"));
+    map.put("1", new User("1", "caroqliu@google.com", "Caroline Liu", "Plants are fun", "11201"));
+    map.put("2", new User("2", "friedj@google.com", "Jake Fried", "Plants are fun too", "11201"));
     return Collections.unmodifiableMap(map);
   }
 

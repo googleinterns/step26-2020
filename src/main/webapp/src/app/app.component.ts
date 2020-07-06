@@ -17,8 +17,9 @@ import {Component} from '@angular/core';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.css', './common/growpod-page-styles.css'],
 })
 export class AppComponent {
-  title = 'growpod-client';
+  // For the mockup, the user is always logged in
+  loggedIn = true;
 }

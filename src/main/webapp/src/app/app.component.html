@@ -1,21 +1,43 @@
-<!-- Template page: these components will appear on
-every page unless they are suppressed. -->
-<mat-toolbar id="growpod-top-bar" color="primary">
-  <mat-toolbar-row>
-    <a routerLink="/page/index"><span>GrowPod</span></a>
-    <span class="growpod-spacer"></span>
-    <a routerLink="/page/test-page1" routerLinkActive="active">
-      <span class="growpod-link">
-        Test Page 1
-      </span>
-    </a>
-    <a routerLink="/page/test-page2" routerLinkActive="active">
-      <span class="growpod-link">
-        Test Page 2
-      </span>
-    </a>
-  </mat-toolbar-row>
-</mat-toolbar>
-
-<!-- Routed page contents -->
-<router-outlet></router-outlet>
+<!-- Displays app contents if user is logged in, otherwise directs user to a home/login page -->
+<div *ngIf="loggedIn; else homePage">
+  <mat-toolbar id="growpod-top-bar" color="primary">
+    <mat-toolbar-row>
+      <a routerLink="/page/index"><span>GrowPod</span></a>
+      <span class="growpod-spacer"></span>
+      <a routerLink="/page/my-gardens" routerLinkActive="active">
+        <button mat-button class="growpod-link">
+          <span>My Gardens</span>
+        </button>
+      </a>
+      <a routerLink="/page/find-gardens" routerLinkActive="active">
+        <button mat-button class="growpod-link">
+          <span>Find Gardens</span>
+        </button>
+      </a>
+      <button mat-button [matMenuTriggerFor]="userMenu" aria-label="User menu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #userMenu>
+        <div #profilePic class="profile-pic-container-s"></div>
+        <h4 class="text-center">David Ladd</h4>
+        <a routerLink="/page/user-profile">
+          <button mat-menu-item>
+            <mat-icon>assignment_ind</mat-icon>
+            <span>My Profile</span>
+          </button>
+        </a>
+        <button mat-menu-item disabled>
+          <mat-icon>login</mat-icon>
+          <!-- https://imgur.com/fub9WUs -->
+          <span>Log Out</span>
+        </button>
+      </mat-menu>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <!-- Routed page contents -->
+  <router-outlet></router-outlet>
+</div>
+<!-- Error homepage -->
+<ng-template #homePage>
+  <h1>You aren't signed into GrowPod )-;</h1>
+</ng-template>

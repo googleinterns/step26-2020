@@ -17,16 +17,18 @@ package com.google.growpod.data;
 /** User data class. */
 public class User {
 
-  public static final int MAX_BIOGRAPHY_LEN = 160;
-
   /** A unique id. */
   private String id;
 
+  /** The user's primary email */
   private String email;
+
   /** This is the only name we track. */
   private String preferredName;
 
+  /** The user's biography */
   private String biography;
+
   /**
    * We do not wish to keep exact user locations -- this will store some approximate location data.
    * Unfortunately, this will only work in the US.
@@ -39,15 +41,14 @@ public class User {
    * @param id A unique ID for the user. This value must be supplied by the user.
    * @param email The user's email.
    * @param preferredName The user's preferred name.
-   * @param biography A user-submitted biography truncated to MAX_BIOGRAPHY_LEN.
+   * @param biography A user-submitted biography.
    * @param zipCode The user's postal code.
    */
   public User(String id, String email, String preferredName, String biography, String zipCode) {
     this.id = id;
     this.email = email;
     this.preferredName = preferredName;
-    // Truncate biography
-    this.biography = biography.substring(0, Math.min(biography.length(), MAX_BIOGRAPHY_LEN));
+    this.biography = biography;
     this.zipCode = zipCode;
   }
 
@@ -76,23 +77,12 @@ public class User {
     this.preferredName = name;
   }
 
-  /**
-   * Returns the user's biography. Guaranteed to be <= MAX_BIOGRAPHY_LEN in size.
-   *
-   * @return the user's biography.
-   */
   public String getBiography() {
     return biography;
   }
 
-  /**
-   * Sets the user's biography to a new string and truncates it to MAX_BIOGRAPHY_LEN characters if
-   * applicable.
-   *
-   * @param biography the user's biography, to be truncated
-   */
   public void setBiography(String biography) {
-    this.biography = biography.substring(0, Math.min(biography.length(), MAX_BIOGRAPHY_LEN));
+    this.biography = biography;
   }
 
   public String getZipCode() {

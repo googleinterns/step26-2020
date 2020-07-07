@@ -23,6 +23,7 @@ public class Plant {
   /** An optional nickname. */
   private String nickname;
 
+  /** The number of plants in this plot */
   private long count;
 
   /** Foreign Key to this plant's information. */

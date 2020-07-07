@@ -18,11 +18,19 @@ import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {MaterialComponents} from './common/material-components';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatCardModule} from '@angular/material/card';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatNativeDateModule} from '@angular/material/core';
+
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
 
 import {AppComponent} from './app.component';
 import {IndexComponent} from './index/index.component';
 import {TestPage1Component} from './test-page1/test-page1.component';
 import {TestPage2Component} from './test-page2/test-page2.component';
+import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 
 @NgModule({
   declarations: [
@@ -30,12 +38,20 @@ import {TestPage2Component} from './test-page2/test-page2.component';
     IndexComponent,
     TestPage1Component,
     TestPage2Component,
+    SchedulePageComponent,
   ],
   imports: [
     MaterialComponents,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatExpansionModule,
+    MatCardModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

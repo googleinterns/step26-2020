@@ -1,79 +1,81 @@
-<div class='split left'>
-  <div class='card-padding'>
-    <mat-card>
-      <h2> Peapod Garden </h2>
-      <h4> Caroline | New York City, NY </h4>
-      <button md-raised-button class='button-style'> Go back </button>
-    </mat-card>
+<div class='flex-container'>
+  <div style='flex-grow: 2'>
+    <div class='card-padding'>
+      <mat-card>
+        <h2> Peapod Garden </h2>
+        <h4> Caroline | New York City, NY </h4>
+        <button md-raised-button class='button-style'> Go back </button>
+      </mat-card>
+    </div>
+
+    <div class='card-padding'>
+      <mat-card>
+        <mat-accordion>
+          <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title> About the garden </mat-panel-title>
+            </mat-expansion-panel-header>
+              <p>Growing all the green things that look like peas.</p>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title> Plants </mat-panel-title>
+            </mat-expansion-panel-header>
+              <ul>
+                <li>Pea plant</li>
+                <li>Pears</li>
+              </ul>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title> Members </mat-panel-title>
+            </mat-expansion-panel-header>
+              <ul>
+                <li>Caroline (owner)</li>
+                <li>Jake</li>
+                <li>Kayla</li>
+                <li>Cody</li>
+                <li>Stephanie</li>
+              </ul>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </mat-card>
+    </div>
   </div>
 
-  <div class='card-padding'>
-    <mat-card>
-      <mat-accordion>
-        <mat-expansion-panel hideToggle>
-          <mat-expansion-panel-header>
-            <mat-panel-title> About the garden </mat-panel-title>
-          </mat-expansion-panel-header>
-            <p>Growing all the green things that look like peas.</p>
-        </mat-expansion-panel>
-
-        <mat-expansion-panel hideToggle>
-          <mat-expansion-panel-header>
-            <mat-panel-title> Plants </mat-panel-title>
-          </mat-expansion-panel-header>
-            <ul>
-              <li>Pea plant</li>
-              <li>Pears</li>
-            </ul>
-        </mat-expansion-panel>
-
-        <mat-expansion-panel hideToggle>
-          <mat-expansion-panel-header>
-            <mat-panel-title> Members </mat-panel-title>
-          </mat-expansion-panel-header>
-            <ul>
-              <li>Caroline (owner)</li>
-              <li>Jake</li>
-              <li>Kayla</li>
-              <li>Cody</li>
-              <li>Stephanie</li>
-            </ul>
-        </mat-expansion-panel>
-      </mat-accordion>
-    </mat-card>
-  </div>
-</div>
-
-<div class='split right'>
-  <div class='card-padding'>
-    <mat-card>
-      <mat-card-title> Daily Tasks Schedule </mat-card-title>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Select date to view tasks</mat-label>
-        <input matInput [matDatepicker]="datepicker"
-              [formControl]="date">
-        <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
-        <mat-datepicker #datepicker></mat-datepicker>
-      </mat-form-field>
-
-      <h1>Tuesday: June 20</h1>
-
+  <div style='flex-grow: 4'>
+    <div class='card-padding'>
       <mat-card>
-        <mat-card-title> 9:00 am | Water Plants </mat-card-title>
-        <h3> Member(s): Cody, Stephanie, Kayla </h3>
-        <mat-card-content>
-          <p> Make sure to water all plants in section 1A </p>
-        </mat-card-content>
-      </mat-card>
+        <mat-card-title> Daily Tasks Schedule </mat-card-title>
 
-      <mat-card>
-        <mat-card-title> 11:00 am | Pick pears </mat-card-title>
-        <h3> Member(s): Caroline, Jake </h3>
-        <mat-card-content>
-          <p> Put the pears in a basket for pickup for tomorrow. </p>
-        </mat-card-content>
+        <mat-form-field appearance="fill">
+          <mat-label>Select date to view tasks</mat-label>
+          <input matInput [matDatepicker]="datepicker"
+                [formControl]="date">
+          <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+          <mat-datepicker #datepicker></mat-datepicker>
+        </mat-form-field>
+
+        <h1>Tuesday: June 20</h1>
+
+        <mat-card>
+          <mat-card-title> 9:00 am | Water Plants </mat-card-title>
+          <h3> Member(s): Cody, Stephanie, Kayla </h3>
+          <mat-card-content>
+            <p> Make sure to water all plants in section 1A </p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card>
+          <mat-card-title> 11:00 am | Pick pears </mat-card-title>
+          <h3> Member(s): Caroline, Jake </h3>
+          <mat-card-content>
+            <p> Put the pears in a basket for pickup for tomorrow. </p>
+          </mat-card-content>
+        </mat-card>
       </mat-card>
-    </mat-card>
+    </div>
   </div>
 </div>

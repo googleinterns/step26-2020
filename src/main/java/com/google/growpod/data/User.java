@@ -20,13 +20,13 @@ public class User {
   /** A unique id. */
   private String id;
 
-  /** The user's primary email */
+  /** The user's primary email. */
   private String email;
 
   /** This is the only name we track. */
   private String preferredName;
 
-  /** The user's biography */
+  /** The user's biography. */
   private String biography;
 
   /**

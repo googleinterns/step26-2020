@@ -20,7 +20,7 @@ public class Garden {
   /** A unique id. */
   private String id;
 
-  /** The garden's name */
+  /** The garden's name. */
   private String name;
 
   /** Latitude of garden. */
@@ -29,9 +29,7 @@ public class Garden {
   /** Longitude of garden. */
   private double lng;
 
-  /**
-   * Foreign Key to this garden's administrator. Must be a valid user key.
-   */
+  /** Foreign Key to this garden's administrator. Must be a valid user key. */
   private String adminId;
 
   /**

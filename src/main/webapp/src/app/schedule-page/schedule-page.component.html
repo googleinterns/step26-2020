@@ -50,13 +50,7 @@
       <mat-card>
         <mat-card-title> Daily Tasks Schedule </mat-card-title>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Select date to view tasks</mat-label>
-          <input matInput [matDatepicker]="datepicker"
-                [formControl]="date">
-          <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
-          <mat-datepicker #datepicker></mat-datepicker>
-        </mat-form-field>
+        <datepicker></datepicker>
 
         <h1>Tuesday: June 20</h1>
 

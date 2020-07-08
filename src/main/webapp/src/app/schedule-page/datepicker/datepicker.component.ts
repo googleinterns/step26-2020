@@ -12,20 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'schedule-page',
-  templateUrl: './schedule-page.component.html',
-  styleUrls: [
-    './schedule-page.component.css',
-    '../common/growpod-page-styles.css',
-  ],
+  selector: 'datepicker',
+  templateUrl: './datepicker.component.html',
 })
 
-export class SchedulePageComponent implements OnInit {
- 
-  constructor() {}
+export class DatepickerComponent implements OnInit {
+  date = new FormControl(new Date());
+  currDate: string = this.date.value;
 
-  ngOnInit(): void {}
+  constructor() { }
+
+  ngOnInit(): void { }
+
+  addEvent(event: MatDatepickerInputEvent<Date>) {
+    this.currDate = `${event.value}`;
+  }
+
 }

@@ -27,6 +27,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
 
 import {AppComponent} from './app.component';
+import {DatepickerComponent} from './schedule-page/datepicker/datepicker.component';
 import {IndexComponent} from './index/index.component';
 import {TestPage1Component} from './test-page1/test-page1.component';
 import {TestPage2Component} from './test-page2/test-page2.component';
@@ -35,6 +36,7 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 @NgModule({
   declarations: [
     AppComponent,
+    DatepickerComponent,
     IndexComponent,
     TestPage1Component,
     TestPage2Component,

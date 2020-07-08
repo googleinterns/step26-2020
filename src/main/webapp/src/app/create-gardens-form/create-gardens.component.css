@@ -1,21 +1,20 @@
-.button{
-   display: flex; 
-  margin-left:auto;
-  margin-right:auto;
+.button {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0.5em 3em;
   text-decoration: none;
   border: none;
   box-sizing: border-box;
-  box-shadow:inset 0 -0.6em 0 -0.35em #003353;
-  background-color: #005C80;
+  box-shadow: inset 0 -0.6em 0 -0.35em #003353;
+  background-color: #005c80;
   color: white;
 }
 
-
-.form{
- background-color: #00BB98;
-  max-height:450px;
+.form {
+  background-color: #00bb98;
+  max-height: 450px;
   max-width: 400px;
   margin: 20px auto;
-  text-align:center;
+  text-align: center;
 }

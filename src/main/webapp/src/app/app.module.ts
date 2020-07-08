@@ -26,14 +26,11 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
 
-
-
 import {AppComponent} from './app.component';
 import {IndexComponent} from './index/index.component';
 import {TestPage1Component} from './test-page1/test-page1.component';
 import {TestPage2Component} from './test-page2/test-page2.component';
 import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
-
 
 @NgModule({
   declarations: [
@@ -41,7 +38,7 @@ import {CreateGardensComponent} from './create-gardens-form/create-gardens.compo
     IndexComponent,
     TestPage1Component,
     TestPage2Component,
-    CreateGardensComponent
+    CreateGardensComponent,
   ],
   imports: [
     MaterialComponents,
@@ -57,7 +54,7 @@ import {CreateGardensComponent} from './create-gardens-form/create-gardens.compo
     MatInputModule,
   ],
   providers: [
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
+    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}},
   ],
   bootstrap: [AppComponent],
 })

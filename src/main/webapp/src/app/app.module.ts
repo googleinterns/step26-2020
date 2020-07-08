@@ -21,12 +21,19 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatCardModule} from '@angular/material/card';
 import {CarouselModule} from 'ngx-owl-carousel-o';
 import {RouterModule} from '@angular/router';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input';
 
 import {AppComponent} from './app.component';
 import {IndexComponent} from './index/index.component';
 import {TestPage1Component} from './test-page1/test-page1.component';
 import {TestPage2Component} from './test-page2/test-page2.component';
 import {MyGardensComponent} from './my_gardens_page/my-gardens.component';
+import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
+import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +42,8 @@ import {MyGardensComponent} from './my_gardens_page/my-gardens.component';
     TestPage1Component,
     TestPage2Component,
     MyGardensComponent,
+    CreateGardensComponent,
+    FindGardensComponent,
   ],
   imports: [
     MaterialComponents,
@@ -44,8 +53,16 @@ import {MyGardensComponent} from './my_gardens_page/my-gardens.component';
     MatCardModule,
     RouterModule,
     CarouselModule,
+    MatCardModule,
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatInputModule,
   ],
-  providers: [],
+  providers: [
+    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}},
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

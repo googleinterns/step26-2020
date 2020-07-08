@@ -85,7 +85,7 @@ public class PlantServlet extends HttpServlet {
    * @return the plant with id's data or null.
    */
   private Plant getPlantById(String id) {
-    // MOCKUP IMPLEMENTATION
+    // MOCK IMPLEMENTATION
     return PLANT_MAP.get(id);
   }
 }

@@ -1,0 +1,14 @@
+#profile-pic {
+  margin-bottom: 64px;
+}
+
+.biography {
+  border-radius: 4px;
+  margin: 0px auto;
+  max-width: 500px;
+  width: 55%;
+}
+
+.biography p {
+  margin: 12px;
+}

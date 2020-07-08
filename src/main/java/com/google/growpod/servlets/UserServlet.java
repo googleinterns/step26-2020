@@ -65,6 +65,17 @@ public class UserServlet extends HttpServlet {
     return Collections.unmodifiableMap(map);
   }
 
+  private static final Map<String, List<String>> USER_GARDEN_ADMIN_LIST_MAP =
+      createUserGardenAdminListMap();
+
+  private static Map<String, List<String>> createUserGardenAdminListMap() {
+    Map<String, List<String>> map = new HashMap<String, List<String>>();
+    map.put("0", Arrays.asList("0"));
+    map.put("1", Arrays.asList("1"));
+    map.put("2", Arrays.asList());
+    return Collections.unmodifiableMap(map);
+  }
+
   /**
    * Processes HTTP GET requests for the /user servlet. Dispatches functionality based on structure
    * of GET request.
@@ -91,16 +102,28 @@ public class UserServlet extends HttpServlet {
       return;
     }
 
-    // /user/{id}/garden-list
     if (uriList.length == 4) {
-      List<String> list = getUserGardenListById(uriList[2]);
-      if (list == null) {
-        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + uriList[2]);
+      if (uriList[3].equals("garden-list")) {
+        // /user/{id}/garden-list
+        List<String> list = getUserGardenListById(uriList[2]);
+        if (list == null) {
+          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + uriList[2]);
+          return;
+        }
+        response.setContentType("application/json;");
+        response.getWriter().println(new Gson().toJson(list));
+        return;
+      } else if (uriList[3].equals("garden-admin-list")) {
+        // /user/{id}/garden-admin-list
+        List<String> list = getUserGardenAdminListById(uriList[2]);
+        if (list == null) {
+          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + uriList[2]);
+          return;
+        }
+        response.setContentType("application/json;");
+        response.getWriter().println(new Gson().toJson(list));
         return;
       }
-      response.setContentType("application/json;");
-      response.getWriter().println(new Gson().toJson(list));
-      return;
     }
     response.sendError(
         HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
@@ -113,7 +136,7 @@ public class UserServlet extends HttpServlet {
    * @return the user with id's data or null.
    */
   private User getUserById(String id) {
-    // MOCKUP IMPLEMENTATION
+    // MOCK IMPLEMENTATION
     if (id.equals("current")) {
       return USER_MAP.get(CURRENT_USER_KEY);
     }
@@ -128,10 +151,25 @@ public class UserServlet extends HttpServlet {
    * @return a list of gardens the user is a part of, or an empty list, or null.
    */
   private List<String> getUserGardenListById(String id) {
-    // MOCKUP IMPLEMENTATION
+    // MOCK IMPLEMENTATION
     if (id.equals("current")) {
       return USER_GARDEN_LIST_MAP.get(CURRENT_USER_KEY);
     }
     return USER_GARDEN_LIST_MAP.get(id);
+  }
+
+  /**
+   * Retrieves a list of gardens the user with a given id administers. Returns an empty list if the
+   * user administers no gardens, and null if the user does not exist.
+   *
+   * @param id the user's id
+   * @return a list of gardens the user administers, or an empty list, or null.
+   */
+  private List<String> getUserGardenAdminListById(String id) {
+    // MOCK IMPLEMENTATION
+    if (id.equals("current")) {
+      return USER_GARDEN_ADMIN_LIST_MAP.get(CURRENT_USER_KEY);
+    }
+    return USER_GARDEN_ADMIN_LIST_MAP.get(id);
   }
 }

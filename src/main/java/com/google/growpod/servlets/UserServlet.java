@@ -65,7 +65,8 @@ public class UserServlet extends HttpServlet {
     return Collections.unmodifiableMap(map);
   }
 
-  private static final Map<String, List<String>> USER_GARDEN_ADMIN_LIST_MAP = createUserGardenAdminListMap();
+  private static final Map<String, List<String>> USER_GARDEN_ADMIN_LIST_MAP =
+      createUserGardenAdminListMap();
 
   private static Map<String, List<String>> createUserGardenAdminListMap() {
     Map<String, List<String>> map = new HashMap<String, List<String>>();
@@ -158,8 +159,8 @@ public class UserServlet extends HttpServlet {
   }
 
   /**
-   * Retrieves a list of gardens the user with a given id administers. Returns an empty list if
-   * the user administers no gardens, and null if the user does not exist.
+   * Retrieves a list of gardens the user with a given id administers. Returns an empty list if the
+   * user administers no gardens, and null if the user does not exist.
    *
    * @param id the user's id
    * @return a list of gardens the user administers, or an empty list, or null.

@@ -35,9 +35,8 @@ import {UserProfileComponent} from './user-profile/user-profile.component';
 import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 
-import {MatCardModule} from '@angular/material/card';
 import {CarouselModule} from 'ngx-owl-carousel-o';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -57,7 +56,6 @@ import {Routes, RouterModule} from '@angular/router';
     BrowserAnimationsModule,
     MatCardModule,
     CarouselModule,
-    Routes,
     RouterModule,
     MatExpansionModule,
     MatCardModule,

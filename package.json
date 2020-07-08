@@ -9,5 +9,10 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.1.2",
     "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@angular/core": "^10.0.2",
+    "@angular/forms": "^10.0.2",
+    "@angular/router": "^10.0.2"
   }
 }

@@ -18,6 +18,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {IndexComponent} from './index/index.component';
 import {TestPage1Component} from './test-page1/test-page1.component';
 import {TestPage2Component} from './test-page2/test-page2.component';
+import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 
 /**
  * The routing table for all frontend pages
@@ -30,6 +31,8 @@ const routes: Routes = [
   {path: 'page/index', component: IndexComponent},
   {path: 'page/test-page1', component: TestPage1Component},
   {path: 'page/test-page2', component: TestPage2Component},
+  {path: 'page/create-garden', component: CreateGardensComponent},
+
   /** Defaults to /index */
   {path: '', redirectTo: '/page/index', pathMatch: 'full'},
 ];

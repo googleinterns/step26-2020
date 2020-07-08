@@ -18,11 +18,22 @@ import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {MaterialComponents} from './common/material-components';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatCardModule} from '@angular/material/card';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input';
+
+
 
 import {AppComponent} from './app.component';
 import {IndexComponent} from './index/index.component';
 import {TestPage1Component} from './test-page1/test-page1.component';
 import {TestPage2Component} from './test-page2/test-page2.component';
+import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
+
 
 @NgModule({
   declarations: [
@@ -30,14 +41,24 @@ import {TestPage2Component} from './test-page2/test-page2.component';
     IndexComponent,
     TestPage1Component,
     TestPage2Component,
+    CreateGardensComponent
   ],
   imports: [
     MaterialComponents,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatNativeDateModule,
+    MatSelectModule,
+    MatInputModule,
   ],
-  providers: [],
+  providers: [
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

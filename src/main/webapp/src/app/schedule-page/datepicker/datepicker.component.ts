@@ -29,8 +29,20 @@ export class DatepickerComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  addEvent(event: MatDatepickerInputEvent<Date>) {
-    this.currDate = `${event.value}`;
+  updateCurrDate(event: MatDatepickerInputEvent<Date>): void {
+    if(event.value) {
+      this.currDate = this.formatDate(event);
+    }
+    else {
+      this.currDate = '';
+    }
+  }
+
+  formatDate(event: MatDatepickerInputEvent<Date>): string {
+    var original = `${event.value}`;
+    const splits = original.split(' ');
+    const formattedDate = splits[0] + ': ' + splits[1] + ' ' +  splits[2] + ', ' +  splits[3];
+    return formattedDate;
   }
 
 }

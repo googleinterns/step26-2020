@@ -18,6 +18,13 @@ import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {MaterialComponents} from './common/material-components';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatCardModule} from '@angular/material/card';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatNativeDateModule} from '@angular/material/core';
+
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
 
 import {AppComponent} from './app.component';
 import {IndexComponent} from './index/index.component';
@@ -27,6 +34,7 @@ import {MatCardModule} from '@angular/material/card';
 import {CarouselModule} from 'ngx-owl-carousel-o';
 import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {Routes, RouterModule} from '@angular/router';
+import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +43,7 @@ import {Routes, RouterModule} from '@angular/router';
     TestPage1Component,
     TestPage2Component,
     FindGardensComponent,
+    SchedulePageComponent,
   ],
   imports: [
     MaterialComponents,
@@ -44,6 +53,13 @@ import {Routes, RouterModule} from '@angular/router';
     MatCardModule,
     CarouselModule,
     RouterModule,
+    MatExpansionModule,
+    MatCardModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

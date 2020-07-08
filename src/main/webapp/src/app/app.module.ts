@@ -32,7 +32,12 @@ import {IndexComponent} from './index/index.component';
 import {TestPage1Component} from './test-page1/test-page1.component';
 import {TestPage2Component} from './test-page2/test-page2.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
+import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
+
+import {MatCardModule} from '@angular/material/card';
+import {CarouselModule} from 'ngx-owl-carousel-o';
+import {Routes, RouterModule} from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -41,6 +46,7 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
     TestPage1Component,
     TestPage2Component,
     UserProfileComponent,
+    FindGardensComponent,
     SchedulePageComponent,
   ],
   imports: [
@@ -49,6 +55,9 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatCardModule,
+    CarouselModule,
+    RouterModule,
     MatExpansionModule,
     MatCardModule,
     FormsModule,

@@ -30,6 +30,10 @@ import {AppComponent} from './app.component';
 import {IndexComponent} from './index/index.component';
 import {TestPage1Component} from './test-page1/test-page1.component';
 import {TestPage2Component} from './test-page2/test-page2.component';
+import {MatCardModule} from '@angular/material/card';
+import {CarouselModule} from 'ngx-owl-carousel-o';
+import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
+import {Routes, RouterModule} from '@angular/router';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 
 @NgModule({
@@ -38,6 +42,7 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
     IndexComponent,
     TestPage1Component,
     TestPage2Component,
+    FindGardensComponent,
     SchedulePageComponent,
   ],
   imports: [
@@ -45,6 +50,9 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatCardModule,
+    CarouselModule,
+    RouterModule,
     MatExpansionModule,
     MatCardModule,
     FormsModule,

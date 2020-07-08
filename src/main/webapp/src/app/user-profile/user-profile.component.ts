@@ -32,6 +32,9 @@ import {User} from '../model/user.model';
  * logged in user or another user.
  *
  * This page takes an argument 'id', the id of the user it requests.
+ * If the 'id' argument is not provided, the component will call
+ * GET: /user/current. Otherwise, the component will call GET:
+ * /user/{id}, with the value of the string 'id' as {id}.
  */
 export class UserProfileComponent implements OnInit {
   displayInfo: User | null;
@@ -44,7 +47,7 @@ export class UserProfileComponent implements OnInit {
    */
   constructor(private route: ActivatedRoute, private httpClient: HttpClient) {
     const idArg = route.snapshot.paramMap.get('id');
-    const id = idArg === null ? 'current' : idArg;
+    const id = idArg ?? 'current';
     this.createUserProfile(id);
   }
 

@@ -57,6 +57,7 @@ import {Routes, RouterModule} from '@angular/router';
     BrowserAnimationsModule,
     MatCardModule,
     CarouselModule,
+    Routes,
     RouterModule,
     MatExpansionModule,
     MatCardModule,

@@ -21,5 +21,5 @@ export interface User {
   email: string;
   preferredName: string;
   biography: string;
-  coarseLocation: string;
+  zipCode: string;
 }

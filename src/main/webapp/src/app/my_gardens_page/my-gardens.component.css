@@ -1,0 +1,48 @@
+.avatar {
+  background-size: cover;
+  height: 50px;
+  padding-top: 5px;
+}
+.avatar-image {
+  width: 50px;
+}
+
+.button {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0.5em 3em;
+  text-decoration: none;
+  border: none;
+  box-sizing: border-box;
+  box-shadow: inset 0 -0.6em 0 -0.35em #003353;
+  background-color: #005c80;
+  color: white;
+}
+.cards {
+  max-width: 400px;
+  background-color: #00bb98;
+  min-height: 750px;
+  margin: 20px auto;
+}
+
+.garden-image {
+  height: 350px;
+  width: 390px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h1 {
+  text-align: center;
+  margin: 20px auto;
+  font-weight: bold;
+}
+.name,
+.avatar-image {
+  display: inline-block;
+}
+
+.title {
+  text-align: center;
+}

@@ -136,7 +136,7 @@ public class UserServlet extends HttpServlet {
    * @return the user with id's data or null.
    */
   private User getUserById(String id) {
-    // MOCKUP IMPLEMENTATION
+    // MOCK IMPLEMENTATION
     if (id.equals("current")) {
       return USER_MAP.get(CURRENT_USER_KEY);
     }
@@ -151,7 +151,7 @@ public class UserServlet extends HttpServlet {
    * @return a list of gardens the user is a part of, or an empty list, or null.
    */
   private List<String> getUserGardenListById(String id) {
-    // MOCKUP IMPLEMENTATION
+    // MOCK IMPLEMENTATION
     if (id.equals("current")) {
       return USER_GARDEN_LIST_MAP.get(CURRENT_USER_KEY);
     }
@@ -166,7 +166,7 @@ public class UserServlet extends HttpServlet {
    * @return a list of gardens the user administers, or an empty list, or null.
    */
   private List<String> getUserGardenAdminListById(String id) {
-    // MOCKUP IMPLEMENTATION
+    // MOCK IMPLEMENTATION
     if (id.equals("current")) {
       return USER_GARDEN_ADMIN_LIST_MAP.get(CURRENT_USER_KEY);
     }

@@ -21,6 +21,11 @@ import {MaterialComponents} from './common/material-components';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCardModule} from '@angular/material/card';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatNativeDateModule} from '@angular/material/core';
+
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
 
 import {AppComponent} from './app.component';
 import {IndexComponent} from './index/index.component';
@@ -46,6 +51,11 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
     BrowserAnimationsModule,
     MatExpansionModule,
     MatCardModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

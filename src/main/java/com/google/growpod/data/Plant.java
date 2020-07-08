@@ -23,6 +23,7 @@ public class Plant {
   /** An optional nickname. */
   private String nickname;
 
+  /** The number of plants in this plot. */
   private long count;
 
   /** Foreign Key to this plant's information. */
@@ -34,7 +35,7 @@ public class Plant {
    * @param id A unique ID for the plant. This value must be supplied by the user.
    * @param nickname A nickname or null.
    * @param count The number of this type of plant.
-   * @param plantTypeId The garden's administrator. THIS IS UNCHECKED.
+   * @param plantTypeId The plant's type. Must be a valid plant type id.
    */
   public Plant(String id, String nickname, long count, String plantTypeId) {
     this.id = id;

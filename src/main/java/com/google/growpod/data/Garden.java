@@ -20,6 +20,7 @@ public class Garden {
   /** A unique id. */
   private String id;
 
+  /** The garden's name. */
   private String name;
 
   /** Latitude of garden. */
@@ -28,10 +29,7 @@ public class Garden {
   /** Longitude of garden. */
   private double lng;
 
-  /**
-   * Foreign Key to this garden's administrator. Currently, there is no checking as to whether this
-   * is a valid key.
-   */
+  /** Foreign Key to this garden's administrator. Must be a valid user key. */
   private String adminId;
 
   /**
@@ -41,7 +39,7 @@ public class Garden {
    * @param name The garden's name
    * @param lat The garden's latitude
    * @param lng The garden's longitude
-   * @param adminId The garden's administrator. THIS IS UNCHECKED.
+   * @param adminId The garden's administrator. Must be a valid user key.
    */
   public Garden(String id, String name, double lat, double lng, String adminId) {
     this.id = id;

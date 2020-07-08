@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import {Component, OnInit} from '@angular/core';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'schedule-page',
@@ -23,6 +24,9 @@ import {Component, OnInit} from '@angular/core';
   ],
 })
 export class SchedulePageComponent implements OnInit {
+  date = new FormControl(new Date());
+  serializedDate = new FormControl((new Date()).toISOString());
+  
   constructor() {}
 
   ngOnInit(): void {}

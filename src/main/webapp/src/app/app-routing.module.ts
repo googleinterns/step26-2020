@@ -33,7 +33,7 @@ const routes: Routes = [
   {path: 'page/test-page1', component: TestPage1Component},
   {path: 'page/test-page2', component: TestPage2Component},
   {path: 'page/user-profile', component: UserProfileComponent},
-  {path: 'page/schedule-page', component: SchedulePageComponent},
+  {path: 'page/schedule', component: SchedulePageComponent},
   /** Defaults to /index */
   {path: '', redirectTo: '/page/index', pathMatch: 'full'},
 ];

@@ -19,6 +19,8 @@ import {IndexComponent} from './index/index.component';
 import {TestPage1Component} from './test-page1/test-page1.component';
 import {TestPage2Component} from './test-page2/test-page2.component';
 import {MyGardensComponent} from './my_gardens_page/my-gardens.component';
+import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
+import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 
 /**
  * The routing table for all frontend pages
@@ -32,6 +34,8 @@ const routes: Routes = [
   {path: 'page/test-page1', component: TestPage1Component},
   {path: 'page/test-page2', component: TestPage2Component},
   {path: 'page/my-gardens', component: MyGardensComponent},
+  {path: 'page/find-gardens', component: FindGardensComponent},
+  {path: 'page/schedule', component: SchedulePageComponent},
   /** Defaults to /index */
   {path: '', redirectTo: '/page/index', pathMatch: 'full'},
 ];

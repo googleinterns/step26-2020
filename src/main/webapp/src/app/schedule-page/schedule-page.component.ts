@@ -12,22 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {NgModule} from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatIconModule} from '@angular/material/icon';
-import {MatInputModule} from '@angular/material/input';
-import {MatCardModule} from '@angular/material/card';
-import {MatButtonModule} from '@angular/material/button';
+import {Component, OnInit} from '@angular/core';
+import {FormControl} from '@angular/forms';
 
-@NgModule({
-  exports: [
-    MatToolbarModule,
-    MatIconModule,
-    MatInputModule,
-    MatCardModule,
-    MatButtonModule,
+@Component({
+  selector: 'schedule-page',
+  templateUrl: './schedule-page.component.html',
+  styleUrls: [
+    './schedule-page.component.css',
+    '../common/growpod-page-styles.css',
   ],
 })
-export class MaterialComponents {}
+export class SchedulePageComponent implements OnInit {
+  date = new FormControl(new Date());
+  serializedDate = new FormControl(new Date().toISOString());
+
+  constructor() {}
+
+  ngOnInit(): void {}
+}

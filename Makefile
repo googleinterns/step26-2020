@@ -1,5 +1,5 @@
 install:
-	npm install --no-package-lock --no-audit
+	npm install --no-audit
 	printf "#!/bin/sh\n\tmake format && make lint" > .git/hooks/pre-push
 	chmod +x .git/hooks/pre-push
 

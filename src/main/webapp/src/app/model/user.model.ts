@@ -12,22 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {NgModule} from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatIconModule} from '@angular/material/icon';
-import {MatInputModule} from '@angular/material/input';
-import {MatCardModule} from '@angular/material/card';
-
-@NgModule({
-  exports: [
-    MatToolbarModule,
-    MatIconModule,
-    MatInputModule,
-    MatCardModule,
-    MatButtonModule,
-    MatMenuModule,
-  ],
-})
-export class MaterialComponents {}
+/**
+ * User interface that corresponds with design doc specs.
+ *
+ */
+export interface User {
+  id: string;
+  email: string;
+  preferredName: string;
+  biography: string;
+  zipCode: string;
+}

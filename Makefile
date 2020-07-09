@@ -20,3 +20,5 @@ dev: install
 prod: install
 	npm run prod
 
+deploy: install
+	npm run deploy

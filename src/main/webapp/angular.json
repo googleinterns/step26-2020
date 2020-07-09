@@ -38,7 +38,6 @@
               "buildOptimizer": false,
               "outputHashing": "none", 
               "statsJson": false, 
-              "assets": [ "src/favicon.ico" ],
               "deleteOutputPath": false,
               "watch": true
             },

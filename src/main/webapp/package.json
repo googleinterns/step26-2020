@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "build:dev": "mkdir -p ../../../target/growpod-1/WEB-INF && cp -R src/WEB-INF ../../../target/growpod-1/ && ng build --configuration=dev",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

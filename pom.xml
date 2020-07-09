@@ -85,16 +85,16 @@
           </execution>
 
           <!-- Angular compilation into src/main/webapp/dist/growpod-client -->
-          <execution>
+          <!-- <execution>
             <id>npm build</id>
-            <phase>compile</phase>
+            <phase>deploy</phase>
             <goals>
               <goal>npm</goal>
             </goals>
             <configuration>
-              <arguments>run build</arguments>
+              <arguments>run build  configuration=dev</arguments>
             </configuration>
-          </execution>
+          </execution> -->
         </executions>
         <configuration>
           <!-- Frontend source will be stored in this directory -->
@@ -112,6 +112,20 @@
         <configuration>
           <warSourceDirectory>src/main/webapp/dist/growpod-client</warSourceDirectory>
         </configuration>
+
+        <executions>
+          <execution>
+              <id>default-war</id>
+              <phase>none</phase>
+          </execution>
+          <execution>
+            <id>war-exploded</id>
+            <phase>package</phase>
+            <goals>
+                <goal>exploded</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
       <!-- Provides automatic Java formatting via google-java-format --> 

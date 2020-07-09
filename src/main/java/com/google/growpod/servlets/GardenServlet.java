@@ -134,7 +134,7 @@ public class GardenServlet extends HttpServlet {
    * @return the garden with id's data or null.
    */
   private Garden getGardenById(String id) {
-    // MOCKUP IMPLEMENTATION
+    // MOCK IMPLEMENTATION
     return GARDEN_MAP.get(id);
   }
 
@@ -145,7 +145,7 @@ public class GardenServlet extends HttpServlet {
    * @return a list of user ids in the garden or null.
    */
   private List<String> getGardenUserListById(String id) {
-    // MOCKUP IMPLEMENTATION
+    // MOCK IMPLEMENTATION
     return GARDEN_USER_LIST_MAP.get(id);
   }
 
@@ -156,7 +156,7 @@ public class GardenServlet extends HttpServlet {
    * @return a list of plant ids in the garden or null.
    */
   private List<String> getGardenPlantListById(String id) {
-    // MOCKUP IMPLEMENTATION
+    // MOCK IMPLEMENTATION
     return GARDEN_PLANT_LIST_MAP.get(id);
   }
 }

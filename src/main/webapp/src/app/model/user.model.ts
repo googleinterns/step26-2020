@@ -12,22 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit} from '@angular/core';
-import {FormControl} from '@angular/forms';
-
-@Component({
-  selector: 'schedule-page',
-  templateUrl: './schedule-page.component.html',
-  styleUrls: [
-    './schedule-page.component.css',
-    '../common/growpod-page-styles.css',
-  ],
-})
-export class SchedulePageComponent implements OnInit {
-  date = new FormControl(new Date());
-  serializedDate = new FormControl(new Date().toISOString());
-
-  constructor() {}
-
-  ngOnInit(): void {}
+/**
+ * User interface that corresponds with design doc specs.
+ *
+ */
+export interface User {
+  id: string;
+  email: string;
+  preferredName: string;
+  biography: string;
+  zipCode: string;
 }

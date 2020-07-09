@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import {BrowserModule} from '@angular/platform-browser';
+import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -33,8 +34,12 @@ import {IndexComponent} from './index/index.component';
 import {TestPage1Component} from './test-page1/test-page1.component';
 import {TestPage2Component} from './test-page2/test-page2.component';
 import {MyGardensComponent} from './my_gardens_page/my-gardens.component';
+import {UserProfileComponent} from './user-profile/user-profile.component';
 import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
+
+import {CarouselModule} from 'ngx-owl-carousel-o';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -43,12 +48,14 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
     TestPage1Component,
     TestPage2Component,
     MyGardensComponent,
+    UserProfileComponent,
     FindGardensComponent,
     SchedulePageComponent,
   ],
   imports: [
     MaterialComponents,
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatCardModule,

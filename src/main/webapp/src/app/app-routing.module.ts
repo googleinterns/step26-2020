@@ -18,6 +18,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {IndexComponent} from './index/index.component';
 import {TestPage1Component} from './test-page1/test-page1.component';
 import {TestPage2Component} from './test-page2/test-page2.component';
+import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 import {MyGardensComponent} from './my_gardens_page/my-gardens.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
@@ -34,6 +35,7 @@ const routes: Routes = [
   {path: 'page/index', component: IndexComponent},
   {path: 'page/test-page1', component: TestPage1Component},
   {path: 'page/test-page2', component: TestPage2Component},
+  {path: 'page/create-garden', component: CreateGardensComponent},
   {path: 'page/my-gardens', component: MyGardensComponent},
   {path: 'page/user-profile', component: UserProfileComponent},
   {path: 'page/find-gardens', component: FindGardensComponent},

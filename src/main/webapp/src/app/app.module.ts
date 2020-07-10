@@ -31,7 +31,6 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
 
-
 import {AppComponent} from './app.component';
 import {IndexComponent} from './index/index.component';
 import {TestPage1Component} from './test-page1/test-page1.component';
@@ -41,7 +40,6 @@ import {MyGardensComponent} from './my_gardens_page/my-gardens.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
-
 
 @NgModule({
   declarations: [
@@ -74,7 +72,9 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
     MatInputModule,
     MatNativeDateModule,
   ],
-  providers: [{provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}},],
+  providers: [
+    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}},
+  ],
 
   bootstrap: [AppComponent],
 })

@@ -11,3 +11,9 @@ lint: install
 	npx eslint --ignore-pattern=**/target --ignore-pattern=**/node_modules --ignore-pattern=**/dist --ignore-pattern=**/*.conf.js --ignore-pattern=**/webpack.config.js **/*.ts
 	mvn org.apache.maven.plugins:maven-checkstyle-plugin:check -Dverbose=true
 
+dev: install
+	npm run dev
+
+prod: install
+	npm run prod
+

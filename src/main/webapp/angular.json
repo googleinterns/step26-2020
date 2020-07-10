@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/growpod-client",
+            "outputPath": "../../../target/growpod-1/",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -33,6 +33,14 @@
             "scripts": []
           },
           "configurations": {
+            "dev": {
+              "optimization": false,
+              "buildOptimizer": false,
+              "outputHashing": "none", 
+              "statsJson": false, 
+              "deleteOutputPath": false,
+              "watch": true
+            },
             "production": {
               "fileReplacements": [
                 {

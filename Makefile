@@ -2,7 +2,7 @@ install:
 	npm install --no-audit
 	printf "#!/bin/sh\n\tmake format && make lint" > .git/hooks/pre-push
 	chmod +x .git/hooks/pre-push
-	npm run before
+	cd src/main/webapp && npm install && cd ../../../
 
 format:
 	npx prettier --write "src/main/webapp/**/*.{html,css,js,ts}"

@@ -1,6 +1,5 @@
 {
   "scripts": {
-    "before": "cd src/main/webapp && npm install && cd ../../../",
     "dev": "concurrently 'cd src/main/webapp && npm run build:dev' 'mvn package appengine:run'",
     "prod": "cd src/main/webapp && npm run build:prod && cd ../../../ && mvn package appengine:run",
     "deploy": "cd src/main/webapp && npm run build:prod && cd ../../../ && mvn package war:war appengine:deploy"

@@ -10,11 +10,11 @@ App Engine.
 
 ## Build Instructions
 
-Before the build, execute this command in Cloud Shell to fetch
+Before the build, execute this command in Cloud Shell to install
 all needed depencencies:
 
 ```bash
-make before
+make install
 ```
 
 To run a development server, execute this command in Cloud Shell:
@@ -32,7 +32,7 @@ To run a production server, execute this command in Cloud Shell:
 make prod
 ```
 
-To deploy, set the deploy.projectId field in pom.xml
+To deploy, set the `deploy.projectId` field in `pom.xml`
 and execute this command in Cloud Shell:
 
 ```bash

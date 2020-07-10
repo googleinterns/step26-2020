@@ -1,7 +1,8 @@
 {
   "scripts": {
-    "dev": "concurrently 'cd src/main/webapp && npm install && npm run build:dev' 'mvn package appengine:run'",
-    "prod": "cd src/main/webapp && npm install && npm run build && cd ../../../ && mvn package appengine:run"
+    "before": "cd src/main/webapp && npm install && cd ../../../",
+    "dev": "concurrently 'cd src/main/webapp && npm run build:dev' 'mvn package appengine:run'",
+    "prod": "cd src/main/webapp && npm run build && cd ../../../ && mvn package appengine:run"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^3.4.0",

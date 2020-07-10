@@ -3,7 +3,7 @@ import {OwlOptions} from 'ngx-owl-carousel-o';
 @Component({
   selector: 'FindGardens',
   templateUrl: './find-gardens.component.html',
-  styleUrls: ['./find-gardens.component.css'],
+  styleUrls: ['./find-gardens.component.css','../common/growpod-page-styles.css',],
 })
 export class FindGardensComponent implements OnInit {
   /* Option to display a certian number of slides based off of browser window size along with

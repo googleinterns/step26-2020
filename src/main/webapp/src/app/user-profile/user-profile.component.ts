@@ -45,13 +45,13 @@ export class UserProfileComponent implements OnInit {
    *
    * @param route Contains arguments.
    */
-  constructor(private route: ActivatedRoute, private httpClient: HttpClient) {
-    const idArg = route.snapshot.paramMap.get('id');
+  constructor(private route: ActivatedRoute, private httpClient: HttpClient) {}
+
+  ngOnInit(): void {
+    const idArg = this.route.snapshot.paramMap.get('id');
     const id = idArg ?? 'current';
     this.createUserProfile(id);
   }
-
-  ngOnInit(): void {}
 
   /**
    * Gets user information for the specified user from
@@ -85,7 +85,6 @@ export class UserProfileComponent implements OnInit {
         // Error messages are handled here.
         this.displayInfo = null;
         this.errorMessage = 'Cannot see user profile for user id: ' + user;
-        console.log(new Error(error));
       },
     });
   }

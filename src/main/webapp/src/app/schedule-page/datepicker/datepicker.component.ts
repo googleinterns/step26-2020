@@ -23,25 +23,33 @@ import { FormControl } from '@angular/forms';
 
 export class DatepickerComponent implements OnInit {
   date = new FormControl(new Date());
-  currDate: string = this.date.value;
+  currDate: string = this.formatDate(this.date.value);
 
   constructor() { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+  }
 
+  /* Updates the displayed date whenever user chooses a date in the datepicker */
   updateCurrDate(event: MatDatepickerInputEvent<Date>): void {
     if(event.value) {
-      this.currDate = this.formatDate(event);
+      this.currDate = this.formatDate(`${event.value}`);
     }
     else {
       this.currDate = '';
     }
   }
 
-  formatDate(event: MatDatepickerInputEvent<Date>): string {
-    var original = `${event.value}`;
-    const splits = original.split(' ');
-    const formattedDate = splits[0] + ': ' + splits[1] + ' ' +  splits[2] + ', ' +  splits[3];
+  /**
+   * Formats a string containing a date to: {Day Abbreviation}: {Month} {Day}, {Year}
+   * @param {string} date - a string separated by spaces with the following info {Day} {} 
+   */
+  formatDate(date: string): string {
+    let formattedDate = '';
+    if(date) {
+      const splits = date.split(' ');
+      formattedDate = splits[0] + ': ' + splits[1] + ' ' +  splits[2] + ', ' +  splits[3];
+    }
     return formattedDate;
   }
 

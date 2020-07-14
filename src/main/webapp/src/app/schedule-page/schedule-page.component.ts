@@ -22,9 +22,7 @@ import {Component, OnInit} from '@angular/core';
     '../common/growpod-page-styles.css',
   ],
 })
-
 export class SchedulePageComponent implements OnInit {
- 
   constructor() {}
 
   ngOnInit(): void {}

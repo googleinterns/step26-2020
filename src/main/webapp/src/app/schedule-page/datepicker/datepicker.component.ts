@@ -12,30 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, OnInit } from '@angular/core';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { FormControl } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {MatDatepickerInputEvent} from '@angular/material/datepicker';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'datepicker',
   templateUrl: './datepicker.component.html',
 })
-
 export class DatepickerComponent implements OnInit {
   date = new FormControl(new Date());
   currDate: string = this.formatDate(this.date.value);
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void { 
-  }
+  ngOnInit(): void {}
 
   /* Updates the displayed date whenever user chooses a date in the datepicker */
   updateCurrDate(event: MatDatepickerInputEvent<Date>): void {
-    if(event.value) {
+    if (event.value) {
       this.currDate = this.formatDate(`${event.value}`);
-    }
-    else {
+    } else {
       this.currDate = '';
     }
   }
@@ -46,11 +43,11 @@ export class DatepickerComponent implements OnInit {
    */
   formatDate(date: string): string {
     let formattedDate = '';
-    if(date) {
+    if (date) {
       const splits = date.split(' ');
-      formattedDate = splits[0] + ': ' + splits[1] + ' ' +  splits[2] + ', ' +  splits[3];
+      formattedDate =
+        splits[0] + ': ' + splits[1] + ' ' + splits[2] + ', ' + splits[3];
     }
     return formattedDate;
   }
-
 }

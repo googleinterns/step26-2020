@@ -38,33 +38,31 @@ public class Task {
     this.description = description;
   }
 
-  /* Getters */
   public String getTitle() {
     return this.title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 
   public String getTime() {
     return this.time;
   }
 
-  public List<String> getParticipants() {
-    return this.participants;
+  public void setTime(String time) {
+    this.title = title;
   }
 
   public String getDescription() {
     return this.description;
   }
 
-  /* Setters */
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public void setTime(String time) {
-    this.title = title;
-  }
-
   public void setDescription(String description) {
     this.title = title;
+  }
+
+  public List<String> getParticipants() {
+    return this.participants;
   }
 }

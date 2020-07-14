@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
  * <p>TODO: This is the mockup implementation; a future PR will implement calendar api and connect
  * gardens together
  */
-@WebServlet({"/schedule", "schedule/*"})
+@WebServlet({"/schedule", "/schedule/*"})
 public class TaskServlet extends HttpServlet {
 
   private List<Task> tasks;

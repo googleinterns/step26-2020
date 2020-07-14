@@ -16,7 +16,7 @@ package com.google.growpod.data;
 
 import java.util.List;
 
-/** Task data class * */
+/** Task data class. */
 public class Task {
 
   /* The title of the event */

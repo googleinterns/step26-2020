@@ -39,7 +39,7 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
     HttpClientModule,
     AppRoutingModule,
     RouterModule,
-    GrowpodUiModule
+    GrowpodUiModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

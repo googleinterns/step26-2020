@@ -1,8 +1,10 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {Observable} from 'rxjs';
 import {RouterModule, ActivatedRoute, convertToParamMap} from '@angular/router';
-import {HttpClientModule, HttpClient} from '@angular/common/http';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {HttpClient} from '@angular/common/http';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import {GrowpodUiModule} from '../common/growpod-ui.module';
 import {UserProfileComponent} from './user-profile.component';
 import {User} from '../model/user.model';
@@ -10,41 +12,37 @@ import {User} from '../model/user.model';
 describe('UserProfileComponent', () => {
   let component: UserProfileComponent;
   let fixture: ComponentFixture<UserProfileComponent>;
-  let activatedRoute: ActivatedRoute;
-  let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
 
   // Component-local mocks
-  const MOCK_ARGUMENT = "0";
+  const MOCK_ARGUMENT = '0';
   const mockActivatedRoute = {
     snapshot: {
       paramMap: convertToParamMap({
         id: MOCK_ARGUMENT,
       }),
-    }
-  }
-  const MOCK_OK_RESPONSE : User = {
+    },
+  };
+  const MOCK_OK_RESPONSE: User = {
     id: MOCK_ARGUMENT,
-    email: "example@example.com",
-    preferredName: "User name",
-    biography: "User biography",
-    zipCode: "12345",
+    email: 'example@example.com',
+    preferredName: 'User name',
+    biography: 'User biography',
+    zipCode: '12345',
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientTestingModule, RouterModule, GrowpodUiModule ],
-      declarations: [ UserProfileComponent ], 
-      providers: [
-        { provide: ActivatedRoute, useValue: mockActivatedRoute },
-      ],
+      imports: [HttpClientTestingModule, RouterModule, GrowpodUiModule],
+      declarations: [UserProfileComponent],
+      providers: [{provide: ActivatedRoute, useValue: mockActivatedRoute}],
     }).compileComponents();
   }));
 
   beforeEach(() => {
     // Inject dependencies
-    activatedRoute = TestBed.inject(ActivatedRoute);
-    httpClient = TestBed.inject(HttpClient);
+    TestBed.inject(ActivatedRoute);
+    TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
     // Create component
     fixture = TestBed.createComponent(UserProfileComponent);
@@ -61,13 +59,12 @@ describe('UserProfileComponent', () => {
    */
   it('should make a GET request for a given user ID', () => {
     fixture.detectChanges();
-    
-    const testRequest = httpTestingController
-                        .expectOne(
-                          "/user/" + MOCK_ARGUMENT,
-                          "A properly-formed GET request to get a user's profile",
-                        );
-    expect(testRequest.request.method).toBe("GET");
+
+    const testRequest = httpTestingController.expectOne(
+      '/user/' + MOCK_ARGUMENT,
+      "A properly-formed GET request to get a user's profile"
+    );
+    expect(testRequest.request.method).toBe('GET');
   });
 
   /**
@@ -76,9 +73,11 @@ describe('UserProfileComponent', () => {
    */
   it('should display a user profile page', () => {
     fixture.detectChanges();
-    
+
     // Handle request
-    const testRequest = httpTestingController.expectOne("/user/" + MOCK_ARGUMENT);
+    const testRequest = httpTestingController.expectOne(
+      '/user/' + MOCK_ARGUMENT
+    );
     testRequest.flush(MOCK_OK_RESPONSE);
     fixture.detectChanges();
 
@@ -92,13 +91,18 @@ describe('UserProfileComponent', () => {
    */
   it('should display an error message due to an error code', () => {
     fixture.detectChanges();
-    
+
     // Handle request
-    const testRequest = httpTestingController.expectOne("/user/" + MOCK_ARGUMENT);
-    testRequest.flush({}, {
-      status: 404,
-      statusText: "Not found",
-    });
+    const testRequest = httpTestingController.expectOne(
+      '/user/' + MOCK_ARGUMENT
+    );
+    testRequest.flush(
+      {},
+      {
+        status: 404,
+        statusText: 'Not found',
+      }
+    );
     fixture.detectChanges();
 
     expect(component.displayInfo).not.toBeTruthy();

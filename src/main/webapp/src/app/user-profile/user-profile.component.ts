@@ -81,7 +81,7 @@ export class UserProfileComponent implements OnInit {
         // Successful responses are handled here.
         this.displayInfo = response.body;
       },
-      error: error => {
+      error: () => {
         // Error messages are handled here.
         this.displayInfo = null;
         this.errorMessage = 'Cannot see user profile for user id: ' + user;

@@ -23,20 +23,20 @@ import {TaskInfo} from '../model/task-info.model';
   styleUrls: ['../common/growpod-page-styles.css'],
 })
 
-/** 
+/**
  * This is a component that will display the tasks of a given date and garden
- * 
- * Mockup: Current implementation does not take into account a date or garden and simply 
+ *
+ * Mockup: Current implementation does not take into account a date or garden and simply
  * displays a single random hardcoded task
  *
  * TODO: This page will take the arguments:
  * 'garden-id' - the unique id of a garden
- * 'date' - the date selected (default: current date) 
- */ 
+ * 'date' - the date selected (default: current date)
+ */
 export class TaskComponent implements OnInit {
   displayInfo: TaskInfo | null;
 
-  /** 
+  /**
    * Initializes the task component. Mockup implementation
    * does not consider arguments at this moment
    */

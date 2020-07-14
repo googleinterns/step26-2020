@@ -27,9 +27,9 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet that handles the tasks from a particular garden and date
  *
- * TODO: This is the mockup implementation; a future PR will implement calendar api and connect gardens together
+ * <p>TODO: This is the mockup implementation; a future PR will implement calendar api and connect
+ * gardens together
  */
-
 @WebServlet({"/schedule", "schedule/*"})
 public class TaskServlet extends HttpServlet {
 

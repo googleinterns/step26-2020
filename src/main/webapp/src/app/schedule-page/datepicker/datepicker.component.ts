@@ -42,7 +42,7 @@ export class DatepickerComponent implements OnInit {
 
   /**
    * Formats a string containing a date to: {Day Abbreviation}: {Month} {Day}, {Year}
-   * @param {string} date - a string separated by spaces with the following info {Day} {} 
+   * @param {string} date - a string separated by spaces with the following info {Day} {Month} {Day} {Year} {Hour:Minute:Seconds} {GMT} {Timezone}
    */
   formatDate(date: string): string {
     let formattedDate = '';

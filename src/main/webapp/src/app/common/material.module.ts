@@ -26,7 +26,6 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 
-
 @NgModule({
   exports: [
     MatToolbarModule,
@@ -43,6 +42,6 @@ import {MatSelectModule} from '@angular/material/select';
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}},
-  ]
+  ],
 })
 export class MaterialModule {}

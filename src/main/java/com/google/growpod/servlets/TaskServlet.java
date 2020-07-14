@@ -24,11 +24,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet({"/task"})
+/**
+ * Servlet that handles the tasks from a particular garden and date
+ *
+ * TODO: This is the mockup implementation; a future PR will implement calendar api and connect gardens together
+ */
+
+@WebServlet({"/schedule", "schedule/*"})
 public class TaskServlet extends HttpServlet {
 
   private List<Task> tasks;
 
+  /* Mockup implementation: Hardcoded tasks for testing */
   @Override
   public void init() {
     tasks = new ArrayList<>();
@@ -55,6 +62,7 @@ public class TaskServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Display a random task in the schedule page
     Task task = tasks.get((int) (Math.random() * tasks.size()));
 
     response.setContentType("text/html;");

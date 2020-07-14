@@ -30,7 +30,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
-
+import {SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
+import {GoogleLoginProvider} from 'angularx-social-login';
+ 
 import {AppComponent} from './app.component';
 import {IndexComponent} from './index/index.component';
 import {TestPage1Component} from './test-page1/test-page1.component';
@@ -40,6 +42,7 @@ import {MyGardensComponent} from './my_gardens_page/my-gardens.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
+import {LoginComponent} from './Login-SignUp-page/Login-SignUp.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +55,7 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
     UserProfileComponent,
     FindGardensComponent,
     SchedulePageComponent,
+    LoginComponent,
   ],
   imports: [
     MaterialComponents,
@@ -71,9 +75,24 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
     MatDatepickerModule,
     MatInputModule,
     MatNativeDateModule,
+    SocialLoginModule,
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}},
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              'clientId'
+            ),
+          }
+        ],
+      } as SocialAuthServiceConfig,
+    }
   ],
 
   bootstrap: [AppComponent],

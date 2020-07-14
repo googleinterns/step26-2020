@@ -23,6 +23,7 @@ import {MyGardensComponent} from './my_gardens_page/my-gardens.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
+import {LoginComponent} from './Login-SignUp-page/Login-SignUp.component';
 
 /**
  * The routing table for all frontend pages
@@ -40,6 +41,7 @@ const routes: Routes = [
   {path: 'page/user-profile', component: UserProfileComponent},
   {path: 'page/find-gardens', component: FindGardensComponent},
   {path: 'page/schedule', component: SchedulePageComponent},
+  {path: 'page/login', component: LoginComponent},
   /** Defaults to /index */
   {path: '', redirectTo: '/page/index', pathMatch: 'full'},
 ];

@@ -22,6 +22,10 @@ import {MatCardModule} from '@angular/material/card';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+
 
 @NgModule({
   exports: [
@@ -34,6 +38,11 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatExpansionModule,
     MatNativeDateModule,
     MatDatepickerModule,
+    MatFormFieldModule,
+    MatSelectModule,
   ],
+  providers: [
+    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}},
+  ]
 })
 export class MaterialModule {}

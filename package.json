@@ -1,8 +1,7 @@
 {
   "scripts": {
-    "before": "cd src/main/webapp && npm install && cd ../../../",
     "dev": "concurrently 'cd src/main/webapp && npm run build:dev' 'mvn package appengine:run'",
-    "prod": "cd src/main/webapp && npm run build && cd ../../../ && mvn package appengine:run",
+    "prod": "cd src/main/webapp && npm run build:prod && cd ../../../ && mvn package appengine:run",
     "deploy": "cd src/main/webapp && npm run build:prod && cd ../../../ && mvn package war:war appengine:deploy"
   },
   "devDependencies": {
@@ -18,6 +17,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "@angular/forms": "^10.0.2",
     "@angular/animations": "^10.0.2",
     "@angular/common": "^10.0.2",
     "@angular/core": "^10.0.2",

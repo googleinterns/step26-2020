@@ -25,6 +25,7 @@ import {MyGardensComponent} from './my_gardens_page/my-gardens.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
+import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
     UserProfileComponent,
     FindGardensComponent,
     SchedulePageComponent,
+    CreateGardensComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,7 +43,7 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
     RouterModule,
     GrowpodUiModule,
   ],
-  providers: [],
+
   bootstrap: [AppComponent],
 })
 export class AppModule {}

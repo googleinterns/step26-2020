@@ -1,0 +1,18 @@
+<div *ngIf="displayInfo != null; else elseBlock">
+  <mat-card>
+    <mat-card-title>
+      {{ displayInfo.time }} | {{ displayInfo.title }}
+    </mat-card-title>
+    <h3>Member(s): {{ displayInfo.participants }}</h3>
+    <mat-card-content>
+      <p>{{ displayInfo.description }}</p>
+    </mat-card-content>
+  </mat-card>
+</div>
+<ng-template #elseBlock>
+  <mat-card>
+    <mat-card-content>
+      <p>No tasks available for the selected date</p>
+    </mat-card-content>
+  </mat-card>
+</ng-template>

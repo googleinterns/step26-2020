@@ -40,6 +40,7 @@ import {MyGardensComponent} from './my_gardens_page/my-gardens.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
+import {TaskComponent} from './task/task.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
     UserProfileComponent,
     FindGardensComponent,
     SchedulePageComponent,
+    TaskComponent,
   ],
   imports: [
     MaterialComponents,

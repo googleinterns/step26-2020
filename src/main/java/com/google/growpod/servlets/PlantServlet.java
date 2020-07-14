@@ -14,12 +14,15 @@
 
 package com.google.growpod.servlets;
 
+import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreOptions;
 import com.google.growpod.data.Plant;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +39,8 @@ public class PlantServlet extends HttpServlet {
 
   static final long serialVersionUID = 1L;
 
+  private Datastore datastore;
+
   /** Static test data. */
   private static final Map<String, Plant> PLANT_MAP = createPlantMap();
 
@@ -46,6 +51,12 @@ public class PlantServlet extends HttpServlet {
     map.put("2", new Plant("2", "Pea Plant 1", 4, "2"));
     map.put("3", new Plant("3", "Pea Plant 2", 4, "3"));
     return Collections.unmodifiableMap(map);
+  }
+
+  /** Initializes the servlet. Connects it to Datastore. */
+  @Override
+  public void init() throws ServletException {
+    this.datastore = DatastoreOptions.getDefaultInstance().getService();
   }
 
   /**

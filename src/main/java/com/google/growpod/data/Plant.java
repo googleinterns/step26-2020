@@ -14,6 +14,12 @@
 
 package com.google.growpod.data;
 
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Entity.Builder;
+import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.LatLng;
+
+
 /** Plant data class. */
 public class Plant {
 
@@ -42,6 +48,34 @@ public class Plant {
     this.nickname = nickname;
     this.count = count;
     this.plantTypeId = plantTypeId;
+  }
+
+  /**
+   * Generates a plant from an entity.
+   *
+   * @param entity the entity to generate the plant from
+   * @return the new plant with the entity's information.
+   */
+  public static Plant from(Entity entity) {
+    String id = entity.getKey().toUrlSafe();
+    String nickname = entity.getString("nickname");
+    Long count = entity.getLong("count");
+    String plantTypeId = entity.getString("plant-type-id");
+    return new Plant(id, nickname, count, plantTypeId);
+  }
+
+  /**
+   * Generates an entity from a plant.
+   * 
+   * @return the new entity representing a plant.
+   */
+  public Entity toEntity() {
+    // I use a different API here than in the portfolio
+    Builder builder = Entity.newBuilder(Key.fromUrlSafe(id));
+    builder.set("nickname", nickname);
+    builder.set("count", count);
+    builder.set("plant-type-id", plantTypeId);
+    return builder.build();
   }
 
   /* Getters and setters. */

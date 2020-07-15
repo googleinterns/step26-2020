@@ -24,7 +24,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServlet;
 
 /** Controller for User entities. */
-public class UserController extends HttpServlet {
+public class UserController {
 
   private Datastore datastore;
 

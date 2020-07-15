@@ -14,6 +14,11 @@
 
 package com.google.growpod.data;
 
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Entity.Builder;
+import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.LatLng;
+
 /** User data class. */
 public class User {
 
@@ -50,6 +55,36 @@ public class User {
     this.preferredName = preferredName;
     this.biography = biography;
     this.zipCode = zipCode;
+  }
+
+  /**
+   * Generates a user from an entity.
+   *
+   * @param entity the entity to generate the user from
+   * @return the new user with the entity's information.
+   */
+  public static User from(Entity entity) {
+    String id = entity.getKey().toUrlSafe();
+    String email = entity.getString("email");
+    String preferredName = entity.getString("preferred-name");
+    String biography = entity.getString("biography");
+    String zipCode = entity.getString("zip-code");
+    return new User(id, email, preferredName, biography, zipCode);
+  }
+
+  /**
+   * Generates an entity from a user.
+   * 
+   * @return the new entity representing a user.
+   */
+  public Entity toEntity() {
+    // I use a different API here than in the portfolio
+    Builder builder = Entity.newBuilder(Key.fromUrlSafe(id));
+    builder.set("email", email);
+    builder.set("preferred-name", preferredName);
+    builder.set("biography", biography);
+    builder.set("zip-code", zipCode);
+    return builder.build();
   }
 
   /* Getters and setters. */

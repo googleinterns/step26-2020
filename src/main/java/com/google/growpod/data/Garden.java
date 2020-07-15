@@ -14,6 +14,12 @@
 
 package com.google.growpod.data;
 
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Entity.Builder;
+import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.LatLng;
+
+
 /** Garden data class. */
 public class Garden {
 
@@ -47,6 +53,34 @@ public class Garden {
     this.lat = lat;
     this.lng = lng;
     this.adminId = adminId;
+  }
+
+  /**
+   * Generates a garden from an entity.
+   *
+   * @param entity the entity to generate the garden from
+   * @return the new garden with the entity's information.
+   */
+  public static Garden from(Entity entity) {
+    String id = entity.getKey().toUrlSafe();
+    String name = entity.getString("name");
+    LatLng latLng = entity.getLatLng("lat-lng");
+    String adminId = entity.getString("admin-id");
+    return new Garden(id, name, latLng.getLatitude(), latLng.getLongitude(), adminId);
+  }
+
+  /**
+   * Generates an entity from a garden.
+   * 
+   * @return the new entity representing a garden.
+   */
+  public Entity toEntity() {
+    // I use a different API here than in the portfolio
+    Builder builder = Entity.newBuilder(Key.fromUrlSafe(id));
+    builder.set("name", name);
+    builder.set("lat-lng", LatLng.of(lat, lng));
+    builder.set("admin-id", adminId);
+    return builder.build();
   }
 
   /* Getters and setters. */

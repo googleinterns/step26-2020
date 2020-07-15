@@ -61,7 +61,7 @@ public class GardenController {
   /**
    * Initializes a new garden controller from a given Datastore.
    *
-   * @param datatore the database to run queries on.
+   * @param datastore the database to run queries on.
    */
   public GardenController(Datastore datastore) {
     this.datastore = datastore;

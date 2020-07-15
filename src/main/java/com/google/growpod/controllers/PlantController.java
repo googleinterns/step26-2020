@@ -40,7 +40,7 @@ public class PlantController {
   /**
    * Initializes a new plant controller from a given Datastore.
    *
-   * @param datatore the database to run queries on.
+   * @param datastore the database to run queries on.
    */
   public PlantController(Datastore datastore) {
     this.datastore = datastore;

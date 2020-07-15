@@ -66,7 +66,7 @@ public class UserController extends HttpServlet {
   /**
    * Initializes a new user controller from a given Datastore.
    *
-   * @param datatore the database to run queries on.
+   * @param datastore the database to run queries on.
    */
   public UserController(Datastore datastore) {
     this.datastore = datastore;

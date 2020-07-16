@@ -18,41 +18,26 @@ import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Entity.Builder;
 import com.google.cloud.datastore.Key;
 import com.google.cloud.datastore.LatLng;
+import lombok.Data;
 
 /** Garden data class. */
+@Data
 public class Garden {
 
   /** A unique id. */
-  private String id;
+  final private String id;
 
   /** The garden's name. */
-  private String name;
+  final private String name;
 
   /** Latitude of garden. */
-  private double lat;
+  final private double lat;
 
   /** Longitude of garden. */
-  private double lng;
+  final private double lng;
 
   /** Foreign Key to this garden's administrator. Must be a valid user key. */
-  private String adminId;
-
-  /**
-   * Constructs a new Garden.
-   *
-   * @param id A unique ID for the garden. This value must be supplied by the user.
-   * @param name The garden's name
-   * @param lat The garden's latitude
-   * @param lng The garden's longitude
-   * @param adminId The garden's administrator. Must be a valid user key.
-   */
-  public Garden(String id, String name, double lat, double lng, String adminId) {
-    this.id = id;
-    this.name = name;
-    this.lat = lat;
-    this.lng = lng;
-    this.adminId = adminId;
-  }
+  final private String adminId;
 
   /**
    * Generates a garden from an entity.
@@ -80,46 +65,5 @@ public class Garden {
     builder.set("lat-lng", LatLng.of(lat, lng));
     builder.set("admin-id", adminId);
     return builder.build();
-  }
-
-  /* Getters and setters. */
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public double getLat() {
-    return lat;
-  }
-
-  public void setLat(double lat) {
-    this.lat = lat;
-  }
-
-  public double getLng() {
-    return lng;
-  }
-
-  public void setLng(double lng) {
-    this.lng = lng;
-  }
-
-  public String getAdminId() {
-    return adminId;
-  }
-
-  public void setAdminId(String id) {
-    this.adminId = id;
   }
 }

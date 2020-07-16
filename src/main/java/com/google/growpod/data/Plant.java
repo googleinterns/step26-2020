@@ -17,36 +17,23 @@ package com.google.growpod.data;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Entity.Builder;
 import com.google.cloud.datastore.Key;
+import lombok.Data;
 
 /** Plant data class. */
+@Data
 public class Plant {
 
   /** A unique id. */
-  private String id;
+  final private String id;
 
-  /** An optional nickname. */
-  private String nickname;
+  /** A nickname or null. */
+  final private String nickname;
 
   /** The number of plants in this plot. */
-  private long count;
+  final private long count;
 
   /** Foreign Key to this plant's information. */
-  private String plantTypeId;
-
-  /**
-   * Constructs a new Plant.
-   *
-   * @param id A unique ID for the plant. This value must be supplied by the user.
-   * @param nickname A nickname or null.
-   * @param count The number of this type of plant.
-   * @param plantTypeId The plant's type. Must be a valid plant type id.
-   */
-  public Plant(String id, String nickname, long count, String plantTypeId) {
-    this.id = id;
-    this.nickname = nickname;
-    this.count = count;
-    this.plantTypeId = plantTypeId;
-  }
+  final private String plantTypeId;
 
   /**
    * Generates a plant from an entity.
@@ -74,48 +61,5 @@ public class Plant {
     builder.set("count", count);
     builder.set("plant-type-id", plantTypeId);
     return builder.build();
-  }
-
-  /* Getters and setters. */
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  /**
-   * Gets the plant's nickname.
-   *
-   * @return the plant's nickname or null.
-   */
-  public String getNickname() {
-    return nickname;
-  }
-
-  /**
-   * Sets the plant's nickname.
-   *
-   * @param name the desired nickname or null.
-   */
-  public void setNickname(String name) {
-    this.nickname = name;
-  }
-
-  public long getCount() {
-    return count;
-  }
-
-  public void setCount(long count) {
-    this.count = count;
-  }
-
-  public String getPlantTypeId() {
-    return plantTypeId;
-  }
-
-  public void setPlantTypeId(String id) {
-    this.plantTypeId = id;
   }
 }

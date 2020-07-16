@@ -12,22 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {NgModule} from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatIconModule} from '@angular/material/icon';
-import {MatInputModule} from '@angular/material/input';
-import {MatCardModule} from '@angular/material/card';
-
-@NgModule({
-  exports: [
-    MatToolbarModule,
-    MatIconModule,
-    MatInputModule,
-    MatCardModule,
-    MatButtonModule,
-    MatMenuModule,
+import {Component, OnInit} from '@angular/core';
+@Component({
+  selector: 'create-gardens',
+  templateUrl: './create-gardens.component.html',
+  styleUrls: [
+    './create-gardens.component.css',
+    '../common/growpod-page-styles.css',
   ],
 })
-export class MaterialComponents {}
+export class CreateGardensComponent implements OnInit {
+  ngOnInit() {}
+}

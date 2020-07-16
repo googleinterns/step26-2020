@@ -12,32 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps.servlets;
+package com.google.growpod.servlets;
 
 import java.io.IOException;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns index.html */
-@WebServlet("/page/*")
-public class PageServlet extends HttpServlet {
+/** Servlet that sends a sample response. */
+@WebServlet("/test")
+public class TestServlet extends HttpServlet {
 
-  static final long serialVersionUID = 2L;
+  static final long serialVersionUID = 1L;
 
   /**
-   * Processes HTTP GET requests for the /page/* servlet. This returns index.html, and allows client
-   * side routing to show the appropriate client page.
+   * Processes HTTP GET requests for the /test servlet. Returns a test response -- a very simple
+   * JSON structure with 'status' and 'value' fields.
    *
    * @param request Information about the GET Request
    * @param response Information about the servlet's response
    */
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    response.setContentType("text/html;");
-    request.getRequestDispatcher("/index.html").forward(request, response);
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.setContentType("application/json;");
+    response.getWriter().println("{ \"status\": \"ok\", \"value\": \"test\" }");
   }
 }

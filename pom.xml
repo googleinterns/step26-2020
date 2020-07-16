@@ -3,8 +3,8 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.google.sps</groupId>
-  <artifactId>portfolio</artifactId>
+  <groupId>com.google.growpod</groupId>
+  <artifactId>growpod</artifactId>
   <version>1</version>
   <packaging>war</packaging>
 
@@ -53,56 +53,6 @@
         </configuration>
       </plugin>
 
-      <!-- npm Custom Configuration for frontend -->
-      <plugin>
-        <groupId>com.github.eirslett</groupId>
-        <artifactId>frontend-maven-plugin</artifactId>
-        <version>1.10.0</version>
-        <!-- Frontend build steps -->
-        <executions>
-          <execution>
-            <id>install node and npm</id>
-            <goals>
-              <goal>install-node-and-npm</goal>
-            </goals>
-            <configuration>
-              <!-- See https://nodejs.org/en/download/ for latest node and npm (lts) versions -->
-              <nodeVersion>v12.17.0</nodeVersion>
-              <npmVersion>6.14.4</npmVersion>
-            </configuration>
-          </execution>
-
-          <execution>
-            <id>npm install</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <!-- Optional configuration which provides for running any npm command -->
-            <configuration>
-              <arguments>install</arguments>
-            </configuration>
-          </execution>
-
-          <!-- Angular compilation into src/main/webapp/dist/growpod-client -->
-          <execution>
-            <id>npm build</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <configuration>
-              <arguments>run build</arguments>
-            </configuration>
-          </execution>
-        </executions>
-        <configuration>
-          <!-- Frontend source will be stored in this directory -->
-          <workingDirectory>src/main/webapp</workingDirectory>
-          <installDirectory>src/main/webapp</installDirectory>
-        </configuration>
-      </plugin>
-
       <!-- .war web app packaging -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -110,11 +60,25 @@
         <version>2.2</version>
         <!-- npm run build stores its output in this directory -->
         <configuration>
-          <warSourceDirectory>src/main/webapp/dist/growpod-client</warSourceDirectory>
+          <warSourceDirectory>target/growpod-1</warSourceDirectory>
         </configuration>
+
+        <executions>
+          <execution>
+              <id>default-war</id>
+              <phase>none</phase>
+          </execution>
+          <execution>
+            <id>war-exploded</id>
+            <phase>package</phase>
+            <goals>
+                <goal>exploded</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
-      <!-- Provides automatic Java formatting via google-java-format --> 
+      <!-- Provides automatic Java formatting via google-java-format -->
       <plugin>
         <groupId>com.coveo</groupId>
         <artifactId>fmt-maven-plugin</artifactId>
@@ -151,7 +115,7 @@
           </execution>
         </executions>
       </plugin>
-      
+
       <!-- Provides `mvn package appengine:run` for local testing
            and `mvn package appengine:deploy` for deploying. -->
       <plugin>
@@ -159,8 +123,8 @@
         <artifactId>appengine-maven-plugin</artifactId>
         <version>2.2.0</version>
         <configuration>
-          <!-- TODO: set project ID. -->
-          <deploy.projectId></deploy.projectId>
+          <!-- Set project ID. -->
+          <deploy.projectId>beta26-step-2020</deploy.projectId>
           <deploy.version>1</deploy.version>
         </configuration>
       </plugin>

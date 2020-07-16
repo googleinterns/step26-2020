@@ -1,0 +1,31 @@
+.avatar {
+  background-size: cover;
+  height: 50px;
+  padding-top: 5px;
+}
+.avatar-image {
+  width: 50px;
+}
+
+.cards {
+  max-width: 400px;
+  background-color: #00bb98;
+  min-height: 750px;
+  margin: 20px auto;
+}
+
+.garden-image {
+  height: 350px;
+  width: 390px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.name,
+.avatar-image {
+  display: inline-block;
+}
+
+.title {
+  text-align: center;
+}

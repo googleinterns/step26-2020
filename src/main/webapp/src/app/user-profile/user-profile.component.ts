@@ -14,7 +14,11 @@
 
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {
+  HttpClient,
+  HttpResponse,
+  HttpErrorResponse,
+} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {User} from '../model/user.model';
 
@@ -77,12 +81,27 @@ export class UserProfileComponent implements OnInit {
    */
   createUserProfile(user: string): void {
     this.getUserInfo(user).subscribe({
-      next: response => {
+      next: (response: HttpResponse<User>) => {
         // Successful responses are handled here.
         this.displayInfo = response.body;
       },
-      error: () => {
-        // Error messages are handled here.
+      error: (error: HttpErrorResponse) => {
+        // Handle connection error
+        if (error.error instanceof ErrorEvent) {
+          console.error('Network error: ' + error.error.message);
+          this.displayInfo = null;
+          this.errorMessage = 'Cannot connect to GrowPod Server';
+          return;
+        }
+        // Non-404 error codes
+        if (error.status !== 404) {
+          console.error('Unexpected error: ' + error.statusText);
+          this.displayInfo = null;
+          this.errorMessage =
+            'Unexpected error ' + error.status + ': ' + error.statusText;
+          return;
+        }
+        console.error('Error ' + error.status + ': ' + error.statusText);
         this.displayInfo = null;
         this.errorMessage = 'Cannot see user profile for user id: ' + user;
       },

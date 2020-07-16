@@ -30,7 +30,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
-import {SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
+import {SocialLoginModule, SocialAuthServiceConfig} from 'angularx-social-login';
 import {GoogleLoginProvider} from 'angularx-social-login';
  
 import {AppComponent} from './app.component';
@@ -43,6 +43,10 @@ import {UserProfileComponent} from './user-profile/user-profile.component';
 import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 import {LoginComponent} from './Login-SignUp-page/Login-SignUp.component';
+
+
+const google_oauth_client_id:string ="397696466543-0biqdptbuhjmkjmakg2mo2dsov74dl0s.apps.googleusercontent.com";
+
 
 @NgModule({
   declarations: [
@@ -87,7 +91,7 @@ import {LoginComponent} from './Login-SignUp-page/Login-SignUp.component';
           {
             id: GoogleLoginProvider.PROVIDER_ID,
             provider: new GoogleLoginProvider(
-              'clientId'
+              google_oauth_client_id
             ),
           }
         ],

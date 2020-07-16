@@ -26,6 +26,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 
 /**
  * Servlet that handles user entities on the server.
@@ -91,6 +92,7 @@ public class UserServlet extends HttpServlet {
 
     // Dispatch based on method specified.
     // /user/{id}
+    /**
     if (uriList.length == 3) {
       User user = getUserById(uriList[2]);
       if (user == null) {
@@ -124,10 +126,14 @@ public class UserServlet extends HttpServlet {
         response.getWriter().println(new Gson().toJson(list));
         return;
       }
+      **/
     }
-    response.sendError(
+   /* response.getWriter().println("{ \"status\": \"ok\", \"value\": \"test\" }");*/
+   /**response.sendError(
         HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
-  }
+        
+       }**/
+
 
   /**
    * Retrieves a user in the database by id, or null if said id does not exist.
@@ -172,4 +178,18 @@ public class UserServlet extends HttpServlet {
     }
     return USER_GARDEN_ADMIN_LIST_MAP.get(id);
   }
+
+
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String name = req.getParameter("postData1");
+        resp.setContentType("text/html");
+        PrintWriter printWriter = resp.getWriter();
+         printWriter.print(name);
+         System.out.println("firstName :: " + name);
+         System.out.println("got here");
+         
+
+    }
 }

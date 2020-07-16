@@ -1,18 +1,21 @@
-<p> {{title}}</p>
+<p> Login</p>
 
-<button(click)="signInWithGoogle():"> Sign in with google</button>
+<button> hi </button>
 
-<br></br>
+<button on-click="signInWithGoogle()"> Sign in with google  </button>
 
-<button(click)="signOut():"> Sign out</button>
+<br>
+
+<button class="g-signin2" on-click="signOut()"> Sign out</button>
 
 <div *ngIf="user">
 
-<img src="{{user.photoURL}}">
+<img src= "{{user.photoUrl}}">
 
-<h4> {{user.name}}</h4>
+<h4>{{user.name}}</h4>
 
 <p> {{user.email}}</p>
 
-
 </div>
+<!--
+!-->

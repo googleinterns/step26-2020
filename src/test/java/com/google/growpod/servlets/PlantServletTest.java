@@ -64,7 +64,7 @@ public final class PlantServletTest {
     servlet.doGet(request, response);
 
     assertEquals("application/json;", response.getContentType());
-    assertEquals(new Gson().toJson(TEST_PLANT), response.getContentAsString().trim());
+    assertEquals(TEST_PLANT, new Gson().fromJson(response.getContentAsString(), Plant.class));
   }
 
   /** Tests failed query for GET: /plant/{id} method. */

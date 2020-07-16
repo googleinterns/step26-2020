@@ -68,7 +68,7 @@ public final class UserServletTest {
     servlet.doGet(request, response);
 
     assertEquals("application/json;", response.getContentType());
-    assertEquals(new Gson().toJson(TEST_USER), response.getContentAsString().trim());
+    assertEquals(TEST_USER, new Gson().fromJson(response.getContentAsString(), User.class));
   }
 
   /** Tests failed query for GET: /user/{id} method. */
@@ -101,7 +101,7 @@ public final class UserServletTest {
     servlet.doGet(request, response);
 
     assertEquals("application/json;", response.getContentType());
-    assertEquals(new Gson().toJson(TEST_GARDEN_LIST), response.getContentAsString().trim());
+    assertEquals(TEST_GARDEN_LIST, new Gson().fromJson(response.getContentAsString(), List.class));
   }
 
   /** Tests failed query for GET: /user/{id}/garden-list method. */

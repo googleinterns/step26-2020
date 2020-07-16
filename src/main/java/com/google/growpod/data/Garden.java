@@ -25,19 +25,19 @@ import lombok.Data;
 public class Garden {
 
   /** A unique id. */
-  final private String id;
+  private final String id;
 
   /** The garden's name. */
-  final private String name;
+  private final String name;
 
   /** Latitude of garden. */
-  final private double lat;
+  private final double lat;
 
   /** Longitude of garden. */
-  final private double lng;
+  private final double lng;
 
   /** Foreign Key to this garden's administrator. Must be a valid user key. */
-  final private String adminId;
+  private final String adminId;
 
   /**
    * Generates a garden from an entity.

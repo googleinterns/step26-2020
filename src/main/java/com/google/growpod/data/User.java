@@ -24,22 +24,22 @@ import lombok.Data;
 public class User {
 
   /** A unique id. */
-  final private String id;
+  private final String id;
 
   /** The user's primary email. */
-  final private String email;
+  private final String email;
 
   /** This is the only name we track. */
-  final private String preferredName;
+  private final String preferredName;
 
   /** The user's biography. */
-  final private String biography;
+  private final String biography;
 
   /**
    * We do not wish to keep exact user locations -- this will store some approximate location data.
    * Unfortunately, this will only work in the US.
    */
-  final private String zipCode;
+  private final String zipCode;
 
   /**
    * Generates a user from an entity.

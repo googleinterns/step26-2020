@@ -19,7 +19,6 @@ import com.google.cloud.datastore.Entity.Builder;
 import com.google.cloud.datastore.Key;
 import com.google.cloud.datastore.LatLng;
 
-
 /** Garden data class. */
 public class Garden {
 
@@ -71,7 +70,7 @@ public class Garden {
 
   /**
    * Generates an entity from a garden.
-   * 
+   *
    * @return the new entity representing a garden.
    */
   public Entity toEntity() {

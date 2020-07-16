@@ -17,7 +17,6 @@ package com.google.growpod.data;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Entity.Builder;
 import com.google.cloud.datastore.Key;
-import com.google.cloud.datastore.LatLng;
 
 /** User data class. */
 public class User {
@@ -74,7 +73,7 @@ public class User {
 
   /**
    * Generates an entity from a user.
-   * 
+   *
    * @return the new entity representing a user.
    */
   public Entity toEntity() {

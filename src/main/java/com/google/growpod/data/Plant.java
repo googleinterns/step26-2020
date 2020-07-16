@@ -17,8 +17,6 @@ package com.google.growpod.data;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Entity.Builder;
 import com.google.cloud.datastore.Key;
-import com.google.cloud.datastore.LatLng;
-
 
 /** Plant data class. */
 public class Plant {
@@ -66,7 +64,7 @@ public class Plant {
 
   /**
    * Generates an entity from a plant.
-   * 
+   *
    * @return the new entity representing a plant.
    */
   public Entity toEntity() {

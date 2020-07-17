@@ -1,60 +1,64 @@
 import {Component} from '@angular/core';
-import {SocialAuthService } from "angularx-social-login";
-import {GoogleLoginProvider } from "angularx-social-login";
-import{HttpClient} from '@angular/common/http';
+import {SocialAuthService} from 'angularx-social-login';
+import {GoogleLoginProvider} from 'angularx-social-login';
+import {HttpClient} from '@angular/common/http';
+import {HttpHeaders, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'login',
   templateUrl: './Login-SignUp.component.html',
-  styleUrls: ['./Login-SignUp.component.css']
+  styleUrls: ['./Login-SignUp.component.css'],
 })
-export class LoginComponent  {
- user: any;
- //name:string;
- //email:string;
- //imgsrc:string;
- name="kayla";
+export class LoginComponent {
+  user: any;
+  userData: any;
 
+  constructor(
+    private authService: SocialAuthService,
+    private httpClient: HttpClient
+  ) {}
 
- postData1={
-     test:"kayla",
- };
+  signInWithGoogle() {
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(response => {
+      this.user = response;
+      // this.userData= {id:this.user.email,email:this.user.email,name:this.user.name,bio:"hi",zip:"14214"};
+    });
 
-constructor(private authService: SocialAuthService,private http:HttpClient) { }
- 
-  signInWithGoogle():void {
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then((response)=>{
-      console.log("user is logged in user data is =",response);  
-     this.user=response;
-     this.postData(this.user);
-  
-  });
+    return (this.userData = {
+      id: 'email',
+      email: 'email',
+      name: 'kayla',
+      bio: 'hi',
+      zip: '14214',
+    });
   }
 
- 
+  getUserData() {
+    return this.userData;
+  }
+
   signOut(): void {
     this.authService.signOut();
-    console.log("user signed out");
+    console.log('user signed out');
   }
 
- postData(user){
-     this.user=user;
-     console.log("user,",this.user);
+  createData(createBody: any): Observable<any> {
+    console.log('this is user data', this.signInWithGoogle());
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      params: new HttpParams().set('name', JSON.stringify(createBody)),
+    };
+    return this.httpClient.post<any>('/user', null, httpOptions);
+  }
 
-     this.http.post("/user",this.name).toPromise().then((data:string)=>
-     {
-         console.log(data)
-         console.log("name,",this.name)
-
-     });
-    
-
-    /*this.http.post<any>('user', { title: 'Angular POST Request Example' }).subscribe(data => {
-    this.postId = data.id;
-})
-*/
-     console.log("got here java",this.user,this.name);
-    
- }
- 
+  addNewUser() {
+    const newUser = {name: 'kayla'};
+    this.createData(newUser).subscribe(res => {
+      console.log(res, 'thi is response');
+      console.log(newUser);
+    });
+  }
 }

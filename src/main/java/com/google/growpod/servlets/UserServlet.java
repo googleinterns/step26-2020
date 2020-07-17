@@ -15,7 +15,6 @@
 package com.google.growpod.servlets;
 
 import com.google.growpod.data.User;
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,7 +25,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
 
 /**
  * Servlet that handles user entities on the server.
@@ -93,47 +91,30 @@ public class UserServlet extends HttpServlet {
     // Dispatch based on method specified.
     // /user/{id}
     /**
-    if (uriList.length == 3) {
-      User user = getUserById(uriList[2]);
-      if (user == null) {
-        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + uriList[2]);
-        return;
-      }
-      response.setContentType("application/json;");
-      response.getWriter().println(new Gson().toJson(user));
-      return;
-    }
-
-    if (uriList.length == 4) {
-      if (uriList[3].equals("garden-list")) {
-        // /user/{id}/garden-list
-        List<String> list = getUserGardenListById(uriList[2]);
-        if (list == null) {
-          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + uriList[2]);
-          return;
-        }
-        response.setContentType("application/json;");
-        response.getWriter().println(new Gson().toJson(list));
-        return;
-      } else if (uriList[3].equals("garden-admin-list")) {
-        // /user/{id}/garden-admin-list
-        List<String> list = getUserGardenAdminListById(uriList[2]);
-        if (list == null) {
-          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + uriList[2]);
-          return;
-        }
-        response.setContentType("application/json;");
-        response.getWriter().println(new Gson().toJson(list));
-        return;
-      }
-      **/
-    }
-   /* response.getWriter().println("{ \"status\": \"ok\", \"value\": \"test\" }");*/
-   /**response.sendError(
-        HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
-        
-       }**/
-
+     * if (uriList.length == 3) { User user = getUserById(uriList[2]); if (user == null) {
+     * response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + uriList[2]);
+     * return; } response.setContentType("application/json;"); response.getWriter().println(new
+     * Gson().toJson(user)); return; }
+     *
+     * <p>if (uriList.length == 4) { if (uriList[3].equals("garden-list")) { //
+     * /user/{id}/garden-list List<String> list = getUserGardenListById(uriList[2]); if (list ==
+     * null) { response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " +
+     * uriList[2]); return; } response.setContentType("application/json;");
+     * response.getWriter().println(new Gson().toJson(list)); return; } else if
+     * (uriList[3].equals("garden-admin-list")) { // /user/{id}/garden-admin-list List<String> list
+     * = getUserGardenAdminListById(uriList[2]); if (list == null) {
+     * response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + uriList[2]);
+     * return; } response.setContentType("application/json;"); response.getWriter().println(new
+     * Gson().toJson(list)); return; }
+     */
+  }
+  /* response.getWriter().println("{ \"status\": \"ok\", \"value\": \"test\" }");*/
+  /**
+   * response.sendError( HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " +
+   * request.getRequestURI());
+   *
+   * <p>}*
+   */
 
   /**
    * Retrieves a user in the database by id, or null if said id does not exist.
@@ -179,17 +160,22 @@ public class UserServlet extends HttpServlet {
     return USER_GARDEN_ADMIN_LIST_MAP.get(id);
   }
 
+  @Override
+  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    resp.setContentType("application/json");
+    Object obj = req.getParameter("name");
 
+    /*resp.setContentType("text/html");
+    PrintWriter printWriter = resp.getWriter();
+    printWriter.print(name);
+    */
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String name = req.getParameter("postData1");
-        resp.setContentType("text/html");
-        PrintWriter printWriter = resp.getWriter();
-         printWriter.print(name);
-         System.out.println("firstName :: " + name);
-         System.out.println("got here");
-         
-
-    }
+    System.out.println(obj);
+    System.out.println("got here");
+  }
+  // dont get any param from http servlet get the body of request or pass json arg as 3rd
+  // post(url: string, body: any, options: { headers?: HttpHeaders | { [header: string]: string |
+  // string[]; }; observe?: "body"; params?: HttpParams | { [param: string]: string | string[]; };
+  // reportProgress?: boolean; responseType: "arraybuffer"; withCredentials?: boolean; })
+  // post(urlString, {}, { params : { paramName: paramBody } })
 }

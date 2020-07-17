@@ -14,60 +14,43 @@
 
 package com.google.sps;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import com.google.growpod.controllers.PlantController;
 import com.google.growpod.data.Plant;
 import com.google.growpod.servlets.PlantServlet;
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.mockito.Mockito.*;
-import org.mockito.Answers;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
- * Tests Plant servlet response behavior, based on different request URL and controller
- * responses.
+ * Tests Plant servlet response behavior, based on different request URL and controller responses.
  */
 @ExtendWith(MockitoExtension.class)
 public final class PlantServletTest {
 
   private PlantServlet servlet; // Class to test
 
-  /**
-   * Mock services.
-   */
-  @Mock
-  private PlantController controller;
+  /** Mock services. */
+  @Mock private PlantController controller;
 
-  /**
-   * Mock values.
-   */
+  /** Mock values. */
   private final Plant TEST_PLANT = new Plant("0", "x", 0, "0");
 
-  /**
-   * Initializes servlet object and mock controller.
-   */
+  /** Initializes servlet object and mock controller. */
   @BeforeEach
   public void initTest() {
     servlet = new PlantServlet();
     servlet.setController(controller);
   }
 
-  /**
-   * Tests successful query for GET: /plant/{id} method.
-   */
+  /** Tests successful query for GET: /plant/{id} method. */
   @Test
   public void testGetPlant() throws IOException {
     String testUrl = "/plant/0";
@@ -84,9 +67,7 @@ public final class PlantServletTest {
     assertEquals(new Gson().toJson(TEST_PLANT), response.getContentAsString().trim());
   }
 
-  /**
-   * Tests failed query for GET: /plant/{id} method.
-   */
+  /** Tests failed query for GET: /plant/{id} method. */
   @Test
   public void testGetPlantFail() throws IOException {
     String testUrl = "/plant/0";
@@ -102,9 +83,7 @@ public final class PlantServletTest {
     assertEquals(MockHttpServletResponse.SC_NOT_FOUND, response.getStatus());
   }
 
-  /**
-   * Tests invalid method on GET.
-   */
+  /** Tests invalid method on GET. */
   @Test
   public void testGetInvalidMethod() throws IOException {
     String testUrl = "/plant/peapod/cody-kayla-stephanie-caroline-jake";

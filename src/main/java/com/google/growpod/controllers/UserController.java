@@ -21,10 +21,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.HttpServlet;
 
 /** Controller for User entities. */
-public class UserController extends HttpServlet {
+public class UserController {
 
   private Datastore datastore;
 

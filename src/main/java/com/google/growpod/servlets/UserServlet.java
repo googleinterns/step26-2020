@@ -118,9 +118,7 @@ public class UserServlet extends HttpServlet {
         HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
   }
 
-  /**
-   * Getters and Setters for connected objects
-   */
+  /** Getters and Setters for connected objects. */
   public Datastore getDatastore() {
     return datastore;
   }

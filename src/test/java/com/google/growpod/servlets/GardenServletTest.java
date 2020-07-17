@@ -14,66 +14,49 @@
 
 package com.google.sps;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import com.google.growpod.controllers.GardenController;
 import com.google.growpod.data.Garden;
 import com.google.growpod.servlets.GardenServlet;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.mockito.Mockito.*;
-import org.mockito.Answers;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
- * Tests Garden servlet response behavior, based on different request URL and controller
- * responses.
+ * Tests Garden servlet response behavior, based on different request URL and controller responses.
  */
 @ExtendWith(MockitoExtension.class)
 public final class GardenServletTest {
 
   private GardenServlet servlet; // Class to test
 
-  /**
-   * Mock services.
-   */
-  @Mock
-  private GardenController controller;
+  /** Mock services. */
+  @Mock private GardenController controller;
 
-  /**
-   * Mock values.
-   */
+  /** Mock values. */
   private final Garden TEST_GARDEN = new Garden("0", "x", 0.0, 0.0, "0");
-  /**
-   * Separate lists in case I change the type each query returns
-   */
+  /** Separate lists in case I change the type each query returns */
   private final List<String> TEST_USER_LIST = Arrays.asList("0");
+
   private final List<String> TEST_PLANT_LIST = Arrays.asList("0");
 
-
-  /**
-   * Initializes servlet object and mock controller.
-   */
+  /** Initializes servlet object and mock controller. */
   @BeforeEach
   public void initTest() {
     servlet = new GardenServlet();
     servlet.setController(controller);
   }
 
-  /**
-   * Tests successful query for GET: /garden/{id} method.
-   */
+  /** Tests successful query for GET: /garden/{id} method. */
   @Test
   public void testGetGarden() throws IOException {
     String testUrl = "/garden/0";
@@ -90,9 +73,7 @@ public final class GardenServletTest {
     assertEquals(new Gson().toJson(TEST_GARDEN), response.getContentAsString().trim());
   }
 
-  /**
-   * Tests failed query for GET: /garden/{id} method.
-   */
+  /** Tests failed query for GET: /garden/{id} method. */
   @Test
   public void testGetGardenFail() throws IOException {
     String testUrl = "/garden/0";
@@ -108,9 +89,7 @@ public final class GardenServletTest {
     assertEquals(MockHttpServletResponse.SC_NOT_FOUND, response.getStatus());
   }
 
-  /**
-   * Tests successful query for GET: /garden/{id}/user-list method.
-   */
+  /** Tests successful query for GET: /garden/{id}/user-list method. */
   @Test
   public void testGetGardenUserList() throws IOException {
     String testUrl = "/garden/0/user-list";
@@ -127,9 +106,7 @@ public final class GardenServletTest {
     assertEquals(new Gson().toJson(TEST_USER_LIST), response.getContentAsString().trim());
   }
 
-  /**
-   * Tests failed query for GET: /garden/{id}/user-list method.
-   */
+  /** Tests failed query for GET: /garden/{id}/user-list method. */
   @Test
   public void testGetGardenUserListFail() throws IOException {
     String testUrl = "/garden/0/user-list";
@@ -145,9 +122,7 @@ public final class GardenServletTest {
     assertEquals(MockHttpServletResponse.SC_NOT_FOUND, response.getStatus());
   }
 
-  /**
-   * Tests successful query for GET: /garden/{id}/plant-list method.
-   */
+  /** Tests successful query for GET: /garden/{id}/plant-list method. */
   @Test
   public void testGetGardenPlantList() throws IOException {
     String testUrl = "/garden/0/plant-list";
@@ -164,9 +139,7 @@ public final class GardenServletTest {
     assertEquals(new Gson().toJson(TEST_PLANT_LIST), response.getContentAsString().trim());
   }
 
-  /**
-   * Tests failed query for GET: /garden/{id}/plant-list method.
-   */
+  /** Tests failed query for GET: /garden/{id}/plant-list method. */
   @Test
   public void testGetGardenPlantListFail() throws IOException {
     String testUrl = "/garden/0/plant-list";
@@ -182,9 +155,7 @@ public final class GardenServletTest {
     assertEquals(MockHttpServletResponse.SC_NOT_FOUND, response.getStatus());
   }
 
-  /**
-   * Tests invalid method on GET.
-   */
+  /** Tests invalid method on GET. */
   @Test
   public void testGetInvalidMethod() throws IOException {
     String testUrl = "/garden/peapod/cody-kayla-stephanie-caroline-jake";

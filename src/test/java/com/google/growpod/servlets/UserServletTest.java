@@ -14,61 +14,47 @@
 
 package com.google.sps;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import com.google.growpod.controllers.UserController;
 import com.google.growpod.data.User;
 import com.google.growpod.servlets.UserServlet;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.mockito.Mockito.*;
-import org.mockito.Answers;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
- * Tests User servlet response behavior, based on different request URL and controller
- * responses.
+ * Tests User servlet response behavior, based on different request URL and controller responses.
  */
 @ExtendWith(MockitoExtension.class)
 public final class UserServletTest {
 
   private UserServlet servlet; // Class to test
 
-  /**
-   * Mock services.
-   */
-  @Mock
-  private UserController controller;
+  /** Mock services. */
+  @Mock private UserController controller;
 
-  /**
-   * Mock values.
-   */
+  /** Mock values. */
   private final User TEST_USER = new User("0", "x", "y", "z", "aa");
+
   private final List<String> TEST_GARDEN_LIST = Arrays.asList("0");
 
-  /**
-   * Initializes servlet object and mock controller.
-   */
+  /** Initializes servlet object and mock controller. */
   @BeforeEach
   public void initTest() {
     servlet = new UserServlet();
     servlet.setController(controller);
   }
 
-  /**
-   * Tests successful query for GET: /user/{id} method.
-   */
+  /** Tests successful query for GET: /user/{id} method. */
   @Test
   public void testGetUser() throws IOException {
     String testUrl = "/user/0";
@@ -85,9 +71,7 @@ public final class UserServletTest {
     assertEquals(new Gson().toJson(TEST_USER), response.getContentAsString().trim());
   }
 
-  /**
-   * Tests failed query for GET: /user/{id} method.
-   */
+  /** Tests failed query for GET: /user/{id} method. */
   @Test
   public void testGetUserFail() throws IOException {
     String testUrl = "/user/0";
@@ -103,9 +87,7 @@ public final class UserServletTest {
     assertEquals(MockHttpServletResponse.SC_NOT_FOUND, response.getStatus());
   }
 
-  /**
-   * Tests successful query for GET: /user/{id}/garden-list method.
-   */
+  /** Tests successful query for GET: /user/{id}/garden-list method. */
   @Test
   public void testGetUserGardenList() throws IOException {
     String testUrl = "/user/0/garden-list";
@@ -122,9 +104,7 @@ public final class UserServletTest {
     assertEquals(new Gson().toJson(TEST_GARDEN_LIST), response.getContentAsString().trim());
   }
 
-  /**
-   * Tests failed query for GET: /user/{id}/garden-list method.
-   */
+  /** Tests failed query for GET: /user/{id}/garden-list method. */
   @Test
   public void testGetUserGardenListFail() throws IOException {
     String testUrl = "/user/0/garden-list";
@@ -140,9 +120,7 @@ public final class UserServletTest {
     assertEquals(MockHttpServletResponse.SC_NOT_FOUND, response.getStatus());
   }
 
-  /**
-   * Tests invalid method on GET.
-   */
+  /** Tests invalid method on GET. */
   @Test
   public void testGetInvalidMethod() throws IOException {
     String testUrl = "/user/peapod/cody-kayla-stephanie-caroline-jake";

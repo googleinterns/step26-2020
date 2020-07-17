@@ -27,16 +27,16 @@ import lombok.Data;
 public class Plant {
 
   /** A unique id. */
-  private final String id;
+  private String id;
 
   /** A nickname or null. */
-  private final String nickname;
+  private String nickname;
 
   /** The number of plants in this plot. */
-  private final long count;
+  private long count;
 
   /** Foreign Key to this plant's information. */
-  private final String plantTypeId;
+  private String plantTypeId;
 
   /**
    * Generates a plant from an entity.

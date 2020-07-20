@@ -14,15 +14,23 @@
 
 package com.google.growpod;
 
+import com.google.cloud.datastore.Batch;
+import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.Query;
+import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.StructuredQuery;
+import com.google.growpod.data.ContainsPlant;
+import com.google.growpod.data.Garden;
+import com.google.growpod.data.HasMember;
+import com.google.growpod.data.Plant;
+import com.google.growpod.data.User;
 import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.List;
-import com.google.cloud.datastore.*;
-import com.google.growpod.data.*;
 
 /**
- * Helper methods to load and clear test data from any object implementing the Datastore
- * interface.
+ * Helper methods to load and clear test data from any object implementing the Datastore interface.
  */
 public class LoadTestData {
 
@@ -35,16 +43,16 @@ public class LoadTestData {
 
   private void loadUsers(Datastore datastore) {
     // Test User Data
-    testUsers = Arrays.asList(
-      new User("1", "ladd@example.com", "David Ladd", "My SSN is: 143-46-6098", "11201"),
-      new User("2", "caroqliu@google.com", "Caroline Liu", "Plants are fun", "11201"),
-      new User("3", "friedj@google.com", "Jake Fried", "Plants are fun too", "11201")
-    );
+    testUsers =
+        Arrays.asList(
+            new User("1", "ladd@example.com", "David Ladd", "My SSN is: 143-46-6098", "11201"),
+            new User("2", "caroqliu@google.com", "Caroline Liu", "Plants are fun", "11201"),
+            new User("3", "friedj@google.com", "Jake Fried", "Plants are fun too", "11201"));
 
     Batch batch = datastore.newBatch();
 
     // Replace keys with Datastore allocated keys and insert into batch
-    for (User user : testUsers) {;
+    for (User user : testUsers) {
       batch.add(user.toEntity());
     }
 
@@ -55,18 +63,15 @@ public class LoadTestData {
     // Test Garden Data
     double newYorkLat = 40.82;
     double newYorkLng = -73.93;
-    testGardens = Arrays.asList(
-      new Garden("1", "Flower Garden", newYorkLat, newYorkLng, testUsers.get(0).getId()),
-      new Garden("2", "Pea Garden", newYorkLat, newYorkLng, testUsers.get(1).getId())
-    );
+    testGardens =
+        Arrays.asList(
+            new Garden("1", "Flower Garden", newYorkLat, newYorkLng, testUsers.get(0).getId()),
+            new Garden("2", "Pea Garden", newYorkLat, newYorkLng, testUsers.get(1).getId()));
 
     Batch batch = datastore.newBatch();
-    //KeyFactory keyFactory = datastore.newKeyFactory().setKind("Garden");
 
     // Replace keys with Datastore allocated keys and insert into batch
     for (Garden garden : testGardens) {
-      //Key key = datastore.allocateId(keyFactory.newKey());
-      //garden.setId(key.getId().toString());
       batch.add(garden.toEntity());
     }
 
@@ -75,12 +80,12 @@ public class LoadTestData {
 
   private void loadPlants(Datastore datastore) {
     // Test Plant Data
-    testPlants = Arrays.asList(
-      new Plant("1", "Flower Plant 1", 4, "1"),
-      new Plant("2", "Flower Plant 2", 4, "2"),
-      new Plant("3", "Pea Plant 1", 4, "3"),
-      new Plant("4", "Pea Plant 2", 4, "4")
-    );
+    testPlants =
+        Arrays.asList(
+            new Plant("1", "Flower Plant 1", 4, "1"),
+            new Plant("2", "Flower Plant 2", 4, "2"),
+            new Plant("3", "Pea Plant 1", 4, "3"),
+            new Plant("4", "Pea Plant 2", 4, "4"));
 
     Batch batch = datastore.newBatch();
 
@@ -93,11 +98,11 @@ public class LoadTestData {
   }
 
   private void loadHasMember(Datastore datastore) {
-    testHasMembers = Arrays.asList(
-      new HasMember("1", testGardens.get(0).getId(), testUsers.get(0).getId()),
-      new HasMember("2", testGardens.get(1).getId(), testUsers.get(1).getId()),
-      new HasMember("3", testGardens.get(1).getId(), testUsers.get(2).getId())
-    );
+    testHasMembers =
+        Arrays.asList(
+            new HasMember("1", testGardens.get(0).getId(), testUsers.get(0).getId()),
+            new HasMember("2", testGardens.get(1).getId(), testUsers.get(1).getId()),
+            new HasMember("3", testGardens.get(1).getId(), testUsers.get(2).getId()));
 
     Batch batch = datastore.newBatch();
 
@@ -110,12 +115,12 @@ public class LoadTestData {
   }
 
   private void loadContainsPlant(Datastore datastore) {
-    testContainsPlants = Arrays.asList(
-      new ContainsPlant("1", testGardens.get(0).getId(), testPlants.get(0).getId()),
-      new ContainsPlant("2", testGardens.get(0).getId(), testPlants.get(1).getId()),
-      new ContainsPlant("3", testGardens.get(1).getId(), testPlants.get(2).getId()),
-      new ContainsPlant("4", testGardens.get(1).getId(), testPlants.get(3).getId())
-    );
+    testContainsPlants =
+        Arrays.asList(
+            new ContainsPlant("1", testGardens.get(0).getId(), testPlants.get(0).getId()),
+            new ContainsPlant("2", testGardens.get(0).getId(), testPlants.get(1).getId()),
+            new ContainsPlant("3", testGardens.get(1).getId(), testPlants.get(2).getId()),
+            new ContainsPlant("4", testGardens.get(1).getId(), testPlants.get(3).getId()));
 
     Batch batch = datastore.newBatch();
 
@@ -146,13 +151,7 @@ public class LoadTestData {
    * @param datastore The datastore object.
    */
   public void clear(Datastore datastore) {
-    String[] tables = {
-      "User",
-      "Garden", 
-      "Plant",
-      "HasMember",
-      "ContainsPlant"
-    };
+    String[] tables = {"User", "Garden", "Plant", "HasMember", "ContainsPlant"};
 
     Batch batch = datastore.newBatch();
 

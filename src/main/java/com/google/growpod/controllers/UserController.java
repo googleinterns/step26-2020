@@ -18,19 +18,15 @@ import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Key;
-import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery;
-import com.google.growpod.data.User;
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.growpod.data.Garden;
 import com.google.growpod.data.HasMember;
-import java.util.Arrays;
+import com.google.growpod.data.User;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /** Controller for User entities. */
 public class UserController {
@@ -76,10 +72,11 @@ public class UserController {
       return null;
     }
 
-    StructuredQuery<Entity> query = Query.newEntityQueryBuilder()
-      .setKind("HasMember")
-      .setFilter(PropertyFilter.eq("user-id", id))
-      .build();
+    StructuredQuery<Entity> query =
+        Query.newEntityQueryBuilder()
+            .setKind("HasMember")
+            .setFilter(PropertyFilter.eq("user-id", id))
+            .build();
     QueryResults<Entity> results = datastore.run(query);
     while (results.hasNext()) {
       Entity entity = results.next();
@@ -107,10 +104,11 @@ public class UserController {
       return null;
     }
 
-    StructuredQuery<Entity> query = Query.newEntityQueryBuilder()
-      .setKind("Garden")
-      .setFilter(PropertyFilter.eq("admin-id", id))
-      .build();
+    StructuredQuery<Entity> query =
+        Query.newEntityQueryBuilder()
+            .setKind("Garden")
+            .setFilter(PropertyFilter.eq("admin-id", id))
+            .build();
     QueryResults<Entity> results = datastore.run(query);
     while (results.hasNext()) {
       Entity entity = results.next();

@@ -18,19 +18,15 @@ import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Key;
-import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery;
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
+import com.google.growpod.data.ContainsPlant;
 import com.google.growpod.data.Garden;
 import com.google.growpod.data.HasMember;
-import com.google.growpod.data.ContainsPlant;
-import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /** Controller for Garden entities. */
 public class GardenController {
@@ -75,10 +71,11 @@ public class GardenController {
       return null;
     }
 
-    StructuredQuery<Entity> query = Query.newEntityQueryBuilder()
-      .setKind("HasMember")
-      .setFilter(PropertyFilter.eq("garden-id", id))
-      .build();
+    StructuredQuery<Entity> query =
+        Query.newEntityQueryBuilder()
+            .setKind("HasMember")
+            .setFilter(PropertyFilter.eq("garden-id", id))
+            .build();
     QueryResults<Entity> results = datastore.run(query);
     while (results.hasNext()) {
       Entity entity = results.next();
@@ -105,10 +102,11 @@ public class GardenController {
       return null;
     }
 
-    StructuredQuery<Entity> query = Query.newEntityQueryBuilder()
-      .setKind("ContainsPlant")
-      .setFilter(PropertyFilter.eq("garden-id", id))
-      .build();
+    StructuredQuery<Entity> query =
+        Query.newEntityQueryBuilder()
+            .setKind("ContainsPlant")
+            .setFilter(PropertyFilter.eq("garden-id", id))
+            .build();
     QueryResults<Entity> results = datastore.run(query);
     while (results.hasNext()) {
       Entity entity = results.next();

@@ -16,6 +16,12 @@ package com.google.growpod.servlets;
 
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
+import com.google.cloud.datastore.Query;
+import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.StructuredQuery;
 import com.google.growpod.controllers.UserController;
 import com.google.growpod.data.User;
 import com.google.gson.Gson;
@@ -44,13 +50,23 @@ public class UserServlet extends HttpServlet {
   private Datastore datastore;
   private UserController controller;
 
-  private static final String CURRENT_USER_KEY = "0";
+  private String CURRENT_USER_KEY;
 
   /** Initializes the servlet. Connects it to Datastore. */
   @Override
   public void init() throws ServletException {
     this.datastore = DatastoreOptions.getDefaultInstance().getService();
     this.controller = new UserController(datastore);
+
+    // Init CURRENT_USER_KEY
+    StructuredQuery<Entity> query = Query.newEntityQueryBuilder()
+      .setKind("User")
+      .setFilter(PropertyFilter.eq("email", "ladd@example.com"))
+      .build();
+    QueryResults<Entity> results = datastore.run(query);
+    if (results.hasNext()) {
+      CURRENT_USER_KEY = results.next().getKey().getId().toString();
+    }
   }
 
   /**

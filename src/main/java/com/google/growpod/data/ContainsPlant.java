@@ -22,50 +22,45 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-/** Plant data class. */
+/** Relates a garden and a plant through a contains relation. */
 @Data
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
-public class Plant {
+public class ContainsPlant {
 
-  /** A unique id. */
+  /** Unique datastore id. */
   private String id;
 
-  /** A nickname or null. */
-  private String nickname;
+  /** A garden id. */
+  private String gardenId;
 
-  /** The number of plants in this plot. */
-  private long count;
-
-  /** Foreign Key to this plant's information. */
-  private String plantTypeId;
+  /** A plant id. */
+  private String plantId;
 
   /**
-   * Generates a plant from an entity.
+   * Generates a ContainsPlant object from an entity.
    *
-   * @param entity the entity to generate the plant from
-   * @return the new plant with the entity's information.
+   * @param entity the entity to generate the ContainsPlant object from
+   * @return the new ContainsPlant object with the entity's information.
    */
-  public static Plant from(Entity entity) {
+  public static ContainsPlant from(Entity entity) {
     String id = entity.getKey().getId().toString();
-    String nickname = entity.getString("nickname");
-    Long count = entity.getLong("count");
-    String plantTypeId = entity.getString("plant-type-id");
-    return new Plant(id, nickname, count, plantTypeId);
+    String gardenId = entity.getString("garden-id");
+    String plantId = entity.getString("plant-id");
+    return new ContainsPlant(id, gardenId, plantId);
   }
 
   /**
-   * Generates an entity from a plant.
+   * Generates an entity from a ContainsPlant.
    *
-   * @return the new entity representing a plant.
+   * @return the new entity representing the ContainsPlant relationship.
    */
   public Entity toEntity() {
     // I use a different API here than in the portfolio
     String projectId = DatastoreOptions.getDefaultInstance().getProjectId();
-    Key key = Key.newBuilder(projectId, "Plant", Long.parseLong(id)).build();
+    Key key = Key.newBuilder(projectId, "ContainsPlant", Long.parseLong(id)).build();
     Builder builder = Entity.newBuilder(key);
-    builder.set("nickname", nickname);
-    builder.set("count", count);
-    builder.set("plant-type-id", plantTypeId);
+    builder.set("garden-id", gardenId);
+    builder.set("plant-id", plantId);
     return builder.build();
   }
 }

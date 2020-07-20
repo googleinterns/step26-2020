@@ -14,6 +14,7 @@
 
 package com.google.growpod.data;
 
+import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Entity.Builder;
 import com.google.cloud.datastore.Key;
@@ -49,7 +50,7 @@ public class Garden {
    * @return the new garden with the entity's information.
    */
   public static Garden from(Entity entity) {
-    String id = entity.getKey().toUrlSafe();
+    String id = entity.getKey().getId().toString();
     String name = entity.getString("name");
     LatLng latLng = entity.getLatLng("lat-lng");
     String adminId = entity.getString("admin-id");
@@ -63,7 +64,9 @@ public class Garden {
    */
   public Entity toEntity() {
     // I use a different API here than in the portfolio
-    Builder builder = Entity.newBuilder(Key.fromUrlSafe(id));
+    String projectId = DatastoreOptions.getDefaultInstance().getProjectId();
+    Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(id)).build();
+    Builder builder = Entity.newBuilder(key);
     builder.set("name", name);
     builder.set("lat-lng", LatLng.of(lat, lng));
     builder.set("admin-id", adminId);

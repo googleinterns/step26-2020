@@ -14,6 +14,7 @@
 
 package com.google.growpod.data;
 
+import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Entity.Builder;
 import com.google.cloud.datastore.Key;
@@ -51,7 +52,7 @@ public class User {
    * @return the new user with the entity's information.
    */
   public static User from(Entity entity) {
-    String id = entity.getKey().toUrlSafe();
+    String id = entity.getKey().getId().toString();
     String email = entity.getString("email");
     String preferredName = entity.getString("preferred-name");
     String biography = entity.getString("biography");
@@ -66,7 +67,9 @@ public class User {
    */
   public Entity toEntity() {
     // I use a different API here than in the portfolio
-    Builder builder = Entity.newBuilder(Key.fromUrlSafe(id));
+    String projectId = DatastoreOptions.getDefaultInstance().getProjectId();
+    Key key = Key.newBuilder(projectId, "User", Long.parseLong(id)).build();
+    Builder builder = Entity.newBuilder(key);
     builder.set("email", email);
     builder.set("preferred-name", preferredName);
     builder.set("biography", biography);

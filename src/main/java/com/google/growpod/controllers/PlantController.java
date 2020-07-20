@@ -15,27 +15,25 @@
 package com.google.growpod.controllers;
 
 import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
+import com.google.cloud.datastore.Query;
+import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.StructuredQuery;
 import com.google.growpod.data.Plant;
+import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /** Controller for Plant entities. */
 public class PlantController {
 
   private Datastore datastore;
-
-  /** Static test data. */
-  private static final Map<String, Plant> PLANT_MAP = createPlantMap();
-
-  private static Map<String, Plant> createPlantMap() {
-    Map<String, Plant> map = new HashMap<String, Plant>();
-    map.put("0", new Plant("0", "Flower Plant 1", 4, "0"));
-    map.put("1", new Plant("1", "Flower Plant 2", 4, "1"));
-    map.put("2", new Plant("2", "Pea Plant 1", 4, "2"));
-    map.put("3", new Plant("3", "Pea Plant 2", 4, "3"));
-    return Collections.unmodifiableMap(map);
-  }
 
   /**
    * Initializes a new plant controller from a given Datastore.
@@ -53,7 +51,9 @@ public class PlantController {
    * @return the plant with id's data or null.
    */
   public Plant getPlantById(String id) {
-    // MOCK IMPLEMENTATION
-    return PLANT_MAP.get(id);
+    String projectId = DatastoreOptions.getDefaultInstance().getProjectId();
+    Key key = Key.newBuilder(projectId, "Plant", Long.parseLong(id)).build();
+    Entity plantEntity = datastore.get(key);
+    return plantEntity == null ? null : Plant.from(plantEntity);
   }
 }

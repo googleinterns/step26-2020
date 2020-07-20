@@ -1,5 +1,5 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-
+import {GrowpodUiModule} from '../common/growpod-ui.module';
 import {FindGardensComponent} from './find-gardens.component';
 
 describe('FindGardens', () => {
@@ -8,6 +8,7 @@ describe('FindGardens', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [GrowpodUiModule],
       declarations: [FindGardensComponent],
     }).compileComponents();
   }));

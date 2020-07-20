@@ -6,48 +6,59 @@
 
 package com.google.growpod.servlets;
 
-import com.google.gson.Gson;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
+import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.DateTime;
+import com.google.api.client.util.store.AbstractDataStoreFactory;
+import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.calendar.Calendar;
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
-import com.google.api.client.extensions.appengine.auth.oauth2.AbstractAppEngineAuthorizationCodeServlet;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
+import com.google.api.services.calendar.model.CalendarList; 
+import com.google.api.services.calendar.CalendarScopes;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.security.GeneralSecurityException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.api.client.auth.oauth2.Credential;
-
-import com.google.api.services.calendar.model.Events;
-import com.google.api.services.calendar.model.Event;
+import com.google.gson.Gson;
 import java.util.List;
-import com.google.api.client.util.DateTime;
+import java.util.Collections;
+import java.util.Arrays;
 
 @WebServlet("/calendartest")
 public class CalendarTestServlet extends HttpServlet {
+
+  private static final String APPLICATION_NAME = "Growpod";
+  private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+  // missing tokens
+  private static final String TOKENS_DIRECTORY_PATH = "tokens";
+
+  // missing credentials file
+  private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR_READONLY);
+  private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
     // Generate credentials
-    /**
-     * Current issues: 
-     * How to generate the client secrets json file?
-     */
-    Credential authCredential = authorize();
-    AppIdentityCredential credential = new AppIdentityCredential(Arrays.asList(UrlshortenerScopes.URLSHORTENER));
-    Urlshortener shortener = new Urlshortener.Builder(new UrlFetchTransport(), new JacksonFactory(), credential).build();
-    UrlHistory history = shortener.URL().list().execute();
-
-    // Create a client to access the calendar
-    // Reference link: https://developers.google.com/resources/api-libraries/documentation/calendar/v3/java/latest/com/google/api/services/calendar/Calendar.html
-    // Issue: is the variable credential the proper parameter for the constructor?
-    Calendar client = new Calendar.Builder(GoogleNetHttpTransport.newTrustedTransport(), new GsonFactory(), credential).build();
+    // Build a new authorized API client service.
+        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+        Calendar client = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                .setApplicationName(APPLICATION_NAME)
+                .build();
     
     // get events from user's calendar.
     CalendarList allCalendars = client.calendarList().list().execute();
@@ -56,25 +67,28 @@ public class CalendarTestServlet extends HttpServlet {
     response.getWriter().println(new Gson().toJson(allCalendars));
   }
 
-   /** Authorizes the installed application to access user's protected data. */
-   private static Credential authorize() throws Exception {
-   // load client secrets
-   GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
-       new InputStreamReader(CalendarSample.class.getResourceAsStream("/client_secrets.json")));
-   // set up authorization code flow
-   GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-       httpTransport, JSON_FACTORY, clientSecrets,
-       Collections.singleton(CalendarScopes.CALENDAR)).setDataStoreFactory(dataStoreFactory)
-      .build();
-   // authorize
-   return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
-  }
+  /**
+     * Creates an authorized Credential object.
+     * @param HTTP_TRANSPORT The network HTTP Transport.
+     * @return An authorized Credential object.
+     * @throws IOException If the credentials.json file cannot be found.
+     */
+    private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
+        // Load client secrets.
+        InputStream in = CalendarTestServlet.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+        if (in == null) {
+            throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
+        }
+        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
-  /* Obtain a calendar client; currently unused yet this should serve as an alternative to the 
-  current implmentation on the doGet */
-  public static Calendar getCalendarClient() throws IOException {
-    String userId = UserServiceFactory.getUserService().getCurrentUser().getUserId();
-    Credential credential = newFlow().loadCredential(userId);
-    return new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).build();
-  }
+        // Build flow and trigger user authorization request.
+        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+                HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
+                .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
+                .setAccessType("offline")
+                .build();
+        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
+        return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+    }
+ 
 }

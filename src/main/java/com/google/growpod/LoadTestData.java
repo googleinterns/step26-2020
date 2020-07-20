@@ -57,7 +57,7 @@ public class LoadTestData {
     Batch batch = datastore.newBatch();
 
     for (User user : testUsers) {
-      batch.add(user.toEntity());
+      batch.add(user.toEntity(instance));
     }
 
     batch.submit();
@@ -75,7 +75,7 @@ public class LoadTestData {
     Batch batch = datastore.newBatch();
 
     for (Garden garden : testGardens) {
-      batch.add(garden.toEntity());
+      batch.add(garden.toEntity(instance));
     }
 
     batch.submit();
@@ -93,7 +93,7 @@ public class LoadTestData {
     Batch batch = datastore.newBatch();
 
     for (Plant plant : testPlants) {
-      batch.add(plant.toEntity());
+      batch.add(plant.toEntity(instance));
     }
 
     batch.submit();
@@ -109,7 +109,7 @@ public class LoadTestData {
     Batch batch = datastore.newBatch();
 
     for (HasMember hasMember : testHasMembers) {
-      batch.add(hasMember.toEntity());
+      batch.add(hasMember.toEntity(instance));
     }
 
     batch.submit();
@@ -126,7 +126,7 @@ public class LoadTestData {
     Batch batch = datastore.newBatch();
 
     for (ContainsPlant containsPlant : testContainsPlants) {
-      batch.add(containsPlant.toEntity());
+      batch.add(containsPlant.toEntity(instance));
     }
 
     batch.submit();

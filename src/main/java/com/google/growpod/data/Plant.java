@@ -56,11 +56,12 @@ public class Plant {
   /**
    * Generates an entity from a plant.
    *
+   * @param instance The datastore instance the new entity will be associated with.
    * @return the new entity representing a plant.
    */
-  public Entity toEntity() {
+  public Entity toEntity(DatastoreOptions instance) {
     // I use a different API here than in the portfolio
-    String projectId = DatastoreOptions.getDefaultInstance().getProjectId();
+    String projectId = instance.getProjectId();
     Key key = Key.newBuilder(projectId, "Plant", Long.parseLong(id)).build();
     Builder builder = Entity.newBuilder(key);
     builder.set("nickname", nickname);

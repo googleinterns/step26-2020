@@ -52,11 +52,12 @@ public class HasMember {
   /**
    * Generates an entity from a HasMember.
    *
+   * @param instance The datastore instance the new entity will be associated with.
    * @return the new entity representing the HasMember relationship.
    */
-  public Entity toEntity() {
+  public Entity toEntity(DatastoreOptions instance) {
     // I use a different API here than in the portfolio
-    String projectId = DatastoreOptions.getDefaultInstance().getProjectId();
+    String projectId = instance.getProjectId();
     Key key = Key.newBuilder(projectId, "HasMember", Long.parseLong(id)).build();
     Builder builder = Entity.newBuilder(key);
     builder.set("garden-id", gardenId);

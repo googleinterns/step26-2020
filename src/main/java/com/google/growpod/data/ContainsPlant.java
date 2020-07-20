@@ -52,11 +52,12 @@ public class ContainsPlant {
   /**
    * Generates an entity from a ContainsPlant.
    *
+   * @param instance The datastore instance the new entity will be associated with.
    * @return the new entity representing the ContainsPlant relationship.
    */
-  public Entity toEntity() {
+  public Entity toEntity(DatastoreOptions instance) {
     // I use a different API here than in the portfolio
-    String projectId = DatastoreOptions.getDefaultInstance().getProjectId();
+    String projectId = instance.getProjectId();
     Key key = Key.newBuilder(projectId, "ContainsPlant", Long.parseLong(id)).build();
     Builder builder = Entity.newBuilder(key);
     builder.set("garden-id", gardenId);

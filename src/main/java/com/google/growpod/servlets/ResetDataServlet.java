@@ -14,7 +14,6 @@
 
 package com.google.growpod.servlets;
 
-import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.growpod.LoadTestData;
 import java.io.IOException;

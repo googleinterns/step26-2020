@@ -31,7 +31,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Helper methods to load and clear test data from any object implementing the DatastoreOptions interface.
+ * Helper methods to load and clear test data from any object implementing the DatastoreOptions
+ * interface.
  */
 public class LoadTestData {
 
@@ -150,12 +151,12 @@ public class LoadTestData {
   /**
    * Clears all data from any Datastore instance.
    *
-   * @param datastore The datastore instance as a DatastoreOptions object.
+   * @param instance The datastore instance as a DatastoreOptions object.
    */
   public void clear(DatastoreOptions instance) {
     this.instance = instance;
     this.datastore = instance.getService();
-    
+
     String[] tables = {"User", "Garden", "Plant", "HasMember", "ContainsPlant"};
 
     Batch batch = datastore.newBatch();

@@ -46,7 +46,7 @@ public class UserServlet extends HttpServlet {
 
   static final long serialVersionUID = 1L;
 
-  private Datastore datastore;
+  private DatastoreOptions datastoreInstance;
   private UserController controller;
 
   private String currentUserKey;
@@ -54,8 +54,8 @@ public class UserServlet extends HttpServlet {
   /** Initializes the servlet. Connects it to Datastore. */
   @Override
   public void init() throws ServletException {
-    this.datastore = DatastoreOptions.getDefaultInstance().getService();
-    this.controller = new UserController(datastore);
+    this.datastoreInstance = DatastoreOptions.getDefaultInstance();
+    this.controller = new UserController(datastoreInstance);
 
     // Init currentUserKey
     StructuredQuery<Entity> query =
@@ -63,7 +63,7 @@ public class UserServlet extends HttpServlet {
             .setKind("User")
             .setFilter(PropertyFilter.eq("email", "ladd@example.com"))
             .build();
-    QueryResults<Entity> results = datastore.run(query);
+    QueryResults<Entity> results = datastoreInstance.getService().run(query);
     if (results.hasNext()) {
       currentUserKey = results.next().getKey().getId().toString();
     }
@@ -135,12 +135,12 @@ public class UserServlet extends HttpServlet {
   }
 
   /** Getters and Setters for connected objects. */
-  public Datastore getDatastore() {
-    return datastore;
+  public DatastoreOptions getDatastoreInstance() {
+    return datastoreInstance;
   }
 
-  public void setDatastore(Datastore datastore) {
-    this.datastore = datastore;
+  public void setDatastoreInstance(DatastoreOptions datastoreInstance) {
+    this.datastoreInstance = datastoreInstance;
   }
 
   public UserController getController() {

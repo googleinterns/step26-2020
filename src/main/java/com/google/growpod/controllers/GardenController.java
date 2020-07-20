@@ -31,15 +31,17 @@ import java.util.List;
 /** Controller for Garden entities. */
 public class GardenController {
 
+  private DatastoreOptions datastoreInstance;
   private Datastore datastore;
 
   /**
    * Initializes a new garden controller from a given Datastore.
    *
-   * @param datastore the database to run queries on.
+   * @param datastoreInstance the database instance to run queries on.
    */
-  public GardenController(Datastore datastore) {
-    this.datastore = datastore;
+  public GardenController(DatastoreOptions datastoreInstance) {
+    this.datastoreInstance = datastoreInstance;
+    this.datastore = datastoreInstance.getService();
   }
 
   /**
@@ -49,7 +51,7 @@ public class GardenController {
    * @return the garden with id's data or null.
    */
   public Garden getGardenById(String id) {
-    String projectId = DatastoreOptions.getDefaultInstance().getProjectId();
+    String projectId = datastoreInstance.getProjectId();
     Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(id)).build();
     Entity gardenEntity = datastore.get(key);
     return gardenEntity == null ? null : Garden.from(gardenEntity);
@@ -65,7 +67,7 @@ public class GardenController {
     List<String> userList = new ArrayList<String>();
 
     // Existence check
-    String projectId = DatastoreOptions.getDefaultInstance().getProjectId();
+    String projectId = datastoreInstance.getProjectId();
     Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(id)).build();
     if (datastore.get(key) == null) {
       return null;
@@ -96,7 +98,7 @@ public class GardenController {
     List<String> plantList = new ArrayList<String>();
 
     // Existence check
-    String projectId = DatastoreOptions.getDefaultInstance().getProjectId();
+    String projectId = datastoreInstance.getProjectId();
     Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(id)).build();
     if (datastore.get(key) == null) {
       return null;

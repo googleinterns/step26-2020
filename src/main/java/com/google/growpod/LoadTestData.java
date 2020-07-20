@@ -16,6 +16,7 @@ package com.google.growpod;
 
 import com.google.cloud.datastore.Batch;
 import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Key;
 import com.google.cloud.datastore.Query;
@@ -30,9 +31,13 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Helper methods to load and clear test data from any object implementing the Datastore interface.
+ * Helper methods to load and clear test data from any object implementing the DatastoreOptions interface.
  */
 public class LoadTestData {
+
+  /* Datastore instance and datastore itself */
+  DatastoreOptions instance;
+  Datastore datastore;
 
   /* List of entities available at the class-level */
   private List<User> testUsers;
@@ -41,7 +46,7 @@ public class LoadTestData {
   private List<HasMember> testHasMembers;
   private List<ContainsPlant> testContainsPlants;
 
-  private void loadUsers(Datastore datastore) {
+  private void loadUsers() {
     // Test User Data
     testUsers =
         Arrays.asList(
@@ -51,7 +56,6 @@ public class LoadTestData {
 
     Batch batch = datastore.newBatch();
 
-    // Replace keys with Datastore allocated keys and insert into batch
     for (User user : testUsers) {
       batch.add(user.toEntity());
     }
@@ -59,7 +63,7 @@ public class LoadTestData {
     batch.submit();
   }
 
-  private void loadGardens(Datastore datastore) {
+  private void loadGardens() {
     // Test Garden Data
     double newYorkLat = 40.82;
     double newYorkLng = -73.93;
@@ -70,7 +74,6 @@ public class LoadTestData {
 
     Batch batch = datastore.newBatch();
 
-    // Replace keys with Datastore allocated keys and insert into batch
     for (Garden garden : testGardens) {
       batch.add(garden.toEntity());
     }
@@ -78,7 +81,7 @@ public class LoadTestData {
     batch.submit();
   }
 
-  private void loadPlants(Datastore datastore) {
+  private void loadPlants() {
     // Test Plant Data
     testPlants =
         Arrays.asList(
@@ -89,7 +92,6 @@ public class LoadTestData {
 
     Batch batch = datastore.newBatch();
 
-    // Replace keys with Datastore allocated keys and insert into batch
     for (Plant plant : testPlants) {
       batch.add(plant.toEntity());
     }
@@ -97,7 +99,7 @@ public class LoadTestData {
     batch.submit();
   }
 
-  private void loadHasMember(Datastore datastore) {
+  private void loadHasMember() {
     testHasMembers =
         Arrays.asList(
             new HasMember("1", testGardens.get(0).getId(), testUsers.get(0).getId()),
@@ -106,7 +108,6 @@ public class LoadTestData {
 
     Batch batch = datastore.newBatch();
 
-    // Replace keys with Datastore allocated keys and insert into batch
     for (HasMember hasMember : testHasMembers) {
       batch.add(hasMember.toEntity());
     }
@@ -114,7 +115,7 @@ public class LoadTestData {
     batch.submit();
   }
 
-  private void loadContainsPlant(Datastore datastore) {
+  private void loadContainsPlant() {
     testContainsPlants =
         Arrays.asList(
             new ContainsPlant("1", testGardens.get(0).getId(), testPlants.get(0).getId()),
@@ -124,7 +125,6 @@ public class LoadTestData {
 
     Batch batch = datastore.newBatch();
 
-    // Replace keys with Datastore allocated keys and insert into batch
     for (ContainsPlant containsPlant : testContainsPlants) {
       batch.add(containsPlant.toEntity());
     }
@@ -133,24 +133,29 @@ public class LoadTestData {
   }
 
   /**
-   * Loads test data into any Datastore object.
+   * Loads test data into any DatastoreOptions object.
    *
-   * @param datastore The datastore object.
+   * @param instance The datastore instance as a DatastoreOptions object.
    */
-  public void load(Datastore datastore) {
-    loadUsers(datastore);
-    loadGardens(datastore);
-    loadPlants(datastore);
-    loadHasMember(datastore);
-    loadContainsPlant(datastore);
+  public void load(DatastoreOptions instance) {
+    this.instance = instance;
+    this.datastore = instance.getService();
+    loadUsers();
+    loadGardens();
+    loadPlants();
+    loadHasMember();
+    loadContainsPlant();
   }
 
   /**
-   * Clears all data from any Datastore object.
+   * Clears all data from any Datastore instance.
    *
-   * @param datastore The datastore object.
+   * @param datastore The datastore instance as a DatastoreOptions object.
    */
-  public void clear(Datastore datastore) {
+  public void clear(DatastoreOptions instance) {
+    this.instance = instance;
+    this.datastore = instance.getService();
+    
     String[] tables = {"User", "Garden", "Plant", "HasMember", "ContainsPlant"};
 
     Batch batch = datastore.newBatch();

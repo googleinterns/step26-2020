@@ -33,11 +33,11 @@ public class ResetDataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+    DatastoreOptions instance = DatastoreOptions.getDefaultInstance();
 
     LoadTestData ltd = new LoadTestData();
-    ltd.clear(datastore);
-    ltd.load(datastore);
+    ltd.clear(instance);
+    ltd.load(instance);
 
     response.setContentType("application/json;");
     response.getWriter().println("{}");

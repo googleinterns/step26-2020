@@ -42,14 +42,14 @@ public class GardenServlet extends HttpServlet {
 
   static final long serialVersionUID = 1L;
 
-  private Datastore datastore;
+  private DatastoreOptions datastoreInstance;
   private GardenController controller;
 
   /** Initializes the servlet. Connects it to Datastore. */
   @Override
   public void init() throws ServletException {
-    this.datastore = DatastoreOptions.getDefaultInstance().getService();
-    this.controller = new GardenController(datastore);
+    this.datastoreInstance = DatastoreOptions.getDefaultInstance();
+    this.controller = new GardenController(datastoreInstance);
   }
 
   /**
@@ -107,12 +107,12 @@ public class GardenServlet extends HttpServlet {
   }
 
   /** Getters and Setters for connected objects. */
-  public Datastore getDatastore() {
-    return datastore;
+  public DatastoreOptions getDatastoreInstance() {
+    return datastoreInstance;
   }
 
-  public void setDatastore(Datastore datastore) {
-    this.datastore = datastore;
+  public void setDatastoreInstance(DatastoreOptions datastoreInstance) {
+    this.datastoreInstance = datastoreInstance;
   }
 
   public GardenController getController() {

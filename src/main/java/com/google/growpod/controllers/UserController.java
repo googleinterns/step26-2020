@@ -31,15 +31,17 @@ import java.util.List;
 /** Controller for User entities. */
 public class UserController {
 
+  private DatastoreOptions datastoreInstance;
   private Datastore datastore;
 
   /**
    * Initializes a new user controller from a given Datastore.
    *
-   * @param datastore the database to run queries on.
+   * @param datastoreInstance the database instance to run queries on.
    */
-  public UserController(Datastore datastore) {
-    this.datastore = datastore;
+  public UserController(DatastoreOptions datastoreInstance) {
+    this.datastoreInstance = datastoreInstance;
+    this.datastore = datastoreInstance.getService();
   }
 
   /**
@@ -49,7 +51,7 @@ public class UserController {
    * @return the user with id's data or null.
    */
   public User getUserById(String id) {
-    String projectId = DatastoreOptions.getDefaultInstance().getProjectId();
+    String projectId = datastoreInstance.getProjectId();
     Key key = Key.newBuilder(projectId, "User", Long.parseLong(id)).build();
     Entity userEntity = datastore.get(key);
     return userEntity == null ? null : User.from(userEntity);
@@ -66,7 +68,7 @@ public class UserController {
     List<String> gardenList = new ArrayList<String>();
 
     // Existence check
-    String projectId = DatastoreOptions.getDefaultInstance().getProjectId();
+    String projectId = datastoreInstance.getProjectId();
     Key key = Key.newBuilder(projectId, "User", Long.parseLong(id)).build();
     if (datastore.get(key) == null) {
       return null;
@@ -98,7 +100,7 @@ public class UserController {
     List<String> gardenList = new ArrayList<String>();
 
     // Existence check
-    String projectId = DatastoreOptions.getDefaultInstance().getProjectId();
+    String projectId = datastoreInstance.getProjectId();
     Key key = Key.newBuilder(projectId, "User", Long.parseLong(id)).build();
     if (datastore.get(key) == null) {
       return null;

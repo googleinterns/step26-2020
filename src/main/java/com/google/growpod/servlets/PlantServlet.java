@@ -37,14 +37,14 @@ public class PlantServlet extends HttpServlet {
 
   static final long serialVersionUID = 1L;
 
-  private Datastore datastore;
+  private DatastoreOptions datastoreInstance;
   private PlantController controller;
 
   /** Initializes the servlet. Connects it to Datastore. */
   @Override
   public void init() throws ServletException {
-    this.datastore = DatastoreOptions.getDefaultInstance().getService();
-    this.controller = new PlantController(datastore);
+    this.datastoreInstance = DatastoreOptions.getDefaultInstance();
+    this.controller = new PlantController(datastoreInstance);
   }
 
   /**
@@ -78,12 +78,12 @@ public class PlantServlet extends HttpServlet {
   }
 
   /** Getters and Setters for connected objects. */
-  public Datastore getDatastore() {
-    return datastore;
+  public DatastoreOptions getDatastoreInstance() {
+    return datastoreInstance;
   }
 
-  public void setDatastore(Datastore datastore) {
-    this.datastore = datastore;
+  public void setDatastoreInstance(DatastoreOptions datastoreInstance) {
+    this.datastoreInstance = datastoreInstance;
   }
 
   public PlantController getController() {

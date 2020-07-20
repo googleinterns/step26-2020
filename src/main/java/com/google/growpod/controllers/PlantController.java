@@ -23,15 +23,17 @@ import com.google.growpod.data.Plant;
 /** Controller for Plant entities. */
 public class PlantController {
 
+  private DatastoreOptions datastoreInstance;
   private Datastore datastore;
 
   /**
    * Initializes a new plant controller from a given Datastore.
    *
-   * @param datastore the database to run queries on.
+   * @param datastoreInstance the database instance to run queries on.
    */
-  public PlantController(Datastore datastore) {
-    this.datastore = datastore;
+  public PlantController(DatastoreOptions datastoreInstance) {
+    this.datastoreInstance = datastoreInstance;
+    this.datastore = datastoreInstance.getService();
   }
 
   /**
@@ -41,7 +43,7 @@ public class PlantController {
    * @return the plant with id's data or null.
    */
   public Plant getPlantById(String id) {
-    String projectId = DatastoreOptions.getDefaultInstance().getProjectId();
+    String projectId = datastoreInstance.getProjectId();
     Key key = Key.newBuilder(projectId, "Plant", Long.parseLong(id)).build();
     Entity plantEntity = datastore.get(key);
     return plantEntity == null ? null : Plant.from(plantEntity);

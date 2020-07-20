@@ -17,5 +17,5 @@
  *
  */
 export interface CalendarInfo {
-  sample: string;
+  sample: any;
 }

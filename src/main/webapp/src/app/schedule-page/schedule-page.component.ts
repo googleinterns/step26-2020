@@ -51,11 +51,13 @@ export class SchedulePageComponent implements OnInit {
       responseType: 'json',
     });
   }
+  // response types are different
 
   showConsoleComments(): void {
+    console.log(this.getCalendarInfo());
     this.getCalendarInfo().subscribe({
       next: response => {
-        console.log('success woooo');
+        console.log('success!');
       },
       error: error => {
         // Error messages are handled here.
@@ -63,6 +65,4 @@ export class SchedulePageComponent implements OnInit {
       },
     });
   }
-
-
 }

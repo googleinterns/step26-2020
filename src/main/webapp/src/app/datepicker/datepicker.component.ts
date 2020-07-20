@@ -22,7 +22,7 @@ import {FormControl} from '@angular/forms';
 })
 export class DatepickerComponent implements OnInit {
   date = new FormControl(new Date());
-  currDate: string = this.formatDate(this.date.value);
+  currDate: string = this.formatDate(this.date.value.toString());
 
   constructor() {}
 

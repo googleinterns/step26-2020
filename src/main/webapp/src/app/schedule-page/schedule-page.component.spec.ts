@@ -1,6 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {GrowpodUiModule} from '../common/growpod-ui.module';
 import {SchedulePageComponent} from './schedule-page.component';
+import {DatepickerComponent} from '../datepicker/datepicker.component';
 
 describe('SchedulePageComponent', () => {
   let component: SchedulePageComponent;
@@ -9,7 +10,7 @@ describe('SchedulePageComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [GrowpodUiModule],
-      declarations: [SchedulePageComponent],
+      declarations: [SchedulePageComponent, DatepickerComponent],
     }).compileComponents();
   }));
 

@@ -29,7 +29,6 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 import {DatepickerComponent} from './datepicker/datepicker.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,

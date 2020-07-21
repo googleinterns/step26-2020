@@ -31,9 +31,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-/**
- * Tests Garden servlet response behavior, based on different request URL and DAO responses.
- */
+/** Tests Garden servlet response behavior, based on different request URL and DAO responses. */
 @ExtendWith(MockitoExtension.class)
 public final class GardenServletTest {
 

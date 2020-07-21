@@ -29,9 +29,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-/**
- * Tests Plant servlet response behavior, based on different request URL and DAO responses.
- */
+/** Tests Plant servlet response behavior, based on different request URL and DAO responses. */
 @ExtendWith(MockitoExtension.class)
 public final class PlantServletTest {
 

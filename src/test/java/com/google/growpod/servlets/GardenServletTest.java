@@ -58,7 +58,7 @@ public final class GardenServletTest {
 
   /** Tests successful query for GET: /garden/{id} method. */
   @Test
-  public void testGetGarden() throws IOException {
+  public void doGet_successfulGardenQuery_successfulResult() throws IOException {
     String testUrl = "/garden/0";
 
     // Mocks
@@ -75,7 +75,7 @@ public final class GardenServletTest {
 
   /** Tests failed query for GET: /garden/{id} method. */
   @Test
-  public void testGetGardenFail() throws IOException {
+  public void doGet_invalidIdGardenQuery_returns404() throws IOException {
     String testUrl = "/garden/0";
 
     // Mocks
@@ -91,7 +91,7 @@ public final class GardenServletTest {
 
   /** Tests successful query for GET: /garden/{id}/user-list method. */
   @Test
-  public void testGetGardenUserList() throws IOException {
+  public void doGet_successfulUserListQuery_successfulResult() throws IOException {
     String testUrl = "/garden/0/user-list";
 
     // Mocks
@@ -108,7 +108,7 @@ public final class GardenServletTest {
 
   /** Tests failed query for GET: /garden/{id}/user-list method. */
   @Test
-  public void testGetGardenUserListFail() throws IOException {
+  public void doGet_invalidIdUserListQuery_returns404() throws IOException {
     String testUrl = "/garden/0/user-list";
 
     // Mocks
@@ -124,7 +124,7 @@ public final class GardenServletTest {
 
   /** Tests successful query for GET: /garden/{id}/plant-list method. */
   @Test
-  public void testGetGardenPlantList() throws IOException {
+  public void doGet_successfulPlantListQuery_successfulResult() throws IOException {
     String testUrl = "/garden/0/plant-list";
 
     // Mocks
@@ -141,7 +141,7 @@ public final class GardenServletTest {
 
   /** Tests failed query for GET: /garden/{id}/plant-list method. */
   @Test
-  public void testGetGardenPlantListFail() throws IOException {
+  public void doGet_invalidIdPlantListQuery_returns404() throws IOException {
     String testUrl = "/garden/0/plant-list";
 
     // Mocks
@@ -157,7 +157,7 @@ public final class GardenServletTest {
 
   /** Tests invalid method on GET. */
   @Test
-  public void testGetInvalidMethod() throws IOException {
+  public void doGet_invalidUrlQuery_returns405() throws IOException {
     String testUrl = "/garden/peapod/cody-kayla-stephanie-caroline-jake";
 
     // Mocks

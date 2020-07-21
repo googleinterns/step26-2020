@@ -52,7 +52,7 @@ public final class PlantServletTest {
 
   /** Tests successful query for GET: /plant/{id} method. */
   @Test
-  public void testGetPlant() throws IOException {
+  public void doGet_successfulPlantQuery_successfulResult() throws IOException {
     String testUrl = "/plant/0";
 
     // Mocks
@@ -69,7 +69,7 @@ public final class PlantServletTest {
 
   /** Tests failed query for GET: /plant/{id} method. */
   @Test
-  public void testGetPlantFail() throws IOException {
+  public void doGet_invalidIdPlantQuery_returns404() throws IOException {
     String testUrl = "/plant/0";
 
     // Mocks
@@ -85,7 +85,7 @@ public final class PlantServletTest {
 
   /** Tests invalid method on GET. */
   @Test
-  public void testGetInvalidMethod() throws IOException {
+  public void doGet_invalidUrlQuery_returns405() throws IOException {
     String testUrl = "/plant/peapod/cody-kayla-stephanie-caroline-jake";
 
     // Mocks

@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ package com.google.growpod.servlets;
 
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
-import com.google.growpod.controllers.UserController;
+import com.google.growpod.controllers.UserDao;
 import com.google.growpod.data.User;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -42,7 +42,7 @@ public class UserServlet extends HttpServlet {
   static final long serialVersionUID = 1L;
 
   private Datastore datastore;
-  private UserController controller;
+  private UserDao dao;
 
   private static final String CURRENT_USER_KEY = "0";
 
@@ -50,7 +50,7 @@ public class UserServlet extends HttpServlet {
   @Override
   public void init() throws ServletException {
     this.datastore = DatastoreOptions.getDefaultInstance().getService();
-    this.controller = new UserController(datastore);
+    this.dao = new UserDao(datastore);
   }
 
   /**
@@ -81,7 +81,7 @@ public class UserServlet extends HttpServlet {
     // Dispatch based on method specified.
     // /user/{id}
     if (uriList.length == 3) {
-      User user = controller.getUserById(userKey);
+      User user = dao.getUserById(userKey);
       if (user == null) {
         response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userKey);
         return;
@@ -94,7 +94,7 @@ public class UserServlet extends HttpServlet {
     if (uriList.length == 4) {
       if (uriList[3].equals("garden-list")) {
         // /user/{id}/garden-list
-        List<String> list = controller.getUserGardenListById(userKey);
+        List<String> list = dao.getUserGardenListById(userKey);
         if (list == null) {
           response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userKey);
           return;
@@ -104,7 +104,7 @@ public class UserServlet extends HttpServlet {
         return;
       } else if (uriList[3].equals("garden-admin-list")) {
         // /user/{id}/garden-admin-list
-        List<String> list = controller.getUserGardenAdminListById(userKey);
+        List<String> list = dao.getUserGardenAdminListById(userKey);
         if (list == null) {
           response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userKey);
           return;
@@ -118,20 +118,12 @@ public class UserServlet extends HttpServlet {
         HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
   }
 
-  /** Getters and Setters for connected objects. */
-  public Datastore getDatastore() {
-    return datastore;
+  /** Getters and Setters for data access object. */
+  public UserDao getDao() {
+    return dao;
   }
 
-  public void setDatastore(Datastore datastore) {
-    this.datastore = datastore;
-  }
-
-  public UserController getController() {
-    return controller;
-  }
-
-  public void setController(UserController controller) {
-    this.controller = controller;
+  public void setDao(UserDao dao) {
+    this.dao = dao;
   }
 }

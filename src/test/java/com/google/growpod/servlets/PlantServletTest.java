@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package com.google.growpod.tests;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.google.growpod.controllers.PlantController;
+import com.google.growpod.controllers.PlantDao;
 import com.google.growpod.data.Plant;
 import com.google.growpod.servlets.PlantServlet;
 import com.google.gson.Gson;
@@ -29,37 +29,35 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-/**
- * Tests Plant servlet response behavior, based on different request URL and controller responses.
- */
+/** Tests Plant servlet response behavior, based on different request URL and DAO responses. */
 @ExtendWith(MockitoExtension.class)
 public final class PlantServletTest {
 
   private PlantServlet servlet; // Class to test
 
   /** Mock services. */
-  @Mock private PlantController controller;
+  @Mock private PlantDao dao;
 
-  /** Mock values. */
+  /** Test values. */
   private final Plant TEST_PLANT = new Plant("0", "x", 0, "0");
 
-  /** Initializes servlet object and mock controller. */
+  /** Initializes servlet object and mock dao. */
   @BeforeEach
   public void initTest() {
     servlet = new PlantServlet();
-    servlet.setController(controller);
+    servlet.setDao(dao);
   }
 
   /** Tests successful query for GET: /plant/{id} method. */
   @Test
-  public void testGetPlant() throws IOException {
+  public void doGet_successfulPlantQuery_successfulResult() throws IOException {
     String testUrl = "/plant/0";
 
     // Mocks
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(controller.getPlantById("0")).thenReturn(TEST_PLANT);
+    when(dao.getPlantById("0")).thenReturn(TEST_PLANT);
 
     servlet.doGet(request, response);
 
@@ -69,14 +67,14 @@ public final class PlantServletTest {
 
   /** Tests failed query for GET: /plant/{id} method. */
   @Test
-  public void testGetPlantFail() throws IOException {
+  public void doGet_invalidIdPlantQuery_returns404() throws IOException {
     String testUrl = "/plant/0";
 
     // Mocks
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(controller.getPlantById("0")).thenReturn(null);
+    when(dao.getPlantById("0")).thenReturn(null);
 
     servlet.doGet(request, response);
 
@@ -85,7 +83,7 @@ public final class PlantServletTest {
 
   /** Tests invalid method on GET. */
   @Test
-  public void testGetInvalidMethod() throws IOException {
+  public void doGet_invalidUrlQuery_returns405() throws IOException {
     String testUrl = "/plant/peapod/cody-kayla-stephanie-caroline-jake";
 
     // Mocks

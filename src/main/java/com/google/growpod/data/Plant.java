@@ -23,7 +23,7 @@ import lombok.Data;
 
 /** Plant data class. */
 @Data
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor
 public class Plant {
 
   /** A unique id. */

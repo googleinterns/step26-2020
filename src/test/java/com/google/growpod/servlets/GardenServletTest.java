@@ -42,7 +42,7 @@ public final class GardenServletTest {
   /** Mock services. */
   @Mock private GardenDao dao;
 
-  /** Mock values. */
+  /** Test values. */
   private final Garden TEST_GARDEN = new Garden("0", "x", 0.0, 0.0, "0");
   /** Separate lists in case I change the type each query returns */
   private final List<String> TEST_USER_LIST = Arrays.asList("0");

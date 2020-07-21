@@ -40,7 +40,7 @@ public final class PlantServletTest {
   /** Mock services. */
   @Mock private PlantDao dao;
 
-  /** Mock values. */
+  /** Test values. */
   private final Plant TEST_PLANT = new Plant("0", "x", 0, "0");
 
   /** Initializes servlet object and mock dao. */

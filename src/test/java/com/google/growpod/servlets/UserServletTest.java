@@ -42,7 +42,7 @@ public final class UserServletTest {
   /** Mock services. */
   @Mock private UserDao dao;
 
-  /** Mock values. */
+  /** Test values. */
   private final User TEST_USER = new User("0", "x", "y", "z", "aa");
 
   private final List<String> TEST_GARDEN_LIST = Arrays.asList("0");

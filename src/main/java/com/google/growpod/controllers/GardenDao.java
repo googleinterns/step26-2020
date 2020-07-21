@@ -22,8 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Controller for Garden entities. */
-public class GardenController {
+/** Data access object for Garden entities. */
+public class GardenDao {
 
   private Datastore datastore;
 
@@ -63,7 +63,7 @@ public class GardenController {
    *
    * @param datastore the database to run queries on.
    */
-  public GardenController(Datastore datastore) {
+  public GardenDao(Datastore datastore) {
     this.datastore = datastore;
   }
 

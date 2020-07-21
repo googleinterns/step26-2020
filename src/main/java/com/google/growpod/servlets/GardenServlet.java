@@ -16,7 +16,7 @@ package com.google.growpod.servlets;
 
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
-import com.google.growpod.controllers.GardenController;
+import com.google.growpod.controllers.GardenDao;
 import com.google.growpod.data.Garden;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -43,13 +43,13 @@ public class GardenServlet extends HttpServlet {
   static final long serialVersionUID = 1L;
 
   private Datastore datastore;
-  private GardenController controller;
+  private GardenDao dao;
 
   /** Initializes the servlet. Connects it to Datastore. */
   @Override
   public void init() throws ServletException {
     this.datastore = DatastoreOptions.getDefaultInstance().getService();
-    this.controller = new GardenController(datastore);
+    this.dao = new GardenDao(datastore);
   }
 
   /**
@@ -68,7 +68,7 @@ public class GardenServlet extends HttpServlet {
     // Dispatch based on method specified.
     // /garden/{id}
     if (uriList.length == 3) {
-      Garden garden = controller.getGardenById(uriList[2]);
+      Garden garden = dao.getGardenById(uriList[2]);
       if (garden == null) {
         response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid garden id: " + uriList[2]);
         return;
@@ -81,7 +81,7 @@ public class GardenServlet extends HttpServlet {
     if (uriList.length == 4) {
       if (uriList[3].equals("user-list")) {
         // /garden/{id}/user-list
-        List<String> list = controller.getGardenUserListById(uriList[2]);
+        List<String> list = dao.getGardenUserListById(uriList[2]);
         if (list == null) {
           response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid garden id: " + uriList[2]);
           return;
@@ -91,7 +91,7 @@ public class GardenServlet extends HttpServlet {
         return;
       } else if (uriList[3].equals("plant-list")) {
         // /garden/{id}/plant-list
-        List<String> list = controller.getGardenPlantListById(uriList[2]);
+        List<String> list = dao.getGardenPlantListById(uriList[2]);
         if (list == null) {
           response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid garden id: " + uriList[2]);
           return;
@@ -106,20 +106,12 @@ public class GardenServlet extends HttpServlet {
         HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
   }
 
-  /** Getters and Setters for connected objects. */
-  public Datastore getDatastore() {
-    return datastore;
+  /** Getters and Setters for data access object. */
+  public GardenDao getDao() {
+    return dao;
   }
 
-  public void setDatastore(Datastore datastore) {
-    this.datastore = datastore;
-  }
-
-  public GardenController getController() {
-    return controller;
-  }
-
-  public void setController(GardenController controller) {
-    this.controller = controller;
+  public void setDao(GardenDao dao) {
+    this.dao = dao;
   }
 }

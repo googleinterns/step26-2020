@@ -17,7 +17,7 @@ package com.google.sps;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.google.growpod.controllers.GardenController;
+import com.google.growpod.controllers.GardenDao;
 import com.google.growpod.data.Garden;
 import com.google.growpod.servlets.GardenServlet;
 import com.google.gson.Gson;
@@ -32,7 +32,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
- * Tests Garden servlet response behavior, based on different request URL and controller responses.
+ * Tests Garden servlet response behavior, based on different request URL and DAO responses.
  */
 @ExtendWith(MockitoExtension.class)
 public final class GardenServletTest {
@@ -40,7 +40,7 @@ public final class GardenServletTest {
   private GardenServlet servlet; // Class to test
 
   /** Mock services. */
-  @Mock private GardenController controller;
+  @Mock private GardenDao dao;
 
   /** Mock values. */
   private final Garden TEST_GARDEN = new Garden("0", "x", 0.0, 0.0, "0");
@@ -49,11 +49,11 @@ public final class GardenServletTest {
 
   private final List<String> TEST_PLANT_LIST = Arrays.asList("0");
 
-  /** Initializes servlet object and mock controller. */
+  /** Initializes servlet object and mock dao. */
   @BeforeEach
   public void initTest() {
     servlet = new GardenServlet();
-    servlet.setController(controller);
+    servlet.setDao(dao);
   }
 
   /** Tests successful query for GET: /garden/{id} method. */
@@ -65,7 +65,7 @@ public final class GardenServletTest {
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(controller.getGardenById("0")).thenReturn(TEST_GARDEN);
+    when(dao.getGardenById("0")).thenReturn(TEST_GARDEN);
 
     servlet.doGet(request, response);
 
@@ -82,7 +82,7 @@ public final class GardenServletTest {
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(controller.getGardenById("0")).thenReturn(null);
+    when(dao.getGardenById("0")).thenReturn(null);
 
     servlet.doGet(request, response);
 
@@ -98,7 +98,7 @@ public final class GardenServletTest {
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(controller.getGardenUserListById("0")).thenReturn(TEST_USER_LIST);
+    when(dao.getGardenUserListById("0")).thenReturn(TEST_USER_LIST);
 
     servlet.doGet(request, response);
 
@@ -115,7 +115,7 @@ public final class GardenServletTest {
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(controller.getGardenUserListById("0")).thenReturn(null);
+    when(dao.getGardenUserListById("0")).thenReturn(null);
 
     servlet.doGet(request, response);
 
@@ -131,7 +131,7 @@ public final class GardenServletTest {
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(controller.getGardenPlantListById("0")).thenReturn(TEST_PLANT_LIST);
+    when(dao.getGardenPlantListById("0")).thenReturn(TEST_PLANT_LIST);
 
     servlet.doGet(request, response);
 
@@ -148,7 +148,7 @@ public final class GardenServletTest {
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(controller.getGardenPlantListById("0")).thenReturn(null);
+    when(dao.getGardenPlantListById("0")).thenReturn(null);
 
     servlet.doGet(request, response);
 

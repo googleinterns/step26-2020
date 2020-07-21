@@ -22,8 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Controller for User entities. */
-public class UserController {
+/** Data access object for User entities. */
+public class UserDao {
 
   private Datastore datastore;
 
@@ -67,7 +67,7 @@ public class UserController {
    *
    * @param datastore the database to run queries on.
    */
-  public UserController(Datastore datastore) {
+  public UserDao(Datastore datastore) {
     this.datastore = datastore;
   }
 

@@ -20,8 +20,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Controller for Plant entities. */
-public class PlantController {
+/** Data access object for Plant entities. */
+public class PlantDao {
 
   private Datastore datastore;
 
@@ -42,7 +42,7 @@ public class PlantController {
    *
    * @param datastore the database to run queries on.
    */
-  public PlantController(Datastore datastore) {
+  public PlantDao(Datastore datastore) {
     this.datastore = datastore;
   }
 

@@ -17,7 +17,7 @@ package com.google.sps;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.google.growpod.controllers.PlantController;
+import com.google.growpod.controllers.PlantDao;
 import com.google.growpod.data.Plant;
 import com.google.growpod.servlets.PlantServlet;
 import com.google.gson.Gson;
@@ -30,7 +30,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
- * Tests Plant servlet response behavior, based on different request URL and controller responses.
+ * Tests Plant servlet response behavior, based on different request URL and DAO responses.
  */
 @ExtendWith(MockitoExtension.class)
 public final class PlantServletTest {
@@ -38,16 +38,16 @@ public final class PlantServletTest {
   private PlantServlet servlet; // Class to test
 
   /** Mock services. */
-  @Mock private PlantController controller;
+  @Mock private PlantDao dao;
 
   /** Mock values. */
   private final Plant TEST_PLANT = new Plant("0", "x", 0, "0");
 
-  /** Initializes servlet object and mock controller. */
+  /** Initializes servlet object and mock dao. */
   @BeforeEach
   public void initTest() {
     servlet = new PlantServlet();
-    servlet.setController(controller);
+    servlet.setDao(dao);
   }
 
   /** Tests successful query for GET: /plant/{id} method. */
@@ -59,7 +59,7 @@ public final class PlantServletTest {
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(controller.getPlantById("0")).thenReturn(TEST_PLANT);
+    when(dao.getPlantById("0")).thenReturn(TEST_PLANT);
 
     servlet.doGet(request, response);
 
@@ -76,7 +76,7 @@ public final class PlantServletTest {
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(controller.getPlantById("0")).thenReturn(null);
+    when(dao.getPlantById("0")).thenReturn(null);
 
     servlet.doGet(request, response);
 

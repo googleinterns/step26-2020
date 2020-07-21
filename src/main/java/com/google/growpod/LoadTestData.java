@@ -70,8 +70,8 @@ public class LoadTestData {
     double newYorkLng = -73.93;
     testGardens =
         Arrays.asList(
-            new Garden("1", "Flower Garden", newYorkLat, newYorkLng, testUsers.get(0).getId()),
-            new Garden("2", "Pea Garden", newYorkLat, newYorkLng, testUsers.get(1).getId()));
+            new Garden("1", "Flower Garden", "I love flowers!!!", newYorkLat, newYorkLng, "11201", testUsers.get(0).getId()),
+            new Garden("2", "Pea Garden", "I love peas!!!", newYorkLat, newYorkLng, "11201", testUsers.get(1).getId()));
 
     Batch batch = datastore.newBatch();
 

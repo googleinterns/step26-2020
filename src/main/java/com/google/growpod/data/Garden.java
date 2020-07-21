@@ -34,11 +34,17 @@ public class Garden {
   /** The garden's name. */
   private String name;
 
+  /** The garden's bio. */
+  private String bio;
+
   /** Latitude of garden. */
   private double lat;
 
   /** Longitude of garden. */
   private double lng;
+
+  /** Postal code of garden. */
+  private String zipCode;
 
   /** Foreign Key to this garden's administrator. Must be a valid user key. */
   private String adminId;
@@ -52,9 +58,11 @@ public class Garden {
   public static Garden from(Entity entity) {
     String id = entity.getKey().getId().toString();
     String name = entity.getString("name");
+    String bio = entity.getString("bio");
     LatLng latLng = entity.getLatLng("lat-lng");
+    String zipCode = entity.getString("zip-code");
     String adminId = entity.getString("admin-id");
-    return new Garden(id, name, latLng.getLatitude(), latLng.getLongitude(), adminId);
+    return new Garden(id, name, bio, latLng.getLatitude(), latLng.getLongitude(), zipCode, adminId);
   }
 
   /**
@@ -69,7 +77,9 @@ public class Garden {
     Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(id)).build();
     Builder builder = Entity.newBuilder(key);
     builder.set("name", name);
+    builder.set("bio", bio);
     builder.set("lat-lng", LatLng.of(lat, lng));
+    builder.set("zip-code", zipCode);
     builder.set("admin-id", adminId);
     return builder.build();
   }

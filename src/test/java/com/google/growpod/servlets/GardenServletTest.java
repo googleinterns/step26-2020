@@ -43,7 +43,7 @@ public final class GardenServletTest {
   @Mock private GardenController controller;
 
   /** Mock values. */
-  private final Garden TEST_GARDEN = new Garden("0", "x", 0.0, 0.0, "0");
+  private final Garden TEST_GARDEN = new Garden("0", "x", "y", 0.0, 0.0, "0", "0");
   /** Separate lists in case I change the type each query returns */
   private final List<String> TEST_USER_LIST = Arrays.asList("0");
 

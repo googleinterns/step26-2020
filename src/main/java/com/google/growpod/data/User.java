@@ -17,7 +17,6 @@ package com.google.growpod.data;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Entity.Builder;
 import com.google.cloud.datastore.Key;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

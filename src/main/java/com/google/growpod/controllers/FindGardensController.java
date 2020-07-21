@@ -35,7 +35,7 @@ public class FindGardensController {
   private Datastore datastore;
 
   /**
-   * Initializes a new garden controller from a given Datastore.
+   * Initializes a new find gardens controller from a given Datastore.
    *
    * @param datastoreInstance the database instance to run queries on.
    */
@@ -45,77 +45,27 @@ public class FindGardensController {
   }
 
   /**
-   * Retrieves a garden in the database by id, or null if said id does not exist.
+   * Retrieves all gardens near a given zip code.
+   * Currently only returns exact matches.
    *
-   * @param id the garden's id
-   * @return the garden with id's data or null.
+   * @param zipCode the specified zip code.
+   * @return a list of gardens with zipcodes equal to zipCode.
    */
-  public Garden getGardenById(String id) {
-    String projectId = datastoreInstance.getProjectId();
-    Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(id)).build();
-    Entity gardenEntity = datastore.get(key);
-    return gardenEntity == null ? null : Garden.from(gardenEntity);
-  }
-
-  /**
-   * Retrieves a list of garden members. Returns null if the garden does not exist.
-   *
-   * @param id the garden's id
-   * @return a list of user ids in the garden or null.
-   */
-  public List<String> getGardenUserListById(String id) {
-    List<String> userList = new ArrayList<String>();
-
-    // Existence check
-    String projectId = datastoreInstance.getProjectId();
-    Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(id)).build();
-    if (datastore.get(key) == null) {
-      return null;
-    }
+  public List<Garden> getNearbyGardens(String zipCode) {
+    List<Garden> gardenList = new ArrayList<Garden>();
 
     StructuredQuery<Entity> query =
         Query.newEntityQueryBuilder()
-            .setKind("HasMember")
-            .setFilter(PropertyFilter.eq("garden-id", id))
+            .setKind("Garden")
+            .setFilter(PropertyFilter.eq("zip-code", zipCode))
             .build();
     QueryResults<Entity> results = datastore.run(query);
     while (results.hasNext()) {
       Entity entity = results.next();
-      HasMember hasMember = HasMember.from(entity);
-      userList.add(hasMember.getUserId());
+      Garden garden = Garden.from(entity);
+      gardenList.add(garden);
     }
 
-    return userList;
-  }
-
-  /**
-   * Retrieves a list of garden plants. Returns null if the garden does not exist.
-   *
-   * @param id the garden's id
-   * @return a list of plant ids in the garden or null.
-   */
-  public List<String> getGardenPlantListById(String id) {
-    List<String> plantList = new ArrayList<String>();
-
-    // Existence check
-    String projectId = datastoreInstance.getProjectId();
-    Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(id)).build();
-    if (datastore.get(key) == null) {
-      return null;
-    }
-
-    StructuredQuery<Entity> query =
-        Query.newEntityQueryBuilder()
-            .setKind("ContainsPlant")
-            .setFilter(PropertyFilter.eq("garden-id", id))
-            .build();
-    QueryResults<Entity> results = datastore.run(query);
-    while (results.hasNext()) {
-      Entity entity = results.next();
-      ContainsPlant containsPlant = ContainsPlant.from(entity);
-      plantList.add(containsPlant.getPlantId());
-    }
-
-    return plantList;
+    return gardenList;
   }
 }

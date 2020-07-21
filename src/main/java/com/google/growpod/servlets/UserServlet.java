@@ -56,16 +56,7 @@ public class UserServlet extends HttpServlet {
     this.datastoreInstance = DatastoreOptions.getDefaultInstance();
     this.controller = new UserController(datastoreInstance);
 
-    // Init currentUserKey
-    StructuredQuery<Entity> query =
-        Query.newEntityQueryBuilder()
-            .setKind("User")
-            .setFilter(PropertyFilter.eq("email", "ladd@example.com"))
-            .build();
-    QueryResults<Entity> results = datastoreInstance.getService().run(query);
-    if (results.hasNext()) {
-      currentUserKey = results.next().getKey().getId().toString();
-    }
+    currentUserKey = "1"; // MOCK VALUE -- REPLACE ONCE OAUTH WORKS
   }
 
   /**

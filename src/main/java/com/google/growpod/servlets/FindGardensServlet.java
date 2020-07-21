@@ -15,7 +15,7 @@
 package com.google.growpod.servlets;
 
 import com.google.cloud.datastore.DatastoreOptions;
-import com.google.growpod.controllers.GardenController;
+import com.google.growpod.controllers.FindGardensController;
 import com.google.growpod.data.Garden;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -27,8 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet that returns gardens close to either a given ZIP code or 
- * the logged-in user's ZIP code, upon a GET request.
+ * Servlet that returns gardens close to either a given ZIP code or the logged-in user's ZIP code,
+ * upon a GET request.
  */
 @WebServlet({"/find-gardens"})
 public class FindGardensServlet extends HttpServlet {
@@ -36,33 +36,33 @@ public class FindGardensServlet extends HttpServlet {
   static final long serialVersionUID = 1L;
 
   private DatastoreOptions datastoreInstance;
-  private GardenController controller;
+  private FindGardensController controller;
 
   /** Initializes the servlet. Connects it to Datastore. */
   @Override
   public void init() throws ServletException {
     this.datastoreInstance = DatastoreOptions.getDefaultInstance();
-    this.controller = new GardenController(datastoreInstance);
+    this.controller = new FindGardensController(datastoreInstance);
   }
 
   /**
-   * Processes HTTP GET requests for the /find-gardens servlet. The optional argument
-   * `zip-code` can specify where to look for gardens, otherwise, the user's zip code
-   * suffices.
+   * Processes HTTP GET requests for the /find-gardens servlet. The optional argument `zip-code` can
+   * specify where to look for gardens, otherwise, the user's zip code suffices.
    *
    * @param request Information about the GET Request
    * @param response Information about the servlet's response
    */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    
     String zipCode = request.getParameter("zip-code");
     if (zipCode == null) {
-      zipCode = "11201"; // MOCK VALUE
+      zipCode = "11201"; // MOCK VALUE -- REPLACE ONCE OAUTH WORKS
     }
 
+    List<Garden> nearbyGardens = controller.getNearbyGardens(zipCode);
+
     response.setContentType("application/json;");
-    response.getWriter().println("{}");
+    response.getWriter().println(new Gson().toJson(nearbyGardens));
   }
 
   /** Getters and Setters for connected objects. */
@@ -74,11 +74,11 @@ public class FindGardensServlet extends HttpServlet {
     this.datastoreInstance = datastoreInstance;
   }
 
-  public GardenController getController() {
+  public FindGardensController getController() {
     return controller;
   }
 
-  public void setController(GardenController controller) {
+  public void setController(FindGardensController controller) {
     this.controller = controller;
   }
 }

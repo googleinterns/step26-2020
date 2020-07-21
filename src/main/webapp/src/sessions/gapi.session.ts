@@ -1,4 +1,4 @@
-import {Injectable, EventEmitter} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {UserRepository} from '../repositories/user.repository';
 
 const CLIENT_ID = '<generate client id';
@@ -7,7 +7,7 @@ const API_KEY = '<generate api key>';
 const DISCOVERY_DOCS = [
   'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
 ];
-var SCOPES = 'https://www.googleapis.com/auth/calendar';
+const SCOPES = 'https://www.googleapis.com/auth/calendar';
 
 @Injectable()
 export class GapiSession {
@@ -22,7 +22,7 @@ export class GapiSession {
    * Include docs
    */
   initClient() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       gapi.load('client:auth2', () => {
         return gapi.client
           .init({

@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,13 +18,12 @@ import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Entity.Builder;
 import com.google.cloud.datastore.Key;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /** Plant data class. */
 @Data
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor
 public class Plant {
 
   /** A unique id. */

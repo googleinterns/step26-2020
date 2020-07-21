@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Key;
 import com.google.growpod.data.Plant;
 
-/** Controller for Plant entities. */
-public class PlantController {
+/** Data access object for Plant entities. */
+public class PlantDao {
 
   private DatastoreOptions datastoreInstance;
   private Datastore datastore;
@@ -31,7 +31,7 @@ public class PlantController {
    *
    * @param datastoreInstance the database instance to run queries on.
    */
-  public PlantController(DatastoreOptions datastoreInstance) {
+  public PlantDao(DatastoreOptions datastoreInstance) {
     this.datastoreInstance = datastoreInstance;
     this.datastore = datastoreInstance.getService();
   }

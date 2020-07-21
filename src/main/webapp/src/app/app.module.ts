@@ -29,8 +29,8 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 import {DatepickerComponent} from './datepicker/datepicker.component';
 
-import { GapiSession } from '../sessions/gapi.session';
-import { UserRepository } from '../repositories/user.repository';
+import {GapiSession} from '../sessions/gapi.session';
+import {UserRepository} from '../repositories/user.repository';
 
 export function initGapi(gapiSession: GapiSession) {
   return () => gapiSession.initClient();
@@ -53,13 +53,17 @@ export function initGapi(gapiSession: GapiSession) {
     RouterModule,
     GrowpodUiModule,
   ],
-   providers: [
-    { provide: APP_INITIALIZER, useFactory: initGapi, deps: [GapiSession], multi: true },
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initGapi,
+      deps: [GapiSession],
+      multi: true,
+    },
 
     GapiSession,
 
     UserRepository,
-
   ],
 
   bootstrap: [AppComponent],

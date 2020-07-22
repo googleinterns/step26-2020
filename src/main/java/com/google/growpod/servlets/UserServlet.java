@@ -45,6 +45,8 @@ public class UserServlet extends HttpServlet {
   private UserDao dao;
 
   private static final String CURRENT_USER_ARG = "current";
+  private static final String GARDEN_LIST_ARG = "garden-list";
+  private static final String GARDEN_ADMIN_LIST_ARG = "garden-admin-list";
   private static final String CURRENT_USER_KEY = "0";
 
   /** Initializes the servlet. Connects it to Datastore. */
@@ -93,7 +95,7 @@ public class UserServlet extends HttpServlet {
     }
 
     if (uriList.length == 4) {
-      if (uriList[3].equals("garden-list")) {
+      if (uriList[3].equals(GARDEN_LIST_ARG)) {
         // /user/{id}/garden-list
         List<String> list = dao.getUserGardenListById(userKey);
         if (list == null) {
@@ -103,7 +105,7 @@ public class UserServlet extends HttpServlet {
         response.setContentType("application/json;");
         response.getWriter().println(new Gson().toJson(list));
         return;
-      } else if (uriList[3].equals("garden-admin-list")) {
+      } else if (uriList[3].equals(GARDEN_ADMIN_LIST_ARG)) {
         // /user/{id}/garden-admin-list
         List<String> list = dao.getUserGardenAdminListById(userKey);
         if (list == null) {

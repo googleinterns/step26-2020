@@ -46,6 +46,7 @@ public final class FindGardensServletTest {
 
   /** Mock values. */
   private final Garden TEST_GARDEN = new Garden("0", "x", "y", 0.0, 0.0, "0", "0");
+
   private final List<Garden> TEST_GARDEN_LIST = Arrays.asList(TEST_GARDEN);
 
   /** Initializes servlet object and mock controller. */
@@ -71,7 +72,7 @@ public final class FindGardensServletTest {
     servlet.doGet(request, response);
 
     assertEquals("application/json;", response.getContentType());
-    Type listType = new TypeToken<List<Garden>>(){}.getType();
+    Type listType = new TypeToken<List<Garden>>() {}.getType();
     assertEquals(TEST_GARDEN_LIST, new Gson().fromJson(response.getContentAsString(), listType));
   }
 
@@ -90,8 +91,7 @@ public final class FindGardensServletTest {
     servlet.doGet(request, response);
 
     assertEquals("application/json;", response.getContentType());
-    Type listType = new TypeToken<List<Garden>>(){}.getType();
+    Type listType = new TypeToken<List<Garden>>() {}.getType();
     assertEquals(TEST_GARDEN_LIST, new Gson().fromJson(response.getContentAsString(), listType));
   }
-
 }

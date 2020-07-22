@@ -15,11 +15,6 @@
 package com.google.growpod.servlets;
 
 import com.google.cloud.datastore.DatastoreOptions;
-import com.google.cloud.datastore.Entity;
-import com.google.cloud.datastore.Query;
-import com.google.cloud.datastore.QueryResults;
-import com.google.cloud.datastore.StructuredQuery;
-import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.growpod.controllers.UserController;
 import com.google.growpod.data.User;
 import com.google.gson.Gson;

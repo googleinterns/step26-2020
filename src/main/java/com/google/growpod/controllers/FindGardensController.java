@@ -17,14 +17,11 @@ package com.google.growpod.controllers;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
-import com.google.cloud.datastore.Key;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
-import com.google.growpod.data.ContainsPlant;
 import com.google.growpod.data.Garden;
-import com.google.growpod.data.HasMember;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +42,7 @@ public class FindGardensController {
   }
 
   /**
-   * Retrieves all gardens near a given zip code.
-   * Currently only returns exact matches.
+   * Retrieves all gardens near a given zip code. Currently only returns exact matches.
    *
    * @param zipCode the specified zip code.
    * @return a list of gardens with zipcodes equal to zipCode.

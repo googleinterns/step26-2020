@@ -41,6 +41,7 @@ import {User} from '../model/user.model';
  * /user/{id}, with the value of the string 'id' as {id}.
  */
 export class UserProfileComponent implements OnInit {
+  isLoaded = false;
   displayInfo: User | null;
   errorMessage = '';
 
@@ -84,6 +85,7 @@ export class UserProfileComponent implements OnInit {
       next: (response: HttpResponse<User>) => {
         // Successful responses are handled here.
         this.displayInfo = response.body;
+        this.isLoaded = true;
       },
       error: (error: HttpErrorResponse) => {
         // Handle connection error
@@ -91,6 +93,7 @@ export class UserProfileComponent implements OnInit {
           console.error('Network error: ' + error.error.message);
           this.displayInfo = null;
           this.errorMessage = 'Cannot connect to GrowPod Server';
+          this.isLoaded = true;
           return;
         }
         // Non-404 error codes
@@ -99,11 +102,13 @@ export class UserProfileComponent implements OnInit {
           this.displayInfo = null;
           this.errorMessage =
             'Unexpected error ' + error.status + ': ' + error.statusText;
+          this.isLoaded = true;
           return;
         }
         console.error('Error ' + error.status + ': ' + error.statusText);
         this.displayInfo = null;
         this.errorMessage = 'Cannot see user profile for user id: ' + user;
+        this.isLoaded = true;
       },
     });
   }

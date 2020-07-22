@@ -1,154 +1,72 @@
-<owl-carousel-o [options]="customOptions">
-  <ng-template carouselSlide>
-    <mat-card class="mat-elevation-z8 cards">
-      <mat-card-header>
-        <mat-card-title class="title"><h2>Buffalo Garden</h2></mat-card-title>
-      </mat-card-header>
+<div *ngIf="isLoaded">
+  <div *ngIf="displayInfo !== null; else errorBlock">
+    <div *ngIf="displayInfo.length > 0; else emptyBlock">
+      <owl-carousel-o [options]="customOptions">
+        <ng-template carouselSlide *ngFor="let garden of displayInfo">
+          <mat-card class="mat-elevation-z8 cards">
+            <mat-card-header>
+              <mat-card-title class="title"><h2>{{ garden.name }}</h2></mat-card-title>
+            </mat-card-header>
 
-      <img
-        class="garden-image"
-        src="https://images.unsplash.com/photo-1515150144380-bca9f1650ed9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-      />
-      <div class="avatar-image">
-        <img
-          mat-card-avatar
-          class="avatar"
-          src="https://images.unsplash.com/photo-1571442463800-1337d7af9d2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-        />
-      </div>
+            <img
+              class="garden-image"
+              src="https://images.unsplash.com/photo-1515150144380-bca9f1650ed9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+            />
+            <div class="avatar-image">
+              <img
+                mat-card-avatar
+                class="avatar"
+                src="https://images.unsplash.com/photo-1571442463800-1337d7af9d2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+              />
+            </div>
 
-      <h3 class="name">Mary Brown</h3>
+            <h3 class="name">{{ garden.adminId }}</h3>
+            <h4 class="name">
+              <mat-icon aria-label="Garden location:">location_on</mat-icon>
+              {{ garden.zipCode }}
+            </h4>
 
+            <mat-card-content>
+              <p>
+                {{ garden.bio }}
+              </p>
+            </mat-card-content>
+            <mat-card-actions>
+              <div *ngIf="userGardenSet && userGardenSet.has(garden.id); else joinGardenBlock">
+                <button mat-button disabled class="button">
+                  Already joined
+                </button>
+              </div>
+              <ng-template #joinGardenBlock>
+                <button mat-button class="button">
+                  Join Garden
+                </button>
+              </ng-template>
+            </mat-card-actions>
+          </mat-card>
+        </ng-template>  
+      </owl-carousel-o>
+    </div>
+    <ng-template #emptyBlock>
+      <mat-card class="growpod-main-section growpod-card">
+        <mat-card-content>
+          <h4 class="text-center">
+            <mat-icon aria-label="No results" color="accent">search_off</mat-icon>
+            No nearby gardens found.
+          </h4>
+        </mat-card-content>
+      </mat-card>
+    </ng-template>
+  </div>
+  <!-- Error case -->
+  <ng-template #errorBlock>
+    <mat-card class="growpod-main-section growpod-card">
       <mat-card-content>
-        <p>
-          Hello! This is my garden that I have been running for 6 years.
-          Currently in my garden I have...
-        </p>
-        <ul>
-          <li>Peas</li>
-          <li>Carrots</li>
-          <li>Potatoes</li>
-        </ul>
-        <p>
-          We would love to have more help around here!
-        </p>
+        <h4 class="text-center">
+          <mat-icon aria-label="Error" color="warn">error</mat-icon>
+          {{ errorMessage }}
+        </h4>
       </mat-card-content>
-      <mat-card-actions>
-        <button mat-button class="button">Join Garden</button>
-      </mat-card-actions>
     </mat-card>
   </ng-template>
-  <ng-template carouselSlide id="slide">
-    <mat-card class="mat-elevation-z8 cards">
-      <mat-card-header>
-        <mat-card-title class="title"><h2>New York Garden</h2></mat-card-title>
-      </mat-card-header>
-      <img
-        class="garden-image"
-        src="https://images.unsplash.com/photo-1516906561371-53f48df1254d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-      />
-
-      <div class="avatar-image">
-        <img
-          mat-card-avatar
-          class="avatar"
-          src="https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-        />
-      </div>
-
-      <h3 class="name">Joe Mason</h3>
-      <mat-card-content>
-        <p>
-          Hey Everybody! I am fairly new to gardening and I wanted to try this
-          out with people other than myself. This is a new garden so I don't
-          have any plants growing right now but I'd love to hear some
-          suggestions! I’m thinking of adding..
-        </p>
-        <ul>
-          <li>Strawberries</li>
-          <li>Kale</li>
-          <li>Blueberries</li>
-        </ul>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button class="button">Join Garden</button>
-      </mat-card-actions>
-    </mat-card>
-  </ng-template>
-
-  <ng-template carouselSlide>
-    <mat-card class="mat-elevation-z8 cards">
-      <mat-card-header>
-        <mat-card-title class="title"><h2>My Fun Garden</h2></mat-card-title>
-      </mat-card-header>
-
-      <img
-        class="garden-image"
-        src="https://images.unsplash.com/photo-1536236010565-78fbb2fb25d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-      />
-      <div class="avatar-image">
-        <img
-          mat-card-avatar
-          class="avatar"
-          src="https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-        />
-      </div>
-
-      <h3 class="name">Erica James</h3>
-      <mat-card-content>
-        <p>
-          Hey Y'all! I've been gardening since I was a little girl so I’m fairly
-          experienced. Anyone from any level of gardening can join, I'm not
-          picky. Just looking for some extra hands to help around. Currently we
-          are growing...
-        </p>
-        <ul>
-          <li>Cucumbers</li>
-          <li>Zucchini</li>
-          <li>Broccoli</li>
-        </ul>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button class="button">Join garden</button>
-      </mat-card-actions>
-    </mat-card>
-  </ng-template>
-
-  <ng-template carouselSlide>
-    <mat-card class="mat-elevation-z8 cards">
-      <mat-card-header>
-        <mat-card-title class="title"><h2>My First Garden</h2></mat-card-title>
-      </mat-card-header>
-
-      <img
-        class="garden-image"
-        src="https://images.unsplash.com/photo-1592863690468-9f163db6635c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-      />
-
-      <div class="avatar-image">
-        <img
-          mat-card-avatar
-          class="avatar"
-          src="https://images.unsplash.com/photo-1561677843-39dee7a319ca?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-        />
-      </div>
-      <h3 class="name">Trey Thomas</h3>
-      <mat-card-content>
-        <p>
-          Hey everybody! I'm not new to gardening but it has been a while since
-          I've gotten into it. I want to create this garden as a way to get back
-          into something I loved to do once before. I know about growing these
-          plants from experience so as a start I'd like to grow...
-        </p>
-        <ul>
-          <li>Cauliflower</li>
-          <li>Tomatoes</li>
-          <li>Squash</li>
-        </ul>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button class="button">Join garden</button>
-      </mat-card-actions>
-    </mat-card>
-  </ng-template>
-</owl-carousel-o>
+</div>

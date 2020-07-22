@@ -44,6 +44,7 @@ public class UserServlet extends HttpServlet {
   private Datastore datastore;
   private UserDao dao;
 
+  private static final String CURRENT_USER_ARG = "current";
   private static final String CURRENT_USER_KEY = "0";
 
   /** Initializes the servlet. Connects it to Datastore. */
@@ -74,7 +75,7 @@ public class UserServlet extends HttpServlet {
 
     // Replace 'current' user with logged-in user.
     String userKey = uriList[2];
-    if (userKey.equals("current")) {
+    if (userKey.equals(CURRENT_USER_ARG)) {
       userKey = CURRENT_USER_KEY;
     }
 

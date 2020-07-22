@@ -5,7 +5,9 @@
         <ng-template carouselSlide *ngFor="let garden of displayInfo">
           <mat-card class="mat-elevation-z8 cards">
             <mat-card-header>
-              <mat-card-title class="title"><h2>{{ garden.name }}</h2></mat-card-title>
+              <mat-card-title class="title"
+                ><h2>{{ garden.name }}</h2></mat-card-title
+              >
             </mat-card-header>
 
             <img
@@ -20,7 +22,8 @@
               />
             </div>
 
-            <h3 class="name">{{ garden.adminId }}</h3>
+            <h3 class="name">{{ gardenAdminNames.get(garden.adminId) }}</h3>
+            <div></div>
             <h4 class="name">
               <mat-icon aria-label="Garden location:">location_on</mat-icon>
               {{ garden.zipCode }}
@@ -32,7 +35,12 @@
               </p>
             </mat-card-content>
             <mat-card-actions>
-              <div *ngIf="userGardenSet && userGardenSet.has(garden.id); else joinGardenBlock">
+              <div
+                *ngIf="
+                  userGardenSet && userGardenSet.has(garden.id);
+                  else joinGardenBlock
+                "
+              >
                 <button mat-button disabled class="button">
                   Already joined
                 </button>
@@ -44,14 +52,16 @@
               </ng-template>
             </mat-card-actions>
           </mat-card>
-        </ng-template>  
+        </ng-template>
       </owl-carousel-o>
     </div>
     <ng-template #emptyBlock>
       <mat-card class="growpod-main-section growpod-card">
         <mat-card-content>
           <h4 class="text-center">
-            <mat-icon aria-label="No results" color="accent">search_off</mat-icon>
+            <mat-icon aria-label="No results" color="accent"
+              >search_off</mat-icon
+            >
             No nearby gardens found.
           </h4>
         </mat-card-content>

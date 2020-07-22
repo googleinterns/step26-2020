@@ -22,6 +22,7 @@ import {
 import {Observable} from 'rxjs';
 import {OwlOptions} from 'ngx-owl-carousel-o';
 import {Garden} from '../model/garden.model';
+import {User} from '../model/user.model';
 
 @Component({
   selector: 'FindGardens',
@@ -43,11 +44,12 @@ import {Garden} from '../model/garden.model';
  */
 export class FindGardensComponent implements OnInit {
   displayInfo: Array<Garden> | null;
+  gardenAdminNames: Map<string, string>;
   isLoaded = false;
   errorMessage = '';
   userGardenSet: Set<string>;
 
-  /** 
+  /**
    * Option to display a certian number of slides based off of browser window size along with
    * some style options
    */
@@ -88,12 +90,14 @@ export class FindGardensComponent implements OnInit {
    * search near the current user's location.
    * @return the http response.
    */
-  getNearbyGardenList(zipCode: string | null | undefined): Observable<HttpResponse<Array<Garden>>> {
+  getNearbyGardenList(
+    zipCode: string | null | undefined
+  ): Observable<HttpResponse<Array<Garden>>> {
     return this.httpClient.get<Array<Garden>>('/find-gardens', {
       observe: 'response',
       responseType: 'json',
       // Conditionally include parameter on truthiness
-      ...(zipCode && { params: {'zip-code': zipCode} }),
+      ...(zipCode && {params: {'zip-code': zipCode}}),
     });
   }
 
@@ -112,6 +116,22 @@ export class FindGardensComponent implements OnInit {
   }
 
   /**
+   * Gets user information for the specified user from
+   * the server. Returns an observable HTTP response.
+   *
+   * Performs GET: /user/{user}
+   *
+   * @param user The user reqested from the server.
+   * @return the http response.
+   */
+  getUserInfo(user: string): Observable<HttpResponse<User>> {
+    return this.httpClient.get<User>('/user/' + user, {
+      observe: 'response',
+      responseType: 'json',
+    });
+  }
+
+  /**
    * Populates component with nearby gardens, shows a message to the user
    * saying there are no gardens, or displays an error message.
    *
@@ -123,6 +143,7 @@ export class FindGardensComponent implements OnInit {
       next: (response: HttpResponse<Array<Garden>>) => {
         // Successful responses are handled here.
         this.displayInfo = response.body;
+        this.createGardenAdminNames();
         this.isLoaded = true;
       },
       error: (error: HttpErrorResponse) => {
@@ -171,6 +192,36 @@ export class FindGardensComponent implements OnInit {
           'Unexpected error ' + error.status + ': ' + error.statusText;
         this.isLoaded = true;
       },
+    });
+  }
+
+  /**
+   * Populates gardenAdminNames with administer names.
+   *
+   */
+  createGardenAdminNames(): void {
+    // Initialize array
+    this.gardenAdminNames = new Map<string, string>();
+    this.displayInfo.forEach(garden => {
+      this.gardenAdminNames.set(garden.adminId, "Loading...");
+
+      // Obtain user names
+      this.getUserInfo(garden.adminId).subscribe({
+        next: (response: HttpResponse<User>) => {
+          // Successful responses are handled here.
+          this.gardenAdminNames.set(garden.adminId, response.body.preferredName);
+        },
+        error: (error: HttpErrorResponse) => {
+          // Handle connection error
+          if (error.error instanceof ErrorEvent) {
+            console.error('Network error: ' + error.error.message);
+            this.gardenAdminNames.set(garden.adminId, 'Cannot fetch name');
+            return;
+          }
+          console.error('Unexpected error: ' + error.statusText);
+          this.gardenAdminNames.set(garden.adminId, 'Cannot fetch name');
+        },
+      });
     });
   }
 }

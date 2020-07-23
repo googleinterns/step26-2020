@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,12 +14,13 @@
 
 package com.google.growpod.servlets;
 
+import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.growpod.controllers.PlantDao;
 import com.google.growpod.data.Plant;
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -36,16 +37,14 @@ public class PlantServlet extends HttpServlet {
 
   static final long serialVersionUID = 1L;
 
-  /** Static test data. */
-  private static final Map<String, Plant> PLANT_MAP = createPlantMap();
+  private Datastore datastore;
+  private PlantDao dao;
 
-  private static Map<String, Plant> createPlantMap() {
-    Map<String, Plant> map = new HashMap<String, Plant>();
-    map.put("0", new Plant("0", "Flower Plant 1", 4, "0"));
-    map.put("1", new Plant("1", "Flower Plant 2", 4, "1"));
-    map.put("2", new Plant("2", "Pea Plant 1", 4, "2"));
-    map.put("3", new Plant("3", "Pea Plant 2", 4, "3"));
-    return Collections.unmodifiableMap(map);
+  /** Initializes the servlet. Connects it to Datastore. */
+  @Override
+  public void init() throws ServletException {
+    this.datastore = DatastoreOptions.getDefaultInstance().getService();
+    this.dao = new PlantDao(datastore);
   }
 
   /**
@@ -64,7 +63,7 @@ public class PlantServlet extends HttpServlet {
     // Dispatch based on method specified.
     // /plant/{id}
     if (uriList.length == 3) {
-      Plant plant = getPlantById(uriList[2]);
+      Plant plant = dao.getPlantById(uriList[2]);
       if (plant == null) {
         response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid plant id: " + uriList[2]);
         return;
@@ -78,14 +77,12 @@ public class PlantServlet extends HttpServlet {
         HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
   }
 
-  /**
-   * Retrieves a plant in the database by id, or null if said id does not exist.
-   *
-   * @param id the plant's id
-   * @return the plant with id's data or null.
-   */
-  private Plant getPlantById(String id) {
-    // MOCK IMPLEMENTATION
-    return PLANT_MAP.get(id);
+  /** Getters and Setters for data access object. */
+  public PlantDao getDao() {
+    return dao;
+  }
+
+  public void setDao(PlantDao dao) {
+    this.dao = dao;
   }
 }

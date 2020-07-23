@@ -12,18 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit} from '@angular/core';
+import {NgModule} from '@angular/core';
+import {MaterialModule} from './material.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {CarouselModule} from 'ngx-owl-carousel-o';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-@Component({
-  selector: 'app-test-page1',
-  templateUrl: './test-page1.component.html',
-  styleUrls: [
-    './test-page1.component.css',
-    '../common/growpod-page-styles.css',
+@NgModule({
+  exports: [
+    MaterialModule,
+    BrowserAnimationsModule,
+    CarouselModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
 })
-export class TestPage1Component implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
-}
+export class GrowpodUiModule {}

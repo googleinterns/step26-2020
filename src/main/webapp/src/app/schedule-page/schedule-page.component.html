@@ -44,22 +44,13 @@
       </mat-card>
     </div>
   </div>
+
   <div class="flex-split">
     <div class="card-padding">
       <mat-card>
-        <mat-card-title> Daily Tasks Schedule </mat-card-title>
+        <mat-card-title> Schedule </mat-card-title>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Select date to view tasks</mat-label>
-          <input matInput [matDatepicker]="datepicker" [formControl]="date" />
-          <mat-datepicker-toggle
-            matSuffix
-            [for]="datepicker"
-          ></mat-datepicker-toggle>
-          <mat-datepicker #datepicker></mat-datepicker>
-        </mat-form-field>
-
-        <h1>Tuesday: June 20</h1>
+        <datepicker></datepicker>
 
         <mat-card>
           <mat-card-title> 9:00 am | Water Plants </mat-card-title>

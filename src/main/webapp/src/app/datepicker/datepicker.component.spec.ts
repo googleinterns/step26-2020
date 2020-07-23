@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {GrowpodUiModule} from '../common/growpod-ui.module';
-import {FindGardensComponent} from './find-gardens.component';
+import {DatepickerComponent} from './datepicker.component';
 
-describe('FindGardens', () => {
-  let component: FindGardensComponent;
-  let fixture: ComponentFixture<FindGardensComponent>;
+describe('DatepickerComponent', () => {
+  let component: DatepickerComponent;
+  let fixture: ComponentFixture<DatepickerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [GrowpodUiModule],
-      declarations: [FindGardensComponent],
+      declarations: [DatepickerComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FindGardensComponent);
+    fixture = TestBed.createComponent(DatepickerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

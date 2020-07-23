@@ -15,11 +15,6 @@
 package com.google.growpod.servlets;
 
 import com.google.cloud.datastore.DatastoreOptions;
-import com.google.cloud.datastore.Entity;
-import com.google.cloud.datastore.Query;
-import com.google.cloud.datastore.QueryResults;
-import com.google.cloud.datastore.StructuredQuery;
-import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.growpod.controllers.UserDao;
 import com.google.growpod.data.User;
 import com.google.gson.Gson;
@@ -48,24 +43,16 @@ public class UserServlet extends HttpServlet {
   private DatastoreOptions datastoreInstance;
   private UserDao dao;
 
-  private String currentUserKey;
+  private static final String CURRENT_USER_ARG = "current";
+  private static final String GARDEN_LIST_ARG = "garden-list";
+  private static final String GARDEN_ADMIN_LIST_ARG = "garden-admin-list";
+  private static final String CURRENT_USER_KEY = "1";
 
   /** Initializes the servlet. Connects it to Datastore. */
   @Override
   public void init() throws ServletException {
     this.datastoreInstance = DatastoreOptions.getDefaultInstance();
     this.dao = new UserDao(datastoreInstance);
-
-    // Init currentUserKey
-    StructuredQuery<Entity> query =
-        Query.newEntityQueryBuilder()
-            .setKind("User")
-            .setFilter(PropertyFilter.eq("email", "ladd@example.com"))
-            .build();
-    QueryResults<Entity> results = datastoreInstance.getService().run(query);
-    if (results.hasNext()) {
-      currentUserKey = results.next().getKey().getId().toString();
-    }
   }
 
   /**
@@ -89,8 +76,8 @@ public class UserServlet extends HttpServlet {
 
     // Replace 'current' user with logged-in user.
     String userKey = uriList[2];
-    if (userKey.equals("current")) {
-      userKey = currentUserKey;
+    if (userKey.equals(CURRENT_USER_ARG)) {
+      userKey = CURRENT_USER_KEY;
     }
 
     // Dispatch based on method specified.
@@ -107,7 +94,7 @@ public class UserServlet extends HttpServlet {
     }
 
     if (uriList.length == 4) {
-      if (uriList[3].equals("garden-list")) {
+      if (uriList[3].equals(GARDEN_LIST_ARG)) {
         // /user/{id}/garden-list
         List<String> list = dao.getUserGardenListById(userKey);
         if (list == null) {
@@ -117,7 +104,7 @@ public class UserServlet extends HttpServlet {
         response.setContentType("application/json;");
         response.getWriter().println(new Gson().toJson(list));
         return;
-      } else if (uriList[3].equals("garden-admin-list")) {
+      } else if (uriList[3].equals(GARDEN_ADMIN_LIST_ARG)) {
         // /user/{id}/garden-admin-list
         List<String> list = dao.getUserGardenAdminListById(userKey);
         if (list == null) {

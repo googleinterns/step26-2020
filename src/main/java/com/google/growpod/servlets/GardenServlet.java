@@ -44,6 +44,9 @@ public class GardenServlet extends HttpServlet {
   private DatastoreOptions datastoreInstance;
   private GardenDao dao;
 
+  private static final String USER_LIST_ARG = "user-list";
+  private static final String PLANT_LIST_ARG = "plant-list";
+
   /** Initializes the servlet. Connects it to Datastore. */
   @Override
   public void init() throws ServletException {
@@ -78,7 +81,7 @@ public class GardenServlet extends HttpServlet {
     }
 
     if (uriList.length == 4) {
-      if (uriList[3].equals("user-list")) {
+      if (uriList[3].equals(USER_LIST_ARG)) {
         // /garden/{id}/user-list
         List<String> list = dao.getGardenUserListById(uriList[2]);
         if (list == null) {
@@ -88,7 +91,7 @@ public class GardenServlet extends HttpServlet {
         response.setContentType("application/json;");
         response.getWriter().println(new Gson().toJson(list));
         return;
-      } else if (uriList[3].equals("plant-list")) {
+      } else if (uriList[3].equals(PLANT_LIST_ARG)) {
         // /garden/{id}/plant-list
         List<String> list = dao.getGardenPlantListById(uriList[2]);
         if (list == null) {

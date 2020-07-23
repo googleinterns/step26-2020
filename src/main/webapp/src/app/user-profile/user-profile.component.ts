@@ -14,7 +14,11 @@
 
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {
+  HttpClient,
+  HttpResponse,
+  HttpErrorResponse,
+} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {User} from '../model/user.model';
 
@@ -45,13 +49,13 @@ export class UserProfileComponent implements OnInit {
    *
    * @param route Contains arguments.
    */
-  constructor(private route: ActivatedRoute, private httpClient: HttpClient) {
-    const idArg = route.snapshot.paramMap.get('id');
+  constructor(private route: ActivatedRoute, private httpClient: HttpClient) {}
+
+  ngOnInit(): void {
+    const idArg = this.route.snapshot.paramMap.get('id');
     const id = idArg ?? 'current';
     this.createUserProfile(id);
   }
-
-  ngOnInit(): void {}
 
   /**
    * Gets user information for the specified user from
@@ -77,15 +81,29 @@ export class UserProfileComponent implements OnInit {
    */
   createUserProfile(user: string): void {
     this.getUserInfo(user).subscribe({
-      next: response => {
+      next: (response: HttpResponse<User>) => {
         // Successful responses are handled here.
         this.displayInfo = response.body;
       },
-      error: error => {
-        // Error messages are handled here.
+      error: (error: HttpErrorResponse) => {
+        // Handle connection error
+        if (error.error instanceof ErrorEvent) {
+          console.error('Network error: ' + error.error.message);
+          this.displayInfo = null;
+          this.errorMessage = 'Cannot connect to GrowPod Server';
+          return;
+        }
+        // Non-404 error codes
+        if (error.status !== 404) {
+          console.error('Unexpected error: ' + error.statusText);
+          this.displayInfo = null;
+          this.errorMessage =
+            'Unexpected error ' + error.status + ': ' + error.statusText;
+          return;
+        }
+        console.error('Error ' + error.status + ': ' + error.statusText);
         this.displayInfo = null;
         this.errorMessage = 'Cannot see user profile for user id: ' + user;
-        console.log(new Error(error));
       },
     });
   }

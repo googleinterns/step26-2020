@@ -1,0 +1,13 @@
+<mat-form-field appearance="fill">
+  <mat-label>Select date to view tasks</mat-label>
+  <input
+    matInput
+    [matDatepicker]="datepicker"
+    [formControl]="date"
+    (dateChange)="updateCurrDate($event)"
+  />
+  <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+  <mat-datepicker #datepicker></mat-datepicker>
+</mat-form-field>
+
+<h1>{{ currDate }}</h1>

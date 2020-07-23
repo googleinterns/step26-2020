@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps;
+package com.google.growpod.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -62,7 +62,7 @@ public final class PlantServletTest {
     servlet.doGet(request, response);
 
     assertEquals("application/json;", response.getContentType());
-    assertEquals(new Gson().toJson(TEST_PLANT), response.getContentAsString().trim());
+    assertEquals(TEST_PLANT, new Gson().fromJson(response.getContentAsString(), Plant.class));
   }
 
   /** Tests failed query for GET: /plant/{id} method. */

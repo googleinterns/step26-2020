@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps;
+package com.google.growpod.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -68,7 +68,7 @@ public final class GardenServletTest {
     servlet.doGet(request, response);
 
     assertEquals("application/json;", response.getContentType());
-    assertEquals(new Gson().toJson(TEST_GARDEN), response.getContentAsString().trim());
+    assertEquals(TEST_GARDEN, new Gson().fromJson(response.getContentAsString(), Garden.class));
   }
 
   /** Tests failed query for GET: /garden/{id} method. */
@@ -101,7 +101,7 @@ public final class GardenServletTest {
     servlet.doGet(request, response);
 
     assertEquals("application/json;", response.getContentType());
-    assertEquals(new Gson().toJson(TEST_USER_LIST), response.getContentAsString().trim());
+    assertEquals(TEST_USER_LIST, new Gson().fromJson(response.getContentAsString(), List.class));
   }
 
   /** Tests failed query for GET: /garden/{id}/user-list method. */
@@ -134,7 +134,7 @@ public final class GardenServletTest {
     servlet.doGet(request, response);
 
     assertEquals("application/json;", response.getContentType());
-    assertEquals(new Gson().toJson(TEST_PLANT_LIST), response.getContentAsString().trim());
+    assertEquals(TEST_PLANT_LIST, new Gson().fromJson(response.getContentAsString(), List.class));
   }
 
   /** Tests failed query for GET: /garden/{id}/plant-list method. */

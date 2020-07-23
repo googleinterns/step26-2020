@@ -15,6 +15,7 @@
 package com.google.growpod.servlets;
 
 import com.google.growpod.data.User;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,14 +44,16 @@ public class UserServlet extends HttpServlet {
   /** Static test data. */
   private static final String CURRENT_USER_KEY = "0";
 
-  private static final Map<String, User> USER_MAP = createUserMap();
+  private final Map<String, User> USER_MAP = createUserMap();
+  Map<String, User> userMap = new HashMap<String, User>();
 
-  private static Map<String, User> createUserMap() {
+  private Map<String, User> createUserMap() {
     Map<String, User> map = new HashMap<String, User>();
     map.put(
         "0", new User("0", "ladd@example.com", "David Ladd", "My SSN is: 143-46-6098", "11201"));
     map.put("1", new User("1", "caroqliu@google.com", "Caroline Liu", "Plants are fun", "11201"));
     map.put("2", new User("2", "friedj@google.com", "Jake Fried", "Plants are fun too", "11201"));
+
     return Collections.unmodifiableMap(map);
   }
 
@@ -90,31 +93,45 @@ public class UserServlet extends HttpServlet {
 
     // Dispatch based on method specified.
     // /user/{id}
-    /**
-     * if (uriList.length == 3) { User user = getUserById(uriList[2]); if (user == null) {
-     * response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + uriList[2]);
-     * return; } response.setContentType("application/json;"); response.getWriter().println(new
-     * Gson().toJson(user)); return; }
-     *
-     * <p>if (uriList.length == 4) { if (uriList[3].equals("garden-list")) { //
-     * /user/{id}/garden-list List<String> list = getUserGardenListById(uriList[2]); if (list ==
-     * null) { response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " +
-     * uriList[2]); return; } response.setContentType("application/json;");
-     * response.getWriter().println(new Gson().toJson(list)); return; } else if
-     * (uriList[3].equals("garden-admin-list")) { // /user/{id}/garden-admin-list List<String> list
-     * = getUserGardenAdminListById(uriList[2]); if (list == null) {
-     * response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + uriList[2]);
-     * return; } response.setContentType("application/json;"); response.getWriter().println(new
-     * Gson().toJson(list)); return; }
-     */
+
+    if (uriList.length == 3) {
+      User user = getUserById(uriList[2]);
+      if (user == null) {
+        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + uriList[2]);
+        return;
+      }
+      response.setContentType("application/json;");
+      response.getWriter().println(new Gson().toJson(user));
+      return;
+    }
+
+    if (uriList.length == 4) {
+      if (uriList[3].equals("garden-list")) {
+        // user/{id}/garden-list
+        List<String> list = getUserGardenListById(uriList[2]);
+        if (list == null) {
+          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + uriList[2]);
+          return;
+        }
+        response.setContentType("application/json;");
+        response.getWriter().println(new Gson().toJson(list));
+        return;
+      } else if (uriList[3].equals("garden-admin-list")) { // /user/{id}/garden-admin-list
+        List<String> list = getUserGardenAdminListById(uriList[2]);
+        if (list == null) {
+          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + uriList[2]);
+          return;
+        }
+        response.setContentType("application/json;");
+        response.getWriter().println(new Gson().toJson(list));
+        return;
+      }
+    }
+    response.getWriter().println("{ \"status\": \"ok\", \"value\": \"test\" }");
+
+    response.sendError(
+        HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
   }
-  /* response.getWriter().println("{ \"status\": \"ok\", \"value\": \"test\" }");*/
-  /**
-   * response.sendError( HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " +
-   * request.getRequestURI());
-   *
-   * <p>}*
-   */
 
   /**
    * Retrieves a user in the database by id, or null if said id does not exist.
@@ -125,9 +142,9 @@ public class UserServlet extends HttpServlet {
   private User getUserById(String id) {
     // MOCK IMPLEMENTATION
     if (id.equals("current")) {
-      return USER_MAP.get(CURRENT_USER_KEY);
+      return userMap.get(CURRENT_USER_KEY);
     }
-    return USER_MAP.get(id);
+    return userMap.get(id);
   }
 
   /**
@@ -160,22 +177,31 @@ public class UserServlet extends HttpServlet {
     return USER_GARDEN_ADMIN_LIST_MAP.get(id);
   }
 
+  /**
+   * Currently this Post function will get the user data in the form of a Json object,turn the
+   * Json object into a User object and put that information into a map.
+   *
+   * @param req Information about the POST request
+   * @param resp Information about the servlet's response
+   */
   @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+  public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    Gson gson = new Gson();
     resp.setContentType("application/json");
-    Object obj = req.getParameter("name");
-
-    /*resp.setContentType("text/html");
-    PrintWriter printWriter = resp.getWriter();
-    printWriter.print(name);
-    */
-
-    System.out.println(obj);
-    System.out.println("got here");
+    String jsonString = req.getParameter("userData");
+    User userData = gson.fromJson(jsonString, User.class);
+    addToMap(userData);
   }
-  // dont get any param from http servlet get the body of request or pass json arg as 3rd
-  // post(url: string, body: any, options: { headers?: HttpHeaders | { [header: string]: string |
-  // string[]; }; observe?: "body"; params?: HttpParams | { [param: string]: string | string[]; };
-  // reportProgress?: boolean; responseType: "arraybuffer"; withCredentials?: boolean; })
-  // post(urlString, {}, { params : { paramName: paramBody } })
+
+  /**
+   * This function puts the user into userMap
+   *
+   * @param user user object holding user data: id,email,name,bio,zip
+   * The runtime of this function would be O(n) with n being the elements in User object
+   */
+  public Map<String, User> addToMap(User user) {
+    // mock id for testing
+    userMap.put("101", user);
+    return Collections.unmodifiableMap(userMap);
+  }
 }

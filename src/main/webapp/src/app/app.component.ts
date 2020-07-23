@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import {Component} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,13 @@ import {Component} from '@angular/core';
   styleUrls: ['./app.component.css', './common/growpod-page-styles.css'],
 })
 export class AppComponent {
-  // For the mockup, the user is always logged in
-  loggedIn = true;
+  constructor(private router: Router) {}
+
+  isLoggedIn(): boolean {
+    if (this.router.url === '/page/login') {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

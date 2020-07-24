@@ -178,8 +178,8 @@ public class UserServlet extends HttpServlet {
   }
 
   /**
-   * Currently this Post function will get the user data in the form of a Json object,turn the
-   * Json object into a User object and put that information into a map.
+   * Currently this Post function will get the user data in the form of a Json object,turn the Json
+   * object into a User object and put that information into a map.
    *
    * @param req Information about the POST request
    * @param resp Information about the servlet's response
@@ -194,10 +194,11 @@ public class UserServlet extends HttpServlet {
   }
 
   /**
-   * This function puts the user into userMap
+   * This function puts the user into userMap.
    *
-   * @param user user object holding user data: id,email,name,bio,zip
-   * The runtime of this function would be O(n) with n being the elements in User object
+   * @param user user object holding user data: id,email,name,bio,zip. The runtime of this function
+   *     would be O(1) but a worse case senareo would be O(n) with n being the elements in User
+   *     object.
    */
   public Map<String, User> addToMap(User user) {
     // mock id for testing

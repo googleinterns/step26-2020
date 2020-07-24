@@ -39,12 +39,12 @@ export class LoginComponent {
   /**
    * @param data user data taken from google account: email and name
    */
-
   set userData(accountData: any) {
     this.user = accountData;
   }
-   /**
-   * return user data taken from google account: email and name
+
+  /**
+   * @return user data taken from google account: email and name
    */
   get userData(): any {
     return this.user;
@@ -59,7 +59,6 @@ export class LoginComponent {
    *
    * @param action string that represents if the user is logging in or signing up
    */
-
   signInWithGoogle(action: String): void {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(response => {
       this.user = response;
@@ -82,7 +81,6 @@ export class LoginComponent {
    *
    * @param action string that represents if the user is logging in or signing up
    */
-
   postData(createBody: any): void {
     const httpOptions = {
       headers: new HttpHeaders({

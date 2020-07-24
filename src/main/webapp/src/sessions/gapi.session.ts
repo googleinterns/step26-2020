@@ -1,8 +1,9 @@
-import { NgZone, Injectable, Optional} from '@angular/core';
+import {NgZone, Injectable} from '@angular/core';
 import {UserRepository} from '../repositories/user.repository';
-import { environment } from '../environments/environment';
+import {environment} from '../environments/environment';
 
-const CLIENT_ID = '397696466543-0biqdptbuhjmkjmakg2mo2dsov74dl0s.apps.googleusercontent.com';
+const CLIENT_ID =
+  '397696466543-0biqdptbuhjmkjmakg2mo2dsov74dl0s.apps.googleusercontent.com';
 const API_KEY = environment.calendar.API_KEY;
 
 const DISCOVERY_DOCS = [
@@ -10,7 +11,7 @@ const DISCOVERY_DOCS = [
 ];
 const SCOPES = 'https://www.googleapis.com/auth/calendar';
 
-declare const gapi:any;
+declare const gapi: any;
 
 @Injectable()
 export class GapiSession {
@@ -28,16 +29,18 @@ export class GapiSession {
   // add docs
   loadClient(): void {
     gapi.load('client:auth2', () => {
-      gapi.auth2.init({
-        apiKey: API_KEY,
-        clientId: CLIENT_ID,
-        discoveryDocs: DISCOVERY_DOCS,
-        scope: SCOPES, 
-      }).then((auth) => {
-        this.zone.run(() => {
-          this.auth2 = auth;  
+      gapi.auth2
+        .init({
+          apiKey: API_KEY,
+          clientId: CLIENT_ID,
+          discoveryDocs: DISCOVERY_DOCS,
+          scope: SCOPES,
+        })
+        .then(auth => {
+          this.zone.run(() => {
+            this.auth2 = auth;
+          });
         });
-      });
     });
   }
 
@@ -67,28 +70,29 @@ export class GapiSession {
 
   listEvents() {
     gapi.client.load('calendar', 'v3', () => {
-      gapi.client.calendar.events.list({
-              'calendarId' : 'primary',
-              'timeMin': (new Date()).toISOString(),
-              'singleEvents': true, 
-              'maxResults': 10, 
-              'orderBy': 'startTime'
-      }).then((response) => {
-        const events = response.result.items;
+      gapi.client.calendar.events
+        .list({
+          calendarId: 'primary',
+          timeMin: new Date().toISOString(),
+          singleEvents: true,
+          maxResults: 10,
+          orderBy: 'startTime',
+        })
+        .then(response => {
+          const events = response.result.items;
 
-        if(events.length > 0) {
-          for(let i = 0; i < events.length; i++) {
-            let event = events[i];
-            console.log(event.summary);
-            console.log(event.description);
-            console.log(event.start.date);
-            console.log(event.start.dateTime);
-            console.log(event.attendees);
-            console.log("--------------");
+          if (events.length > 0) {
+            for (let i = 0; i < events.length; i++) {
+              const event = events[i];
+              console.log(event.summary);
+              console.log(event.description);
+              console.log(event.start.date);
+              console.log(event.start.dateTime);
+              console.log(event.attendees);
+              console.log('--------------');
+            }
           }
-        } 
-      });
+        });
     });
   }
-  
 }

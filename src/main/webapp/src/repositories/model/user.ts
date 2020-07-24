@@ -1,4 +1,3 @@
-declare const gapi : any;
 
 /* User class for gapi authentication */
 export class User {

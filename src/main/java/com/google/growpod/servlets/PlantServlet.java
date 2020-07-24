@@ -36,13 +36,12 @@ public class PlantServlet extends HttpServlet {
 
   static final long serialVersionUID = 1L;
 
-  private DatastoreOptions datastoreInstance;
   private PlantDao dao;
 
   /** Initializes the servlet. Connects it to Datastore. */
   @Override
   public void init() throws ServletException {
-    this.datastoreInstance = DatastoreOptions.getDefaultInstance();
+    DatastoreOptions datastoreInstance = DatastoreOptions.getDefaultInstance();
     this.dao = new PlantDao(datastoreInstance);
   }
 

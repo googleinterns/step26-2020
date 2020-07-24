@@ -40,7 +40,6 @@ public class UserServlet extends HttpServlet {
 
   static final long serialVersionUID = 1L;
 
-  private DatastoreOptions datastoreInstance;
   private UserDao dao;
 
   private static final String CURRENT_USER_ARG = "current";
@@ -51,7 +50,7 @@ public class UserServlet extends HttpServlet {
   /** Initializes the servlet. Connects it to Datastore. */
   @Override
   public void init() throws ServletException {
-    this.datastoreInstance = DatastoreOptions.getDefaultInstance();
+    DatastoreOptions datastoreInstance = DatastoreOptions.getDefaultInstance();
     this.dao = new UserDao(datastoreInstance);
   }
 

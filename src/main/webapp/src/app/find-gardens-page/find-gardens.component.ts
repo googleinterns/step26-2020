@@ -203,13 +203,16 @@ export class FindGardensComponent implements OnInit {
     // Initialize array
     this.gardenAdminNames = new Map<string, string>();
     this.displayInfo.forEach(garden => {
-      this.gardenAdminNames.set(garden.adminId, "Loading...");
+      this.gardenAdminNames.set(garden.adminId, 'Loading...');
 
       // Obtain user names
       this.getUserInfo(garden.adminId).subscribe({
         next: (response: HttpResponse<User>) => {
           // Successful responses are handled here.
-          this.gardenAdminNames.set(garden.adminId, response.body.preferredName);
+          this.gardenAdminNames.set(
+            garden.adminId,
+            response.body.preferredName
+          );
         },
         error: (error: HttpErrorResponse) => {
           // Handle connection error

@@ -25,18 +25,18 @@ import com.google.growpod.data.Garden;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Controller for searching for nearby gardens. */
-public class FindGardensController {
+/** Data access object for searching for nearby gardens. */
+public class FindGardensDao {
 
   private DatastoreOptions datastoreInstance;
   private Datastore datastore;
 
   /**
-   * Initializes a new find gardens controller from a given Datastore.
+   * Initializes a new find gardens dao from a given Datastore.
    *
    * @param datastoreInstance the database instance to run queries on.
    */
-  public FindGardensController(DatastoreOptions datastoreInstance) {
+  public FindGardensDao(DatastoreOptions datastoreInstance) {
     this.datastoreInstance = datastoreInstance;
     this.datastore = datastoreInstance.getService();
   }

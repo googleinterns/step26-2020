@@ -15,7 +15,7 @@
 package com.google.growpod.servlets;
 
 import com.google.cloud.datastore.DatastoreOptions;
-import com.google.growpod.controllers.FindGardensController;
+import com.google.growpod.controllers.FindGardensDao;
 import com.google.growpod.data.Garden;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -35,14 +35,13 @@ public class FindGardensServlet extends HttpServlet {
 
   static final long serialVersionUID = 1L;
 
-  private DatastoreOptions datastoreInstance;
-  private FindGardensController controller;
+  private FindGardensDao dao;
 
   /** Initializes the servlet. Connects it to Datastore. */
   @Override
   public void init() throws ServletException {
-    this.datastoreInstance = DatastoreOptions.getDefaultInstance();
-    this.controller = new FindGardensController(datastoreInstance);
+    DatastoreOptions datastoreInstance = DatastoreOptions.getDefaultInstance();
+    this.dao = new FindGardensDao(datastoreInstance);
   }
 
   /**
@@ -59,26 +58,18 @@ public class FindGardensServlet extends HttpServlet {
       zipCode = "11201"; // MOCK VALUE -- REPLACE ONCE OAUTH WORKS
     }
 
-    List<Garden> nearbyGardens = controller.getNearbyGardens(zipCode);
+    List<Garden> nearbyGardens = dao.getNearbyGardens(zipCode);
 
     response.setContentType("application/json;");
     response.getWriter().println(new Gson().toJson(nearbyGardens));
   }
 
-  /** Getters and Setters for connected objects. */
-  public DatastoreOptions getDatastoreInstance() {
-    return datastoreInstance;
+  /** Getters and Setters for data access object. */
+  public FindGardensDao getDao() {
+    return dao;
   }
 
-  public void setDatastoreInstance(DatastoreOptions datastoreInstance) {
-    this.datastoreInstance = datastoreInstance;
-  }
-
-  public FindGardensController getController() {
-    return controller;
-  }
-
-  public void setController(FindGardensController controller) {
-    this.controller = controller;
+  public void setDao(FindGardensDao dao) {
+    this.dao = dao;
   }
 }

@@ -46,7 +46,8 @@ public class LoadTestData {
           new User("3", "friedj@google.com", "Jake Fried", "Plants are fun too", "11201"));
   private static final List<Garden> TEST_GARDENS =
       Arrays.asList(
-          new Garden("1", "Flower Garden", "I love flowers!!!", newYorkLat, newYorkLng, "11201", "1"),
+          new Garden(
+              "1", "Flower Garden", "I love flowers!!!", newYorkLat, newYorkLng, "11201", "1"),
           new Garden("2", "Pea Garden", "I love peas!!!", newYorkLat, newYorkLng, "11201", "2"));
   private static final List<Plant> TEST_PLANTS =
       Arrays.asList(

@@ -17,7 +17,7 @@ package com.google.growpod.tests;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.google.growpod.controllers.FindGardensController;
+import com.google.growpod.controllers.FindGardensDao;
 import com.google.growpod.data.Garden;
 import com.google.growpod.servlets.FindGardensServlet;
 import com.google.gson.Gson;
@@ -33,27 +33,25 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-/**
- * Tests Garden servlet response behavior, based on different request URL and controller responses.
- */
+/** Tests Garden servlet response behavior, based on different request URL and dao responses. */
 @ExtendWith(MockitoExtension.class)
 public final class FindGardensServletTest {
 
   private FindGardensServlet servlet; // Class to test
 
   /** Mock services. */
-  @Mock private FindGardensController controller;
+  @Mock private FindGardensDao dao;
 
   /** Mock values. */
   private final Garden TEST_GARDEN = new Garden("0", "x", "y", 0.0, 0.0, "0", "0");
 
   private final List<Garden> TEST_GARDEN_LIST = Arrays.asList(TEST_GARDEN);
 
-  /** Initializes servlet object and mock controller. */
+  /** Initializes servlet object and mock dao. */
   @BeforeEach
   public void initTest() {
     servlet = new FindGardensServlet();
-    servlet.setController(controller);
+    servlet.setDao(dao);
   }
 
   /** Tests successful handling of GET: /find-gardens (no arguments) */
@@ -67,7 +65,7 @@ public final class FindGardensServletTest {
 
     // RIGHT NOW, THIS TEST RELIES ON A CONSTANT VALUE IN SOURCE CODE
     // TODO: REPLACE ONCE AUTHENTICATION IS IMPLEMENTED
-    when(controller.getNearbyGardens("11201")).thenReturn(TEST_GARDEN_LIST);
+    when(dao.getNearbyGardens("11201")).thenReturn(TEST_GARDEN_LIST);
 
     servlet.doGet(request, response);
 
@@ -86,7 +84,7 @@ public final class FindGardensServletTest {
     request.addParameter("zip-code", "12345");
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(controller.getNearbyGardens("12345")).thenReturn(TEST_GARDEN_LIST);
+    when(dao.getNearbyGardens("12345")).thenReturn(TEST_GARDEN_LIST);
 
     servlet.doGet(request, response);
 

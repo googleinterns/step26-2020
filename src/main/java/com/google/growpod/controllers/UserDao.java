@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,53 +22,54 @@ import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
-import com.google.growpod.data.ContainsPlant;
 import com.google.growpod.data.Garden;
 import com.google.growpod.data.HasMember;
+import com.google.growpod.data.User;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Controller for Garden entities. */
-public class GardenController {
+/** Data access object for User entities. */
+public class UserDao {
 
   private DatastoreOptions datastoreInstance;
   private Datastore datastore;
 
   /**
-   * Initializes a new garden controller from a given Datastore.
+   * Initializes a new user controller from a given Datastore.
    *
    * @param datastoreInstance the database instance to run queries on.
    */
-  public GardenController(DatastoreOptions datastoreInstance) {
+  public UserDao(DatastoreOptions datastoreInstance) {
     this.datastoreInstance = datastoreInstance;
     this.datastore = datastoreInstance.getService();
   }
 
   /**
-   * Retrieves a garden in the database by id, or null if said id does not exist.
+   * Retrieves a user in the database by id, or null if said id does not exist.
    *
-   * @param id the garden's id
-   * @return the garden with id's data or null.
+   * @param id the user's id
+   * @return the user with id's data or null.
    */
-  public Garden getGardenById(String id) {
+  public User getUserById(String id) {
     String projectId = datastoreInstance.getProjectId();
-    Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(id)).build();
-    Entity gardenEntity = datastore.get(key);
-    return gardenEntity == null ? null : Garden.from(gardenEntity);
+    Key key = Key.newBuilder(projectId, "User", Long.parseLong(id)).build();
+    Entity userEntity = datastore.get(key);
+    return userEntity == null ? null : User.from(userEntity);
   }
 
   /**
-   * Retrieves a list of garden members. Returns null if the garden does not exist.
+   * Retrieves a list of gardens the user with a given id is a member of. Returns an empty list if
+   * the user is a member of no gardens, and null if the user does not exist.
    *
-   * @param id the garden's id
-   * @return a list of user ids in the garden or null.
+   * @param id the user's id
+   * @return a list of gardens the user is a part of, or an empty list, or null.
    */
-  public List<String> getGardenUserListById(String id) {
-    List<String> userList = new ArrayList<String>();
+  public List<String> getUserGardenListById(String id) {
+    List<String> gardenList = new ArrayList<String>();
 
     // Existence check
     String projectId = datastoreInstance.getProjectId();
-    Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(id)).build();
+    Key key = Key.newBuilder(projectId, "User", Long.parseLong(id)).build();
     if (datastore.get(key) == null) {
       return null;
     }
@@ -76,46 +77,47 @@ public class GardenController {
     StructuredQuery<Entity> query =
         Query.newEntityQueryBuilder()
             .setKind("HasMember")
-            .setFilter(PropertyFilter.eq("garden-id", id))
+            .setFilter(PropertyFilter.eq("user-id", id))
             .build();
     QueryResults<Entity> results = datastore.run(query);
     while (results.hasNext()) {
       Entity entity = results.next();
       HasMember hasMember = HasMember.from(entity);
-      userList.add(hasMember.getUserId());
+      gardenList.add(hasMember.getGardenId());
     }
 
-    return userList;
+    return gardenList;
   }
 
   /**
-   * Retrieves a list of garden plants. Returns null if the garden does not exist.
+   * Retrieves a list of gardens the user with a given id administers. Returns an empty list if the
+   * user administers no gardens, and null if the user does not exist.
    *
-   * @param id the garden's id
-   * @return a list of plant ids in the garden or null.
+   * @param id the user's id
+   * @return a list of gardens the user administers, or an empty list, or null.
    */
-  public List<String> getGardenPlantListById(String id) {
-    List<String> plantList = new ArrayList<String>();
+  public List<String> getUserGardenAdminListById(String id) {
+    List<String> gardenList = new ArrayList<String>();
 
     // Existence check
     String projectId = datastoreInstance.getProjectId();
-    Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(id)).build();
+    Key key = Key.newBuilder(projectId, "User", Long.parseLong(id)).build();
     if (datastore.get(key) == null) {
       return null;
     }
 
     StructuredQuery<Entity> query =
         Query.newEntityQueryBuilder()
-            .setKind("ContainsPlant")
-            .setFilter(PropertyFilter.eq("garden-id", id))
+            .setKind("Garden")
+            .setFilter(PropertyFilter.eq("admin-id", id))
             .build();
     QueryResults<Entity> results = datastore.run(query);
     while (results.hasNext()) {
       Entity entity = results.next();
-      ContainsPlant containsPlant = ContainsPlant.from(entity);
-      plantList.add(containsPlant.getPlantId());
+      Garden garden = Garden.from(entity);
+      gardenList.add(garden.getId());
     }
 
-    return plantList;
+    return gardenList;
   }
 }

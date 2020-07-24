@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,9 +34,9 @@ public class ResetDataServlet extends HttpServlet {
       throws ServletException, IOException {
     DatastoreOptions instance = DatastoreOptions.getDefaultInstance();
 
-    LoadTestData ltd = new LoadTestData();
-    ltd.clear(instance);
-    ltd.load(instance);
+    // Deletes and repopulates everything.
+    LoadTestData.clear(instance);
+    LoadTestData.load(instance);
 
     response.setContentType("application/json;");
     response.getWriter().println("{}");

@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package com.google.growpod.tests;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.google.growpod.controllers.UserController;
+import com.google.growpod.controllers.UserDao;
 import com.google.growpod.data.User;
 import com.google.growpod.servlets.UserServlet;
 import com.google.gson.Gson;
@@ -31,39 +31,37 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-/**
- * Tests User servlet response behavior, based on different request URL and controller responses.
- */
+/** Tests User servlet response behavior, based on different request URL and DAO responses. */
 @ExtendWith(MockitoExtension.class)
 public final class UserServletTest {
 
   private UserServlet servlet; // Class to test
 
   /** Mock services. */
-  @Mock private UserController controller;
+  @Mock private UserDao dao;
 
-  /** Mock values. */
+  /** Test values. */
   private final User TEST_USER = new User("0", "x", "y", "z", "aa");
 
   private final List<String> TEST_GARDEN_LIST = Arrays.asList("0");
 
-  /** Initializes servlet object and mock controller. */
+  /** Initializes servlet object and mock dao. */
   @BeforeEach
   public void initTest() {
     servlet = new UserServlet();
-    servlet.setController(controller);
+    servlet.setDao(dao);
   }
 
   /** Tests successful query for GET: /user/{id} method. */
   @Test
-  public void testGetUser() throws IOException {
+  public void doGet_successfulUserQuery_successfulResult() throws IOException {
     String testUrl = "/user/0";
 
     // Mocks
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(controller.getUserById("0")).thenReturn(TEST_USER);
+    when(dao.getUserById("0")).thenReturn(TEST_USER);
 
     servlet.doGet(request, response);
 
@@ -73,14 +71,14 @@ public final class UserServletTest {
 
   /** Tests failed query for GET: /user/{id} method. */
   @Test
-  public void testGetUserFail() throws IOException {
+  public void doGet_invalidIdUserQuery_returns404() throws IOException {
     String testUrl = "/user/0";
 
     // Mocks
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(controller.getUserById("0")).thenReturn(null);
+    when(dao.getUserById("0")).thenReturn(null);
 
     servlet.doGet(request, response);
 
@@ -89,14 +87,14 @@ public final class UserServletTest {
 
   /** Tests successful query for GET: /user/{id}/garden-list method. */
   @Test
-  public void testGetUserGardenList() throws IOException {
+  public void doGet_successfulGardenListQuery_successfulResult() throws IOException {
     String testUrl = "/user/0/garden-list";
 
     // Mocks
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(controller.getUserGardenListById("0")).thenReturn(TEST_GARDEN_LIST);
+    when(dao.getUserGardenListById("0")).thenReturn(TEST_GARDEN_LIST);
 
     servlet.doGet(request, response);
 
@@ -106,14 +104,14 @@ public final class UserServletTest {
 
   /** Tests failed query for GET: /user/{id}/garden-list method. */
   @Test
-  public void testGetUserGardenListFail() throws IOException {
+  public void doGet_invalidIdGardenListQuery_returns404() throws IOException {
     String testUrl = "/user/0/garden-list";
 
     // Mocks
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(controller.getUserGardenListById("0")).thenReturn(null);
+    when(dao.getUserGardenListById("0")).thenReturn(null);
 
     servlet.doGet(request, response);
 
@@ -122,7 +120,7 @@ public final class UserServletTest {
 
   /** Tests invalid method on GET. */
   @Test
-  public void testGetInvalidMethod() throws IOException {
+  public void doGet_invalidUrlQuery_returns405() throws IOException {
     String testUrl = "/user/peapod/cody-kayla-stephanie-caroline-jake";
 
     // Mocks

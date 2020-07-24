@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 package com.google.growpod.servlets;
 
 import com.google.cloud.datastore.DatastoreOptions;
-import com.google.growpod.controllers.PlantController;
+import com.google.growpod.controllers.PlantDao;
 import com.google.growpod.data.Plant;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -36,14 +36,13 @@ public class PlantServlet extends HttpServlet {
 
   static final long serialVersionUID = 1L;
 
-  private DatastoreOptions datastoreInstance;
-  private PlantController controller;
+  private PlantDao dao;
 
   /** Initializes the servlet. Connects it to Datastore. */
   @Override
   public void init() throws ServletException {
-    this.datastoreInstance = DatastoreOptions.getDefaultInstance();
-    this.controller = new PlantController(datastoreInstance);
+    DatastoreOptions datastoreInstance = DatastoreOptions.getDefaultInstance();
+    this.dao = new PlantDao(datastoreInstance);
   }
 
   /**
@@ -62,7 +61,7 @@ public class PlantServlet extends HttpServlet {
     // Dispatch based on method specified.
     // /plant/{id}
     if (uriList.length == 3) {
-      Plant plant = controller.getPlantById(uriList[2]);
+      Plant plant = dao.getPlantById(uriList[2]);
       if (plant == null) {
         response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid plant id: " + uriList[2]);
         return;
@@ -76,20 +75,12 @@ public class PlantServlet extends HttpServlet {
         HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
   }
 
-  /** Getters and Setters for connected objects. */
-  public DatastoreOptions getDatastoreInstance() {
-    return datastoreInstance;
+  /** Getters and Setters for data access object. */
+  public PlantDao getDao() {
+    return dao;
   }
 
-  public void setDatastoreInstance(DatastoreOptions datastoreInstance) {
-    this.datastoreInstance = datastoreInstance;
-  }
-
-  public PlantController getController() {
-    return controller;
-  }
-
-  public void setController(PlantController controller) {
-    this.controller = controller;
+  public void setDao(PlantDao dao) {
+    this.dao = dao;
   }
 }

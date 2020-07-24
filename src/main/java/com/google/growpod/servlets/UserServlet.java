@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,11 @@
 package com.google.growpod.servlets;
 
 import com.google.cloud.datastore.DatastoreOptions;
+<<<<<<< HEAD
 import com.google.growpod.controllers.UserController;
+=======
+import com.google.growpod.controllers.UserDao;
+>>>>>>> feature/persistent-init
 import com.google.growpod.data.User;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -40,18 +44,18 @@ public class UserServlet extends HttpServlet {
 
   static final long serialVersionUID = 1L;
 
-  private DatastoreOptions datastoreInstance;
-  private UserController controller;
+  private UserDao dao;
 
-  private String currentUserKey;
+  private static final String CURRENT_USER_ARG = "current";
+  private static final String GARDEN_LIST_ARG = "garden-list";
+  private static final String GARDEN_ADMIN_LIST_ARG = "garden-admin-list";
+  private static final String CURRENT_USER_KEY = "1";
 
   /** Initializes the servlet. Connects it to Datastore. */
   @Override
   public void init() throws ServletException {
-    this.datastoreInstance = DatastoreOptions.getDefaultInstance();
-    this.controller = new UserController(datastoreInstance);
-
-    currentUserKey = "1"; // MOCK VALUE -- REPLACE ONCE OAUTH WORKS
+    DatastoreOptions datastoreInstance = DatastoreOptions.getDefaultInstance();
+    this.dao = new UserDao(datastoreInstance);
   }
 
   /**
@@ -75,14 +79,14 @@ public class UserServlet extends HttpServlet {
 
     // Replace 'current' user with logged-in user.
     String userKey = uriList[2];
-    if (userKey.equals("current")) {
-      userKey = currentUserKey;
+    if (userKey.equals(CURRENT_USER_ARG)) {
+      userKey = CURRENT_USER_KEY;
     }
 
     // Dispatch based on method specified.
     // /user/{id}
     if (uriList.length == 3) {
-      User user = controller.getUserById(userKey);
+      User user = dao.getUserById(userKey);
       if (user == null) {
         response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userKey);
         return;
@@ -93,9 +97,9 @@ public class UserServlet extends HttpServlet {
     }
 
     if (uriList.length == 4) {
-      if (uriList[3].equals("garden-list")) {
+      if (uriList[3].equals(GARDEN_LIST_ARG)) {
         // /user/{id}/garden-list
-        List<String> list = controller.getUserGardenListById(userKey);
+        List<String> list = dao.getUserGardenListById(userKey);
         if (list == null) {
           response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userKey);
           return;
@@ -103,9 +107,9 @@ public class UserServlet extends HttpServlet {
         response.setContentType("application/json;");
         response.getWriter().println(new Gson().toJson(list));
         return;
-      } else if (uriList[3].equals("garden-admin-list")) {
+      } else if (uriList[3].equals(GARDEN_ADMIN_LIST_ARG)) {
         // /user/{id}/garden-admin-list
-        List<String> list = controller.getUserGardenAdminListById(userKey);
+        List<String> list = dao.getUserGardenAdminListById(userKey);
         if (list == null) {
           response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userKey);
           return;
@@ -119,20 +123,12 @@ public class UserServlet extends HttpServlet {
         HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
   }
 
-  /** Getters and Setters for connected objects. */
-  public DatastoreOptions getDatastoreInstance() {
-    return datastoreInstance;
+  /** Getters and Setters for data access object. */
+  public UserDao getDao() {
+    return dao;
   }
 
-  public void setDatastoreInstance(DatastoreOptions datastoreInstance) {
-    this.datastoreInstance = datastoreInstance;
-  }
-
-  public UserController getController() {
-    return controller;
-  }
-
-  public void setController(UserController controller) {
-    this.controller = controller;
+  public void setDao(UserDao dao) {
+    this.dao = dao;
   }
 }

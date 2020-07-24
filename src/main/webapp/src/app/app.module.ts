@@ -33,7 +33,7 @@ import {GapiSession} from '../sessions/gapi.session';
 import {UserRepository} from '../repositories/user.repository';
 
 export function initGapi(gapiSession: GapiSession) {
-  return () => gapiSession.initClient();
+  return () => gapiSession.loadClient();
 }
 
 @NgModule({

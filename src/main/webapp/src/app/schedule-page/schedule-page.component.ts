@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {GapiSession} from '../../sessions/gapi.session';
 
 @Component({
   selector: 'schedule-page',
@@ -23,7 +25,18 @@ import {Component, OnInit} from '@angular/core';
   ],
 })
 export class SchedulePageComponent implements OnInit {
-  constructor() {}
+  private router: Router;
+
+  constructor(private gapiSession: GapiSession) {
+  }
 
   ngOnInit(): void {}
+
+  signIn() {
+    this.gapiSession.signIn().then(() => {
+      if(this.gapiSession.isSignedIn) {
+       this.gapiSession.listEvents();
+      }
+    });
+  }
 }

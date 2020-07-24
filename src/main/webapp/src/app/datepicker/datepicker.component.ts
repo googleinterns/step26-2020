@@ -22,7 +22,8 @@ import {FormControl} from '@angular/forms';
 })
 export class DatepickerComponent implements OnInit {
   date = new FormControl(new Date());
-  currDate: string = this.formatDate(this.date.value.toString());
+  selectedDate = this.date.value;
+  formattedDate: string = this.formatDate(this.date.value.toString());
 
   constructor() {}
 
@@ -31,9 +32,11 @@ export class DatepickerComponent implements OnInit {
   /* Updates the displayed date whenever user chooses a date in the datepicker */
   updateCurrDate(event: MatDatepickerInputEvent<Date>): void {
     if (event.value) {
-      this.currDate = this.formatDate(`${event.value}`);
+      this.selectedDate = event.value;
+      this.formattedDate = this.formatDate(`${event.value}`);
     } else {
-      this.currDate = '';
+      this.selectedDate = '';
+      this.formattedDate = '';
     }
   }
 

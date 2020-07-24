@@ -1,2 +1,3 @@
 node_modules/
 target/
+src/main/webapp/environments/calendar.environment.ts

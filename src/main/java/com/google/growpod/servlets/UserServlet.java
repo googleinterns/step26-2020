@@ -15,11 +15,7 @@
 package com.google.growpod.servlets;
 
 import com.google.cloud.datastore.DatastoreOptions;
-<<<<<<< HEAD
-import com.google.growpod.controllers.UserController;
-=======
 import com.google.growpod.controllers.UserDao;
->>>>>>> feature/persistent-init
 import com.google.growpod.data.User;
 import com.google.gson.Gson;
 import java.io.IOException;

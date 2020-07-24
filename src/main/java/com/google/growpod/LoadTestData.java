@@ -36,97 +36,78 @@ import java.util.List;
  */
 public class LoadTestData {
 
-  /* Datastore instance and datastore itself */
-  DatastoreOptions instance;
-  Datastore datastore;
+  /* Static test data */
+  private static final double newYorkLat = 40.82;
+  private static final double newYorkLng = -73.93;
+  private static final List<User> TEST_USERS =
+      Arrays.asList(
+          new User("1", "ladd@example.com", "David Ladd", "My SSN is: 143-46-6098", "11201"),
+          new User("2", "caroqliu@google.com", "Caroline Liu", "Plants are fun", "11201"),
+          new User("3", "friedj@google.com", "Jake Fried", "Plants are fun too", "11201"));
+  private static final List<Garden> TEST_GARDENS =
+      Arrays.asList(
+          new Garden("1", "Flower Garden", newYorkLat, newYorkLng, "1"),
+          new Garden("2", "Pea Garden", newYorkLat, newYorkLng, "2"));
+  private static final List<Plant> TEST_PLANTS =
+      Arrays.asList(
+          new Plant("1", "Flower Plant 1", 4, "1"),
+          new Plant("2", "Flower Plant 2", 4, "2"),
+          new Plant("3", "Pea Plant 1", 4, "3"),
+          new Plant("4", "Pea Plant 2", 4, "4"));
+  private static final List<HasMember> TEST_HAS_MEMBERS =
+      Arrays.asList(
+          new HasMember("1", "1", "1"), new HasMember("2", "2", "2"), new HasMember("3", "2", "3"));
+  private static final List<ContainsPlant> TEST_CONTAINS_PLANTS =
+      Arrays.asList(
+          new ContainsPlant("1", "1", "1"),
+          new ContainsPlant("2", "1", "2"),
+          new ContainsPlant("3", "2", "3"),
+          new ContainsPlant("4", "2", "4"));
 
-  /* List of entities available at the class-level */
-  private List<User> testUsers;
-  private List<Garden> testGardens;
-  private List<Plant> testPlants;
-  private List<HasMember> testHasMembers;
-  private List<ContainsPlant> testContainsPlants;
+  private static void loadUsers(DatastoreOptions instance) {
+    Batch batch = instance.getService().newBatch();
 
-  private void loadUsers() {
-    // Test User Data
-    testUsers =
-        Arrays.asList(
-            new User("1", "ladd@example.com", "David Ladd", "My SSN is: 143-46-6098", "11201"),
-            new User("2", "caroqliu@google.com", "Caroline Liu", "Plants are fun", "11201"),
-            new User("3", "friedj@google.com", "Jake Fried", "Plants are fun too", "11201"));
-
-    Batch batch = datastore.newBatch();
-
-    for (User user : testUsers) {
+    for (User user : TEST_USERS) {
       batch.add(user.toEntity(instance));
     }
 
     batch.submit();
   }
 
-  private void loadGardens() {
-    // Test Garden Data
-    double newYorkLat = 40.82;
-    double newYorkLng = -73.93;
-    testGardens =
-        Arrays.asList(
-            new Garden("1", "Flower Garden", newYorkLat, newYorkLng, testUsers.get(0).getId()),
-            new Garden("2", "Pea Garden", newYorkLat, newYorkLng, testUsers.get(1).getId()));
+  private static void loadGardens(DatastoreOptions instance) {
+    Batch batch = instance.getService().newBatch();
 
-    Batch batch = datastore.newBatch();
-
-    for (Garden garden : testGardens) {
+    for (Garden garden : TEST_GARDENS) {
       batch.add(garden.toEntity(instance));
     }
 
     batch.submit();
   }
 
-  private void loadPlants() {
-    // Test Plant Data
-    testPlants =
-        Arrays.asList(
-            new Plant("1", "Flower Plant 1", 4, "1"),
-            new Plant("2", "Flower Plant 2", 4, "2"),
-            new Plant("3", "Pea Plant 1", 4, "3"),
-            new Plant("4", "Pea Plant 2", 4, "4"));
+  private static void loadPlants(DatastoreOptions instance) {
+    Batch batch = instance.getService().newBatch();
 
-    Batch batch = datastore.newBatch();
-
-    for (Plant plant : testPlants) {
+    for (Plant plant : TEST_PLANTS) {
       batch.add(plant.toEntity(instance));
     }
 
     batch.submit();
   }
 
-  private void loadHasMember() {
-    testHasMembers =
-        Arrays.asList(
-            new HasMember("1", testGardens.get(0).getId(), testUsers.get(0).getId()),
-            new HasMember("2", testGardens.get(1).getId(), testUsers.get(1).getId()),
-            new HasMember("3", testGardens.get(1).getId(), testUsers.get(2).getId()));
+  private static void loadHasMembers(DatastoreOptions instance) {
+    Batch batch = instance.getService().newBatch();
 
-    Batch batch = datastore.newBatch();
-
-    for (HasMember hasMember : testHasMembers) {
+    for (HasMember hasMember : TEST_HAS_MEMBERS) {
       batch.add(hasMember.toEntity(instance));
     }
 
     batch.submit();
   }
 
-  private void loadContainsPlant() {
-    testContainsPlants =
-        Arrays.asList(
-            new ContainsPlant("1", testGardens.get(0).getId(), testPlants.get(0).getId()),
-            new ContainsPlant("2", testGardens.get(0).getId(), testPlants.get(1).getId()),
-            new ContainsPlant("3", testGardens.get(1).getId(), testPlants.get(2).getId()),
-            new ContainsPlant("4", testGardens.get(1).getId(), testPlants.get(3).getId()));
+  private static void loadContainsPlants(DatastoreOptions instance) {
+    Batch batch = instance.getService().newBatch();
 
-    Batch batch = datastore.newBatch();
-
-    for (ContainsPlant containsPlant : testContainsPlants) {
+    for (ContainsPlant containsPlant : TEST_CONTAINS_PLANTS) {
       batch.add(containsPlant.toEntity(instance));
     }
 
@@ -138,14 +119,12 @@ public class LoadTestData {
    *
    * @param instance The datastore instance as a DatastoreOptions object.
    */
-  public void load(DatastoreOptions instance) {
-    this.instance = instance;
-    this.datastore = instance.getService();
-    loadUsers();
-    loadGardens();
-    loadPlants();
-    loadHasMember();
-    loadContainsPlant();
+  public static void load(DatastoreOptions instance) {
+    loadUsers(instance);
+    loadGardens(instance);
+    loadPlants(instance);
+    loadHasMembers(instance);
+    loadContainsPlants(instance);
   }
 
   /**
@@ -153,9 +132,8 @@ public class LoadTestData {
    *
    * @param instance The datastore instance as a DatastoreOptions object.
    */
-  public void clear(DatastoreOptions instance) {
-    this.instance = instance;
-    this.datastore = instance.getService();
+  public static void clear(DatastoreOptions instance) {
+    Datastore datastore = instance.getService();
 
     String[] tables = {"User", "Garden", "Plant", "HasMember", "ContainsPlant"};
 

@@ -34,9 +34,9 @@ public class ResetDataServlet extends HttpServlet {
       throws ServletException, IOException {
     DatastoreOptions instance = DatastoreOptions.getDefaultInstance();
 
-    LoadTestData ltd = new LoadTestData();
-    ltd.clear(instance);
-    ltd.load(instance);
+    // Deletes and repopulates everything.
+    LoadTestData.clear(instance);
+    LoadTestData.load(instance);
 
     response.setContentType("application/json;");
     response.getWriter().println("{}");

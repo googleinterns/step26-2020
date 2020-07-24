@@ -9,7 +9,6 @@ import {
 } from '@angular/common/http/testing';
 import {GrowpodUiModule} from '../common/growpod-ui.module';
 import {FindGardensComponent} from './find-gardens.component';
-import {User} from '../model/user.model';
 import {Garden} from '../model/garden.model';
 
 /* TODO: Find a way to test carousel components with arguments. */

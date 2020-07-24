@@ -42,7 +42,7 @@ public final class FindGardensServletTest {
   /** Mock services. */
   @Mock private FindGardensDao dao;
 
-  /** Mock values. */
+  /** Test values. */
   private final Garden TEST_GARDEN = new Garden("0", "x", "y", 0.0, 0.0, "0", "0");
 
   private final List<Garden> TEST_GARDEN_LIST = Arrays.asList(TEST_GARDEN);
@@ -56,7 +56,7 @@ public final class FindGardensServletTest {
 
   /** Tests successful handling of GET: /find-gardens (no arguments) */
   @Test
-  public void testFindGardensDefault() throws IOException {
+  public void doGet_successfulNoArgQuery_successfulResult() throws IOException {
     String testUrl = "/find-gardens";
 
     // Mocks
@@ -76,7 +76,7 @@ public final class FindGardensServletTest {
 
   /** Tests successful handling of GET: /find-gardens?zip-code=12345 */
   @Test
-  public void testFindGardensZipCode() throws IOException {
+  public void doGet_successfulArgQuery_successfulResult() throws IOException {
     String testUrl = "/find-gardens";
 
     // Mocks

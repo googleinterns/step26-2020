@@ -196,9 +196,8 @@ public class UserServlet extends HttpServlet {
   /**
    * This function puts the user into userMap.
    *
-   * @param user user object holding user data: id,email,name,bio,zip. The runtime of this function
-   *     would be O(1) but a worse case senareo would be O(n) with n being the elements in User
-   *     object.
+   * @param user user object holding user data: id,email,name,bio,zip. Expected runtime:O(1). Worse
+   *     case scenario: O(n), n being the elements in User object.
    */
   public Map<String, User> addToMap(User user) {
     // mock id for testing

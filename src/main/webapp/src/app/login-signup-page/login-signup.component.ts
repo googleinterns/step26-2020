@@ -21,9 +21,9 @@ import {Router} from '@angular/router';
 
 @Component({
   selector: 'login',
-  templateUrl: './Login-SignUp.component.html',
+  templateUrl: './login-signup.component.html',
   styleUrls: [
-    './Login-SignUp.component.css',
+    './login-signup.component.css',
     '../common/growpod-page-styles.css',
   ],
 })

@@ -45,7 +45,7 @@ import {MyGardensComponent} from './my_gardens_page/my-gardens.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
-import {LoginComponent} from './Login-SignUp-page/Login-SignUp.component';
+import {LoginComponent} from './login-signup-page/login-signup.component';
 
 const google_oauth_client_id =
   '397696466543-0biqdptbuhjmkjmakg2mo2dsov74dl0s.apps.googleusercontent.com';

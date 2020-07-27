@@ -1,11 +1,11 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-import {CALENDAR_API_KEY} from './api_key'
+import {CALENDAR_API_KEY} from './api_key';
 
 export const environment = {
   production: false,
-  calendar_key: CALENDAR_API_KEY.key
+  calendar_key: CALENDAR_API_KEY.key,
 };
 
 /*

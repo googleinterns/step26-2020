@@ -4,7 +4,7 @@ import {environment} from '../environments/environment';
 
 const CLIENT_ID =
   '397696466543-0biqdptbuhjmkjmakg2mo2dsov74dl0s.apps.googleusercontent.com';
-const API_KEY = environment.calendar.API_KEY;
+const API_KEY = environment.calendar_key;
 
 const DISCOVERY_DOCS = [
   'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',

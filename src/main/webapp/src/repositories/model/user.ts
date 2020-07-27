@@ -1,4 +1,3 @@
-
 /* User class for gapi authentication */
 export class User {
   id: string;

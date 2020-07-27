@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,13 +14,21 @@
 
 package com.google.growpod.data;
 
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Entity.Builder;
+import com.google.cloud.datastore.Key;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 /** Plant data class. */
+@Data
+@AllArgsConstructor
 public class Plant {
 
   /** A unique id. */
   private String id;
 
-  /** An optional nickname. */
+  /** A nickname or null. */
   private String nickname;
 
   /** The number of plants in this plot. */
@@ -30,60 +38,30 @@ public class Plant {
   private String plantTypeId;
 
   /**
-   * Constructs a new Plant.
+   * Generates a plant from an entity.
    *
-   * @param id A unique ID for the plant. This value must be supplied by the user.
-   * @param nickname A nickname or null.
-   * @param count The number of this type of plant.
-   * @param plantTypeId The plant's type. Must be a valid plant type id.
+   * @param entity the entity to generate the plant from
+   * @return the new plant with the entity's information.
    */
-  public Plant(String id, String nickname, long count, String plantTypeId) {
-    this.id = id;
-    this.nickname = nickname;
-    this.count = count;
-    this.plantTypeId = plantTypeId;
-  }
-
-  /* Getters and setters. */
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
+  public static Plant from(Entity entity) {
+    String id = entity.getKey().toUrlSafe();
+    String nickname = entity.getString("nickname");
+    Long count = entity.getLong("count");
+    String plantTypeId = entity.getString("plant-type-id");
+    return new Plant(id, nickname, count, plantTypeId);
   }
 
   /**
-   * Gets the plant's nickname.
+   * Generates an entity from a plant.
    *
-   * @return the plant's nickname or null.
+   * @return the new entity representing a plant.
    */
-  public String getNickname() {
-    return nickname;
-  }
-
-  /**
-   * Sets the plant's nickname.
-   *
-   * @param name the desired nickname or null.
-   */
-  public void setNickname(String name) {
-    this.nickname = name;
-  }
-
-  public long getCount() {
-    return count;
-  }
-
-  public void setCount(long count) {
-    this.count = count;
-  }
-
-  public String getPlantTypeId() {
-    return plantTypeId;
-  }
-
-  public void setPlantTypeId(String id) {
-    this.plantTypeId = id;
+  public Entity toEntity() {
+    // I use a different API here than in the portfolio
+    Builder builder = Entity.newBuilder(Key.fromUrlSafe(id));
+    builder.set("nickname", nickname);
+    builder.set("count", count);
+    builder.set("plant-type-id", plantTypeId);
+    return builder.build();
   }
 }

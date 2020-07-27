@@ -15,15 +15,13 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 
-import {IndexComponent} from './index/index.component';
-import {TestPage1Component} from './test-page1/test-page1.component';
-import {TestPage2Component} from './test-page2/test-page2.component';
-import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 import {MyGardensComponent} from './my_gardens_page/my-gardens.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 import {LoginComponent} from './login-signup-page/login-signup.component';
+import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
+
 
 /**
  * The routing table for all frontend pages
@@ -33,17 +31,13 @@ import {LoginComponent} from './login-signup-page/login-signup.component';
  *
  */
 const routes: Routes = [
-  {path: 'page/index', component: IndexComponent},
-  {path: 'page/test-page1', component: TestPage1Component},
-  {path: 'page/test-page2', component: TestPage2Component},
-  {path: 'page/create-garden', component: CreateGardensComponent},
   {path: 'page/my-gardens', component: MyGardensComponent},
   {path: 'page/user-profile', component: UserProfileComponent},
   {path: 'page/find-gardens', component: FindGardensComponent},
   {path: 'page/schedule', component: SchedulePageComponent},
   {path: 'page/login', component: LoginComponent},
-  /** Defaults to /index */
-  {path: '', redirectTo: '/page/index', pathMatch: 'full'},
+  {path: 'page/create-garden', component: CreateGardensComponent},
+  {path: '', redirectTo: '/page/my-gardens', pathMatch: 'full'},
 ];
 
 @NgModule({

@@ -83,15 +83,15 @@ export class FindGardensComponent implements OnInit {
    * Returns an observable HTTP response.
    *
    * Performs GET: /find-gardens[?zip-code={zipCode}]
-   * If the argument zipCode is falsy, the query string
+   * If the argument zipCode is null, the query string
    * is omitted.
    *
-   * @param zipCode The zipcode to send to the server, or a falsy value to
+   * @param zipCode The zipcode to send to the server, or a null value to
    * search near the current user's location.
    * @return the http response.
    */
   getNearbyGardenList(
-    zipCode: string | null | undefined
+    zipCode: string | null
   ): Observable<HttpResponse<Array<Garden>>> {
     return this.httpClient.get<Array<Garden>>('/find-gardens', {
       observe: 'response',
@@ -135,9 +135,9 @@ export class FindGardensComponent implements OnInit {
    * Populates component with nearby gardens, shows a message to the user
    * saying there are no gardens, or displays an error message.
    *
-   * @param zipCode The zipcode requested or falsy.
+   * @param zipCode The zipcode requested or null.
    */
-  createNearbyGardenList(zipCode: string | null | undefined): void {
+  createNearbyGardenList(zipCode: string | null): void {
     this.createUserGardenSet();
     this.getNearbyGardenList(zipCode).subscribe({
       next: (response: HttpResponse<Array<Garden>>) => {

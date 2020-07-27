@@ -17,6 +17,7 @@ declare const gapi: any;
 export class GapiSession {
   public auth2: any;
   userRepository: UserRepository;
+  hasConsent = false;
 
   constructor(private zone: NgZone) {
     this.userRepository = new UserRepository();
@@ -51,6 +52,10 @@ export class GapiSession {
     return this.auth2.isSignedIn.get();
   }
 
+  get consent(): boolean {
+    return this.hasConsent;
+  }
+
   /**
    * Include docs
    */
@@ -61,6 +66,7 @@ export class GapiSession {
       })
       .then((googleUser: gapi.auth2.GoogleUser) => {
         this.userRepository.add(googleUser.getBasicProfile());
+        this.hasConsent = true;
       });
   }
 

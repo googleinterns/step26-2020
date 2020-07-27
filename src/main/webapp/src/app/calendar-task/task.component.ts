@@ -13,34 +13,24 @@
 // limitations under the License.
 
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {GapiSession} from '../../sessions/gapi.session';
 
 @Component({
-  selector: 'schedule-page',
-  templateUrl: './schedule-page.component.html',
+  selector: 'calendar-task',
+  templateUrl: './task.component.html',
   styleUrls: [
-    './schedule-page.component.css',
     '../common/growpod-page-styles.css',
   ],
 })
-export class SchedulePageComponent implements OnInit {
-  private router: Router;
+export class TaskComponent implements OnInit {
+  date : Date;
+  time : string;
+  title : string;
+  description: string;
+  members: string[];
 
-  constructor(private gapiSession: GapiSession) {}
+  constructor() {}
 
   ngOnInit(): void {}
 
-  signIn() {
-    if(this.gapiSession.consent) {
-      this.gapiSession.listEvents();
-      console.log('wassup');
-    }
-    else {
-      this.gapiSession.signIn().then(() => {
-        this.gapiSession.listEvents();
-        console.log('NOOOO');
-     });
-    } 
-  }
+  
 }

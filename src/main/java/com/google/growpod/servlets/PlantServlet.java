@@ -14,7 +14,6 @@
 
 package com.google.growpod.servlets;
 
-import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.growpod.controllers.PlantDao;
 import com.google.growpod.data.Plant;
@@ -37,14 +36,13 @@ public class PlantServlet extends HttpServlet {
 
   static final long serialVersionUID = 1L;
 
-  private Datastore datastore;
   private PlantDao dao;
 
   /** Initializes the servlet. Connects it to Datastore. */
   @Override
   public void init() throws ServletException {
-    this.datastore = DatastoreOptions.getDefaultInstance().getService();
-    this.dao = new PlantDao(datastore);
+    DatastoreOptions datastoreInstance = DatastoreOptions.getDefaultInstance();
+    this.dao = new PlantDao(datastoreInstance);
   }
 
   /**

@@ -15,28 +15,37 @@
 package com.google.growpod.controllers;
 
 import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.Query;
+import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.StructuredQuery;
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
+import com.google.growpod.data.Garden;
+import com.google.growpod.data.HasMember;
 import com.google.growpod.data.User;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /** Data access object for User entities. */
 public class UserDao {
 
+  private DatastoreOptions datastoreInstance;
   private Datastore datastore;
 
-  /** Static test data. */
+  /** Static test data. old code-- */
+  /** old code--
   private static final String CURRENT_USER_KEY = "0";
   Map<String, User> userMap = new HashMap<String, User>();
-
+**/
   /**
    * This function puts the user into userMap.
    *
    * @param user user object holding user data: id,email,name,bio,zip. Expected runtime:O(1). Worse
    *     case scenario: O(n), n being the elements in User object.
    */
+   /* old code --
   public Map<String, User> addToMap(User user) {
     // mock id for testing
     userMap.put("101", user);
@@ -78,14 +87,16 @@ public class UserDao {
     map.put("2", Arrays.asList());
     return Collections.unmodifiableMap(map);
   }
+*/
 
   /**
    * Initializes a new user controller from a given Datastore.
    *
-   * @param datastore the database to run queries on.
+   * @param datastoreInstance the database instance to run queries on.
    */
-  public UserDao(Datastore datastore) {
-    this.datastore = datastore;
+  public UserDao(DatastoreOptions datastoreInstance) {
+    this.datastoreInstance = datastoreInstance;
+    this.datastore = datastoreInstance.getService();
   }
 
   /**
@@ -95,8 +106,10 @@ public class UserDao {
    * @return the user with id's data or null.
    */
   public User getUserById(String id) {
-    // MOCK IMPLEMENTATION
-    return USER_MAP.get(id);
+    String projectId = datastoreInstance.getProjectId();
+    Key key = Key.newBuilder(projectId, "User", Long.parseLong(id)).build();
+    Entity userEntity = datastore.get(key);
+    return userEntity == null ? null : User.from(userEntity);
   }
   /**
    * Retrieves a user in the database by id, or null if said id does not exist.
@@ -104,10 +117,10 @@ public class UserDao {
    * @param id the user's id
    * @return the user with id's data or null.
    */
-  public User getUserById(String id) {
+  //public User getUserById2(String id) {
     // MOCK IMPLEMENTATION
-    return userMap.get(id);
-  }
+    //return userMap.get(id);
+  //}
 
   /**
    * Retrieves a list of gardens the user with a given id is a member of. Returns an empty list if
@@ -117,8 +130,28 @@ public class UserDao {
    * @return a list of gardens the user is a part of, or an empty list, or null.
    */
   public List<String> getUserGardenListById(String id) {
-    // MOCK IMPLEMENTATION
-    return USER_GARDEN_LIST_MAP.get(id);
+    List<String> gardenList = new ArrayList<String>();
+
+    // Existence check
+    String projectId = datastoreInstance.getProjectId();
+    Key key = Key.newBuilder(projectId, "User", Long.parseLong(id)).build();
+    if (datastore.get(key) == null) {
+      return null;
+    }
+
+    StructuredQuery<Entity> query =
+        Query.newEntityQueryBuilder()
+            .setKind("HasMember")
+            .setFilter(PropertyFilter.eq("user-id", id))
+            .build();
+    QueryResults<Entity> results = datastore.run(query);
+    while (results.hasNext()) {
+      Entity entity = results.next();
+      HasMember hasMember = HasMember.from(entity);
+      gardenList.add(hasMember.getGardenId());
+    }
+
+    return gardenList;
   }
 
   /**
@@ -129,7 +162,27 @@ public class UserDao {
    * @return a list of gardens the user administers, or an empty list, or null.
    */
   public List<String> getUserGardenAdminListById(String id) {
-    // MOCK IMPLEMENTATION
-    return USER_GARDEN_ADMIN_LIST_MAP.get(id);
+    List<String> gardenList = new ArrayList<String>();
+
+    // Existence check
+    String projectId = datastoreInstance.getProjectId();
+    Key key = Key.newBuilder(projectId, "User", Long.parseLong(id)).build();
+    if (datastore.get(key) == null) {
+      return null;
+    }
+
+    StructuredQuery<Entity> query =
+        Query.newEntityQueryBuilder()
+            .setKind("Garden")
+            .setFilter(PropertyFilter.eq("admin-id", id))
+            .build();
+    QueryResults<Entity> results = datastore.run(query);
+    while (results.hasNext()) {
+      Entity entity = results.next();
+      Garden garden = Garden.from(entity);
+      gardenList.add(garden.getId());
+    }
+
+    return gardenList;
   }
 }

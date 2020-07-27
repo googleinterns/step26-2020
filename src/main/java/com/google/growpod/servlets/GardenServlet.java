@@ -14,7 +14,6 @@
 
 package com.google.growpod.servlets;
 
-import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.growpod.controllers.GardenDao;
 import com.google.growpod.data.Garden;
@@ -42,7 +41,6 @@ public class GardenServlet extends HttpServlet {
 
   static final long serialVersionUID = 1L;
 
-  private Datastore datastore;
   private GardenDao dao;
 
   private static final String USER_LIST_ARG = "user-list";
@@ -51,8 +49,8 @@ public class GardenServlet extends HttpServlet {
   /** Initializes the servlet. Connects it to Datastore. */
   @Override
   public void init() throws ServletException {
-    this.datastore = DatastoreOptions.getDefaultInstance().getService();
-    this.dao = new GardenDao(datastore);
+    DatastoreOptions datastoreInstance = DatastoreOptions.getDefaultInstance();
+    this.dao = new GardenDao(datastoreInstance);
   }
 
   /**

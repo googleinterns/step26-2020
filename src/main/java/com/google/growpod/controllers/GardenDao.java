@@ -15,57 +15,34 @@
 package com.google.growpod.controllers;
 
 import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.Query;
+import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.StructuredQuery;
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
+import com.google.growpod.data.ContainsPlant;
 import com.google.growpod.data.Garden;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import com.google.growpod.data.HasMember;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /** Data access object for Garden entities. */
 
 public class GardenDao {
 
+  private DatastoreOptions datastoreInstance;
   private Datastore datastore;
-
-  /** Static test data. */
-  private static final double newYorkLat = 40.82;
-
-  private static final double newYorkLng = -73.93;
-  private static final Map<String, Garden> GARDEN_MAP = createGardenMap();
-
-  private static Map<String, Garden> createGardenMap() {
-    Map<String, Garden> map = new HashMap<String, Garden>();
-    map.put("0", new Garden("0", "Flower Garden", newYorkLat, newYorkLng, "0"));
-    map.put("1", new Garden("1", "Pea Garden", newYorkLat, newYorkLng, "1"));
-    return Collections.unmodifiableMap(map);
-  }
-
-  private static final Map<String, List<String>> GARDEN_USER_LIST_MAP = createGardenUserListMap();
-
-  private static Map<String, List<String>> createGardenUserListMap() {
-    Map<String, List<String>> map = new HashMap<String, List<String>>();
-    map.put("0", Arrays.asList("0", "1"));
-    map.put("1", Arrays.asList("0", "1", "2"));
-    return Collections.unmodifiableMap(map);
-  }
-
-  private static final Map<String, List<String>> GARDEN_PLANT_LIST_MAP = createGardenPlantListMap();
-
-  private static Map<String, List<String>> createGardenPlantListMap() {
-    Map<String, List<String>> map = new HashMap<String, List<String>>();
-    map.put("0", Arrays.asList("0", "1"));
-    map.put("1", Arrays.asList("2", "3"));
-    return Collections.unmodifiableMap(map);
-  }
 
   /**
    * Initializes a new garden controller from a given Datastore.
    *
-   * @param datastore the database to run queries on.
+   * @param datastoreInstance the database instance to run queries on.
    */
-  public GardenDao(Datastore datastore) {
-    this.datastore = datastore;
+  public GardenDao(DatastoreOptions datastoreInstance) {
+    this.datastoreInstance = datastoreInstance;
+    this.datastore = datastoreInstance.getService();
   }
 
   /**
@@ -75,8 +52,10 @@ public class GardenDao {
    * @return the garden with id's data or null.
    */
   public Garden getGardenById(String id) {
-    // MOCK IMPLEMENTATION
-    return GARDEN_MAP.get(id);
+    String projectId = datastoreInstance.getProjectId();
+    Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(id)).build();
+    Entity gardenEntity = datastore.get(key);
+    return gardenEntity == null ? null : Garden.from(gardenEntity);
   }
 
   /**
@@ -86,8 +65,28 @@ public class GardenDao {
    * @return a list of user ids in the garden or null.
    */
   public List<String> getGardenUserListById(String id) {
-    // MOCK IMPLEMENTATION
-    return GARDEN_USER_LIST_MAP.get(id);
+    List<String> userList = new ArrayList<String>();
+
+    // Existence check
+    String projectId = datastoreInstance.getProjectId();
+    Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(id)).build();
+    if (datastore.get(key) == null) {
+      return null;
+    }
+
+    StructuredQuery<Entity> query =
+        Query.newEntityQueryBuilder()
+            .setKind("HasMember")
+            .setFilter(PropertyFilter.eq("garden-id", id))
+            .build();
+    QueryResults<Entity> results = datastore.run(query);
+    while (results.hasNext()) {
+      Entity entity = results.next();
+      HasMember hasMember = HasMember.from(entity);
+      userList.add(hasMember.getUserId());
+    }
+
+    return userList;
   }
 
   /**
@@ -97,7 +96,27 @@ public class GardenDao {
    * @return a list of plant ids in the garden or null.
    */
   public List<String> getGardenPlantListById(String id) {
-    // MOCK IMPLEMENTATION
-    return GARDEN_PLANT_LIST_MAP.get(id);
+    List<String> plantList = new ArrayList<String>();
+
+    // Existence check
+    String projectId = datastoreInstance.getProjectId();
+    Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(id)).build();
+    if (datastore.get(key) == null) {
+      return null;
+    }
+
+    StructuredQuery<Entity> query =
+        Query.newEntityQueryBuilder()
+            .setKind("ContainsPlant")
+            .setFilter(PropertyFilter.eq("garden-id", id))
+            .build();
+    QueryResults<Entity> results = datastore.run(query);
+    while (results.hasNext()) {
+      Entity entity = results.next();
+      ContainsPlant containsPlant = ContainsPlant.from(entity);
+      plantList.add(containsPlant.getPlantId());
+    }
+
+    return plantList;
   }
 }

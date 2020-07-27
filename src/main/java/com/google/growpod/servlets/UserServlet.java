@@ -14,7 +14,6 @@
 
 package com.google.growpod.servlets;
 
-import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.growpod.controllers.UserDao;
 import com.google.growpod.data.User;
@@ -49,7 +48,6 @@ public class UserServlet extends HttpServlet {
   static final long serialVersionUID = 1L;
 Map<String, User> userMap = new HashMap<String, User>();
 
-  private Datastore datastore;
   private UserDao dao;
   
 
@@ -57,14 +55,14 @@ Map<String, User> userMap = new HashMap<String, User>();
   private static final String CURRENT_USER_ARG = "current";
   private static final String GARDEN_LIST_ARG = "garden-list";
   private static final String GARDEN_ADMIN_LIST_ARG = "garden-admin-list";
-  private static final String CURRENT_USER_KEY = "0";
+  private static final String CURRENT_USER_KEY = "1";
 
   /** Initializes the servlet. Connects it to Datastore. */
   
   @Override
   public void init() throws ServletException {
-    this.datastore = DatastoreOptions.getDefaultInstance().getService();
-    this.dao = new UserDao(datastore);
+    DatastoreOptions datastoreInstance = DatastoreOptions.getDefaultInstance();
+    this.dao = new UserDao(datastoreInstance);
   }
 
   /**
@@ -178,7 +176,7 @@ Map<String, User> userMap = new HashMap<String, User>();
     resp.setContentType("application/json");
     String jsonString = req.getParameter("userData");
     User userData = gson.fromJson(jsonString, User.class);
-    dao.addToMap(userData);
+   // dao.addToMap(userData);
   }
 
 }

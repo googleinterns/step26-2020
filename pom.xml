@@ -89,6 +89,13 @@
             <arg>-Xlint:all</arg>
           </compilerArgs>
           <showWarnings>true</showWarnings>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>1.18.12</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
 

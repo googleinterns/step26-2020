@@ -18,58 +18,49 @@ import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Entity.Builder;
 import com.google.cloud.datastore.Key;
-import com.google.cloud.datastore.LatLng;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-/** Garden data class. */
+/** Relates a garden and a plant through a contains relation. */
 @Data
 @AllArgsConstructor
-public class Garden {
+public class ContainsPlant {
 
-  /** A unique id. */
+  /** Unique datastore id. */
   private String id;
 
-  /** The garden's name. */
-  private String name;
+  /** A garden id. */
+  private String gardenId;
 
-  /** Latitude of garden. */
-  private double lat;
-
-  /** Longitude of garden. */
-  private double lng;
-
-  /** Foreign Key to this garden's administrator. Must be a valid user key. */
-  private String adminId;
+  /** A plant id. */
+  private String plantId;
 
   /**
-   * Generates a garden from an entity.
+   * Generates a ContainsPlant object from an entity.
    *
-   * @param entity the entity to generate the garden from
-   * @return the new garden with the entity's information.
+   * @param entity the entity to generate the ContainsPlant object from
+   * @return the new ContainsPlant object with the entity's information.
    */
-  public static Garden from(Entity entity) {
+  public static ContainsPlant from(Entity entity) {
     String id = entity.getKey().getId().toString();
-    String name = entity.getString("name");
-    LatLng latLng = entity.getLatLng("lat-lng");
-    String adminId = entity.getString("admin-id");
-    return new Garden(id, name, latLng.getLatitude(), latLng.getLongitude(), adminId);
+    String gardenId = entity.getString("garden-id");
+    String plantId = entity.getString("plant-id");
+    return new ContainsPlant(id, gardenId, plantId);
   }
 
   /**
-   * Generates an entity from a garden.
+   * Generates an entity from a ContainsPlant.
    *
    * @param instance The datastore instance the new entity will be associated with.
-   * @return the new entity representing a garden.
+   * @return the new entity representing the ContainsPlant relationship.
    */
   public Entity toEntity(DatastoreOptions instance) {
     // I use a different API here than in the portfolio
     String projectId = instance.getProjectId();
-    Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(id)).build();
+    Key key = Key.newBuilder(projectId, "ContainsPlant", Long.parseLong(id)).build();
     Builder builder = Entity.newBuilder(key);
-    builder.set("name", name);
-    builder.set("lat-lng", LatLng.of(lat, lng));
-    builder.set("admin-id", adminId);
+    builder.set("garden-id", gardenId);
+    builder.set("plant-id", plantId);
     return builder.build();
   }
 }

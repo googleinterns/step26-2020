@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Data access object for Garden entities. */
-
 public class GardenDao {
 
   private DatastoreOptions datastoreInstance;

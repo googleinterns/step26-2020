@@ -17,11 +17,14 @@ package com.google.growpod.controllers;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.IncompleteKey;
 import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
+import com.google.growpod.LoadTestData;
 import com.google.growpod.data.Garden;
 import com.google.growpod.data.HasMember;
 import com.google.growpod.data.User;
@@ -33,61 +36,7 @@ public class UserDao {
 
   private DatastoreOptions datastoreInstance;
   private Datastore datastore;
-
-  /** Static test data. old code-- */
-  /** old code--
-  private static final String CURRENT_USER_KEY = "0";
-  Map<String, User> userMap = new HashMap<String, User>();
-**/
-  /**
-   * This function puts the user into userMap.
-   *
-   * @param user user object holding user data: id,email,name,bio,zip. Expected runtime:O(1). Worse
-   *     case scenario: O(n), n being the elements in User object.
-   */
-   /* old code --
-  public Map<String, User> addToMap(User user) {
-    // mock id for testing
-    userMap.put("101", user);
-    userMap.put(
-        "0", new User("0", "ladd@example.com", "David Ladd", "My SSN is: 143-46-6098", "11201"));
-    userMap.put("1", new User("1", "caroqliu@google.com", "Caroline Liu", "Plants are fun", "11201"));
-    userMap.put("2", new User("2", "friedj@google.com", "Jake Fried", "Plants are fun too", "11201"));
-    return Collections.unmodifiableMap(userMap);
-  }
-
-  private static final Map<String, User> USER_MAP = createUserMap();
-
-  private static Map<String, User> createUserMap() {
-    Map<String, User> map = new HashMap<String, User>();
-    map.put(
-        "0", new User("0", "ladd@example.com", "David Ladd", "My SSN is: 143-46-6098", "11201"));
-    map.put("1", new User("1", "caroqliu@google.com", "Caroline Liu", "Plants are fun", "11201"));
-    map.put("2", new User("2", "friedj@google.com", "Jake Fried", "Plants are fun too", "11201"));
-    return Collections.unmodifiableMap(map);
-  }
-
-  private static final Map<String, List<String>> USER_GARDEN_LIST_MAP = createUserGardenListMap();
-
-  private static Map<String, List<String>> createUserGardenListMap() {
-    Map<String, List<String>> map = new HashMap<String, List<String>>();
-    map.put("0", Arrays.asList("0", "1"));
-    map.put("1", Arrays.asList("1"));
-    map.put("2", Arrays.asList("1"));
-    return Collections.unmodifiableMap(map);
-  }
-
-  private static final Map<String, List<String>> USER_GARDEN_ADMIN_LIST_MAP =
-      createUserGardenAdminListMap();
-
-  private static Map<String, List<String>> createUserGardenAdminListMap() {
-    Map<String, List<String>> map = new HashMap<String, List<String>>();
-    map.put("0", Arrays.asList("0"));
-    map.put("1", Arrays.asList("1"));
-    map.put("2", Arrays.asList());
-    return Collections.unmodifiableMap(map);
-  }
-*/
+  private LoadTestData data;
 
   /**
    * Initializes a new user controller from a given Datastore.
@@ -97,6 +46,25 @@ public class UserDao {
   public UserDao(DatastoreOptions datastoreInstance) {
     this.datastoreInstance = datastoreInstance;
     this.datastore = datastoreInstance.getService();
+  }
+
+  /**
+   * Creates an Entity thats holds user data and adds it to Datastore.
+   *
+   * @param user User object holding user data: id,email,name,bio,zip
+   */
+  public void addToDS(User user) {
+    // Generates key
+    KeyFactory keyFactory = datastore.newKeyFactory().setKind("User");
+    IncompleteKey incompleteKey = keyFactory.newKey();
+
+    Key key = datastore.allocateId(incompleteKey);
+    // placeholder id
+    user.setId("1");
+
+    // Puts key into database
+    Entity newEntity = Entity.newBuilder(key, user.toEntity(datastoreInstance)).build();
+    datastore.add(newEntity);
   }
 
   /**
@@ -111,16 +79,6 @@ public class UserDao {
     Entity userEntity = datastore.get(key);
     return userEntity == null ? null : User.from(userEntity);
   }
-  /**
-   * Retrieves a user in the database by id, or null if said id does not exist.
-   *
-   * @param id the user's id
-   * @return the user with id's data or null.
-   */
-  //public User getUserById2(String id) {
-    // MOCK IMPLEMENTATION
-    //return userMap.get(id);
-  //}
 
   /**
    * Retrieves a list of gardens the user with a given id is a member of. Returns an empty list if

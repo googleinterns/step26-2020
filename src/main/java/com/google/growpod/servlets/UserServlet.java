@@ -15,23 +15,19 @@
 package com.google.growpod.servlets;
 
 import com.google.cloud.datastore.DatastoreOptions;
+import com.google.growpod.LoadTestData;
 import com.google.growpod.controllers.UserDao;
 import com.google.growpod.data.User;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-
 
 /**
  * Servlet that handles user entities on the server.
@@ -46,11 +42,10 @@ import java.util.Map;
 public class UserServlet extends HttpServlet {
 
   static final long serialVersionUID = 1L;
-Map<String, User> userMap = new HashMap<String, User>();
+  Map<String, User> userMap = new HashMap<String, User>();
 
   private UserDao dao;
-  
-
+  private LoadTestData data;
 
   private static final String CURRENT_USER_ARG = "current";
   private static final String GARDEN_LIST_ARG = "garden-list";
@@ -58,7 +53,6 @@ Map<String, User> userMap = new HashMap<String, User>();
   private static final String CURRENT_USER_KEY = "1";
 
   /** Initializes the servlet. Connects it to Datastore. */
-  
   @Override
   public void init() throws ServletException {
     DatastoreOptions datastoreInstance = DatastoreOptions.getDefaultInstance();
@@ -77,7 +71,6 @@ Map<String, User> userMap = new HashMap<String, User>();
     /* uriList will have "" as element 0 */
     String[] uriList = request.getRequestURI().split("/");
     assert (uriList[1].equals("user"));
-
     if (uriList.length < 3) {
       response.sendError(
           HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
@@ -94,10 +87,10 @@ Map<String, User> userMap = new HashMap<String, User>();
     // /user/{id}
 
     if (uriList.length == 3) {
-    User user = dao.getUserById(userKey);
-   // User user = getUserById(uriList[2]);
+      User user = dao.getUserById(userKey);
+      // User user = getUserById(uriList[2]);
       if (user == null) {
-        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " +userKey);
+        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userKey);
         return;
       }
       response.setContentType("application/json;");
@@ -109,7 +102,7 @@ Map<String, User> userMap = new HashMap<String, User>();
       if (uriList[3].equals(GARDEN_LIST_ARG)) {
         // /user/{id}/garden-list
         List<String> list = dao.getUserGardenListById(userKey);
-        
+
         if (list == null) {
           response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userKey);
           return;
@@ -117,26 +110,24 @@ Map<String, User> userMap = new HashMap<String, User>();
         response.setContentType("application/json;");
         response.getWriter().println(new Gson().toJson(list));
         return;
-      } 
-    
-       else if (uriList[3].equals(GARDEN_ADMIN_LIST_ARG)) {
+      } else if (uriList[3].equals(GARDEN_ADMIN_LIST_ARG)) {
         // /user/{id}/garden-admin-list
         List<String> list = dao.getUserGardenAdminListById(userKey);
-        
+
         if (list == null) {
-          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userKey); 
+          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userKey);
           return;
         }
         response.setContentType("application/json;");
         response.getWriter().println(new Gson().toJson(list));
         return;
       }
-    
-    response.getWriter().println("{ \"status\": \"ok\", \"value\": \"test\" }");
 
-    response.sendError(
-        HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
-  }
+      response.getWriter().println("{ \"status\": \"ok\", \"value\": \"test\" }");
+
+      response.sendError(
+          HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
+    }
   }
   /**
    * Retrieves a user in the database by id, or null if said id does not exist.
@@ -152,11 +143,9 @@ Map<String, User> userMap = new HashMap<String, User>();
     return userMap.get(id);
   }
 
-  
-  /** Getters and Setters for data access object.*/
+  /** Getters and Setters for data access object. */
   public UserDao getDao() {
     return dao;
-    
   }
 
   public void setDao(UserDao dao) {
@@ -165,7 +154,7 @@ Map<String, User> userMap = new HashMap<String, User>();
 
   /**
    * Currently this Post function will get the user data in the form of a Json object,turn the Json
-   * object into a User object and put that information into a map.
+   * object into a User object and call a function that will in Datastore.
    *
    * @param req Information about the POST request
    * @param resp Information about the servlet's response
@@ -176,7 +165,7 @@ Map<String, User> userMap = new HashMap<String, User>();
     resp.setContentType("application/json");
     String jsonString = req.getParameter("userData");
     User userData = gson.fromJson(jsonString, User.class);
-   // dao.addToMap(userData);
+    System.out.println(userData + "userdata");
+    dao.addToDS(userData);
   }
-
 }

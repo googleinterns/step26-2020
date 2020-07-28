@@ -22,7 +22,6 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 import {LoginComponent} from './login-signup-page/login-signup.component';
 import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 
-
 /**
  * The routing table for all frontend pages
  *

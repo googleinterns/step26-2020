@@ -32,24 +32,20 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 /** Tests User servlet response behavior, based on different request URL and DAO responses. */
-
 @ExtendWith(MockitoExtension.class)
 public final class UserServletTest {
 
   private UserServlet servlet; // Class to test
 
   /** Mock services. */
-  
   @Mock private UserDao dao;
 
   /** Test values. */
-  
   private final User TEST_USER = new User("0", "x", "y", "z", "aa");
 
   private final List<String> TEST_GARDEN_LIST = Arrays.asList("0");
 
   /** Initializes servlet object and mock dao. */
-  
   @BeforeEach
   public void initTest() {
     servlet = new UserServlet();
@@ -57,14 +53,12 @@ public final class UserServletTest {
   }
 
   /** Tests successful query for GET: /user/{id} method. */
-  
   @Test
   public void doGet_successfulUserQuery_successfulResult() throws IOException {
     String testUrl = "/user/0";
-    
 
     // Mocks
-    
+
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
@@ -77,13 +71,12 @@ public final class UserServletTest {
   }
 
   /** Tests failed query for GET: /user/{id} method. */
-  
   @Test
   public void doGet_invalidIdUserQuery_returns404() throws IOException {
     String testUrl = "/user/0";
 
     // Mocks
-    
+
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
@@ -95,13 +88,12 @@ public final class UserServletTest {
   }
 
   /** Tests successful query for GET: /user/{id}/garden-list method. */
-  
   @Test
   public void doGet_successfulGardenListQuery_successfulResult() throws IOException {
     String testUrl = "/user/0/garden-list";
 
     // Mocks
-    
+
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
@@ -112,10 +104,8 @@ public final class UserServletTest {
     assertEquals("application/json;", response.getContentType());
     assertEquals(TEST_GARDEN_LIST, new Gson().fromJson(response.getContentAsString(), List.class));
   }
-  
 
   /** Tests failed query for GET: /user/{id}/garden-list method. */
-  
   @Test
   public void doGet_invalidIdGardenListQuery_returns404() throws IOException {
     String testUrl = "/user/0/garden-list";
@@ -130,16 +120,14 @@ public final class UserServletTest {
 
     assertEquals(MockHttpServletResponse.SC_NOT_FOUND, response.getStatus());
   }
-  
 
   /** Tests invalid method on GET. */
-  
   @Test
   public void doGet_invalidUrlQuery_returns405() throws IOException {
     String testUrl = "/user/peapod/cody-kayla-stephanie-caroline-jake";
 
     // Mocks
-    
+
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 

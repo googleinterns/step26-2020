@@ -100,3 +100,7 @@
   object-position: center;
   border-radius: 50%;
 }
+
+.mat-list-item-right-align {
+  margin-left: auto;
+}

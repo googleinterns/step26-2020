@@ -28,6 +28,7 @@ import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 import {DatepickerComponent} from './datepicker/datepicker.component';
+import {AdminPageComponent} from './admin-page/admin-page.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import {DatepickerComponent} from './datepicker/datepicker.component';
     SchedulePageComponent,
     CreateGardensComponent,
     DatepickerComponent,
+    AdminPageComponent,
   ],
   imports: [
     BrowserModule,

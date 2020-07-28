@@ -55,7 +55,7 @@ public class FindGardensServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String zipCode = request.getParameter("zip-code");
     if (zipCode == null) {
-      zipCode = "11201"; // MOCK VALUE -- REPLACE ONCE OAUTH WORKS
+      zipCode = "11201"; // TODO(Issue #34): Replace value once oauth works
     }
 
     List<Garden> nearbyGardens = dao.getNearbyGardens(zipCode);

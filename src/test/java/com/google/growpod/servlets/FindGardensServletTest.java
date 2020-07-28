@@ -64,7 +64,7 @@ public final class FindGardensServletTest {
     MockHttpServletResponse response = new MockHttpServletResponse();
 
     // RIGHT NOW, THIS TEST RELIES ON A CONSTANT VALUE IN SOURCE CODE
-    // TODO: REPLACE ONCE AUTHENTICATION IS IMPLEMENTED
+    // TODO(Issue #34): Replace value once oauth works
     when(dao.getNearbyGardens("11201")).thenReturn(TEST_GARDEN_LIST);
 
     servlet.doGet(request, response);

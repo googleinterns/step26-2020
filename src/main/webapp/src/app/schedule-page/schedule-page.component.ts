@@ -15,7 +15,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {GapiSession} from '../../sessions/gapi.session';
-import { DatepickerComponent } from '../datepicker/datepicker.component';
+import {DatepickerComponent} from '../datepicker/datepicker.component';
 
 @Component({
   selector: 'schedule-page',
@@ -26,7 +26,8 @@ import { DatepickerComponent } from '../datepicker/datepicker.component';
   ],
 })
 export class SchedulePageComponent implements OnInit {
-  @ViewChild('datepickerElem', { static: false }) datepickerElem: DatepickerComponent;
+  @ViewChild('datepickerElem', {static: false})
+  datepickerElem: DatepickerComponent;
   private router: Router;
 
   constructor(private gapiSession: GapiSession) {}

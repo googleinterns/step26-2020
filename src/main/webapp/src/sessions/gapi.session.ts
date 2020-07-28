@@ -103,18 +103,22 @@ export class GapiSession {
           const events = response.result.items;
 
           if (events.length > 0) {
-            for(let i = 0; i < events.length; i++) {
-              let event = events[i];
+            for (let i = 0; i < events.length; i++) {
+              const event = events[i];
 
-              
               console.log(event.summary);
-              let task = this.tasks.createTaskElement('9:00am', event.summary, event.attendees, event.description);
+              const task = this.tasks.createTaskElement(
+                '9:00am',
+                event.summary,
+                event.attendees,
+                event.description
+              );
               this.tasks.addTaskToComponent(task);
-             // console.log(event.summary);
-             // console.log(event.description);
-             // console.log(event.start.date);
-             // console.log(event.start.dateTime);
-             // console.log(event.attendees)
+              // console.log(event.summary);
+              // console.log(event.description);
+              // console.log(event.start.date);
+              // console.log(event.start.dateTime);
+              // console.log(event.attendees)
             }
           }
         });

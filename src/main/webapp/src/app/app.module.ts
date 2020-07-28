@@ -30,7 +30,6 @@ import {CreateGardensComponent} from './create-gardens-form/create-gardens.compo
 import {DatepickerComponent} from './datepicker/datepicker.component';
 import {TaskComponent} from './calendar-task/task.component';
 
-
 import {GapiSession} from '../sessions/gapi.session';
 import {UserRepository} from '../repositories/user.repository';
 

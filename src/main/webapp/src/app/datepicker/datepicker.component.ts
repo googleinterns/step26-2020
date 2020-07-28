@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import {FormControl} from '@angular/forms';
 })
 export class DatepickerComponent implements OnInit {
   date = new FormControl(new Date());
-  selectedDate = this.date.value.toISOString();
+  selectedDateIso = this.date.value.toISOString();
   formattedDate: string = this.formatDate(this.date.value.toString());
 
   constructor() {}
@@ -32,10 +32,10 @@ export class DatepickerComponent implements OnInit {
   /* Updates the displayed date whenever user chooses a date in the datepicker */
   updateCurrDate(event: MatDatepickerInputEvent<Date>): void {
     if (event.value) {
-      this.selectedDate = event.value.toISOString();
+      this.selectedDateIso = event.value.toISOString();
       this.formattedDate = this.formatDate(`${event.value}`);
     } else {
-      this.selectedDate = '';
+      this.selectedDateIso = '';
       this.formattedDate = '';
     }
   }
@@ -54,7 +54,7 @@ export class DatepickerComponent implements OnInit {
     return formattedDate;
   }
 
-  get selectedDateGetter(): string {
-    return this.selectedDate.get();
+  get selectedDate() {
+    return this.selectedDateIso;
   }
 }

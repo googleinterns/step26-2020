@@ -1,6 +1,21 @@
+// Copyright 2020 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import {NgZone, Injectable} from '@angular/core';
 import {UserRepository} from '../repositories/user.repository';
 import {environment} from '../environments/environment';
+import {TaskComponent} from '../app/calendar-task/task.component';
 
 const CLIENT_ID =
   '397696466543-0biqdptbuhjmkjmakg2mo2dsov74dl0s.apps.googleusercontent.com';
@@ -18,6 +33,7 @@ export class GapiSession {
   public auth2: any;
   userRepository: UserRepository;
   hasConsent = false;
+  tasks = new TaskComponent();
 
   constructor(private zone: NgZone) {
     this.userRepository = new UserRepository();
@@ -74,28 +90,31 @@ export class GapiSession {
     this.auth2.signOut();
   }
 
-  listEvents() {
+  listEvents(selectedDate: string) {
     gapi.client.load('calendar', 'v3', () => {
       gapi.client.calendar.events
         .list({
           calendarId: 'primary',
-          timeMin: new Date().toISOString(),
+          timeMin: selectedDate,
           singleEvents: true,
-          maxResults: 10,
           orderBy: 'startTime',
         })
         .then(response => {
           const events = response.result.items;
 
           if (events.length > 0) {
-            for (let i = 0; i < events.length; i++) {
-              const event = events[i];
+            for(let i = 0; i < events.length; i++) {
+              let event = events[i];
+
+              
               console.log(event.summary);
-              console.log(event.description);
-              console.log(event.start.date);
-              console.log(event.start.dateTime);
-              console.log(event.attendees);
-              console.log('--------------');
+              let task = this.tasks.createTaskElement('9:00am', event.summary, event.attendees, event.description);
+              this.tasks.addTaskToComponent(task);
+             // console.log(event.summary);
+             // console.log(event.description);
+             // console.log(event.start.date);
+             // console.log(event.start.dateTime);
+             // console.log(event.attendees)
             }
           }
         });

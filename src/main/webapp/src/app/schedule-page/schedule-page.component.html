@@ -50,27 +50,13 @@
       <mat-card>
         <mat-card-title> Schedule </mat-card-title>
 
-        <datepicker></datepicker>
+        <datepicker #datepickerElem></datepicker>
 
         <button md-raised-button class="button-style" (click)="signIn()">
           Show Events
         </button>
 
-        <mat-card>
-          <mat-card-title> 9:00 am | Water Plants </mat-card-title>
-          <h3>Member(s): Cody, Stephanie, Kayla</h3>
-          <mat-card-content>
-            <p>Make sure to water all plants in section 1A</p>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card>
-          <mat-card-title> 11:00 am | Pick pears </mat-card-title>
-          <h3>Member(s): Caroline, Jake</h3>
-          <mat-card-content>
-            <p>Put the pears in a basket for pickup for tomorrow.</p>
-          </mat-card-content>
-        </mat-card>
+       <calendar-tasks #calendarTasks></calendar-tasks>
       </mat-card>
     </div>
   </div>

@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {GapiSession} from '../../sessions/gapi.session';
+import { DatepickerComponent } from '../datepicker/datepicker.component';
 
 @Component({
   selector: 'schedule-page',
@@ -25,6 +26,7 @@ import {GapiSession} from '../../sessions/gapi.session';
   ],
 })
 export class SchedulePageComponent implements OnInit {
+  @ViewChild('datepickerElem', { static: false }) datepickerElem: DatepickerComponent;
   private router: Router;
 
   constructor(private gapiSession: GapiSession) {}
@@ -32,15 +34,12 @@ export class SchedulePageComponent implements OnInit {
   ngOnInit(): void {}
 
   signIn() {
-    if(this.gapiSession.consent) {
-      this.gapiSession.listEvents();
-      console.log('wassup');
-    }
-    else {
+    if (this.gapiSession.consent) {
+      this.gapiSession.listEvents(this.datepickerElem.selectedDate);
+    } else {
       this.gapiSession.signIn().then(() => {
-        this.gapiSession.listEvents();
-        console.log('NOOOO');
-     });
-    } 
+        this.gapiSession.listEvents(this.datepickerElem.selectedDate);
+      });
+    }
   }
 }

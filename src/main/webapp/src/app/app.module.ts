@@ -28,6 +28,8 @@ import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 import {DatepickerComponent} from './datepicker/datepicker.component';
+import {TaskComponent} from './calendar-task/task.component';
+
 
 import {GapiSession} from '../sessions/gapi.session';
 import {UserRepository} from '../repositories/user.repository';
@@ -45,6 +47,7 @@ export function initGapi(gapiSession: GapiSession) {
     SchedulePageComponent,
     CreateGardensComponent,
     DatepickerComponent,
+    TaskComponent,
   ],
   imports: [
     BrowserModule,

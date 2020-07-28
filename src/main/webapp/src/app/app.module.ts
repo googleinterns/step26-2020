@@ -18,12 +18,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 
 import {AppRoutingModule} from './app-routing.module';
-import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
-import {MatExpansionModule} from '@angular/material/expansion';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatNativeDateModule} from '@angular/material/core';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatInputModule} from '@angular/material/input';
 import {
   SocialLoginModule,
   SocialAuthServiceConfig,
@@ -38,12 +33,12 @@ import {UserProfileComponent} from './user-profile/user-profile.component';
 import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 import {LoginComponent} from './login-signup-page/login-signup.component';
+import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
+import {DatepickerComponent} from './datepicker/datepicker.component';
+import {AdminPageComponent} from './admin-page/admin-page.component';
 import {CLIENT_ID} from './SensitiveData';
 
 const google_oauth_client_id = CLIENT_ID;
-
-import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
-import {DatepickerComponent} from './datepicker/datepicker.component';
 
 @NgModule({
   declarations: [
@@ -55,23 +50,19 @@ import {DatepickerComponent} from './datepicker/datepicker.component';
     LoginComponent,
     CreateGardensComponent,
     DatepickerComponent,
+    AdminPageComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     RouterModule,
-    MatExpansionModule,
     FormsModule,
     ReactiveFormsModule,
-    MatDatepickerModule,
-    MatInputModule,
-    MatNativeDateModule,
     SocialLoginModule,
     GrowpodUiModule,
   ],
   providers: [
-    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}},
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {

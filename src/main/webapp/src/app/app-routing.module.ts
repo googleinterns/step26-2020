@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2020 Google LLCn
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 import {LoginComponent} from './login-signup-page/login-signup.component';
 import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
+import {AdminPageComponent} from './admin-page/admin-page.component';
 
 /**
  * The routing table for all frontend pages
@@ -36,6 +37,8 @@ const routes: Routes = [
   {path: 'page/schedule', component: SchedulePageComponent},
   {path: 'page/login', component: LoginComponent},
   {path: 'page/create-garden', component: CreateGardensComponent},
+  {path: 'page/admin-page', component: AdminPageComponent},
+  /** Defaults to /my-gardens */
   {path: '', redirectTo: '/page/my-gardens', pathMatch: 'full'},
 ];
 

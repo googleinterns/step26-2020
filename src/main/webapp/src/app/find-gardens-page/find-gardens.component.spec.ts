@@ -72,7 +72,7 @@ describe('FindGardensComponent', () => {
     expect(testGardenRequest.request.method).toBe('GET');
   });
 
-  it('should populate displayInfo as a result of a mock OK response object', () => {
+  it('should populate gardenList as a result of a mock OK response object', () => {
     fixture.detectChanges();
 
     // Handle requests
@@ -93,7 +93,7 @@ describe('FindGardensComponent', () => {
     );
     fixture.detectChanges();
 
-    expect(component.displayInfo).toBe(TEST_GARDEN_LIST);
+    expect(component.gardenList).toBe(TEST_GARDEN_LIST);
   });
 
   it('should display a message indicating no gardens were found nearby', () => {
@@ -111,7 +111,7 @@ describe('FindGardensComponent', () => {
     testRequest.flush([]);
     fixture.detectChanges();
 
-    expect(component.displayInfo).toEqual([]);
+    expect(component.gardenList).toEqual([]);
     // Verifies error message. Second child of h4 tag.
     const message = fixture.debugElement.query(By.css('h4'));
     expect(message.nativeElement.childNodes[1].nodeValue.trim()).toBe(
@@ -140,7 +140,7 @@ describe('FindGardensComponent', () => {
     );
     fixture.detectChanges();
 
-    expect(component.displayInfo).not.toBeTruthy();
+    expect(component.gardenList).toBeNull();
     expect(component.errorMessage).toBe(
       'Unexpected error 500: Internal Server Error'
     );
@@ -166,7 +166,7 @@ describe('FindGardensComponent', () => {
     );
     fixture.detectChanges();
 
-    expect(component.displayInfo).toBeNull();
+    expect(component.gardenList).toBeNull();
     expect(component.errorMessage).toBe('Cannot connect to GrowPod Server');
   });
 

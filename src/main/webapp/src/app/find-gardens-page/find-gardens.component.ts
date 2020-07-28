@@ -43,7 +43,7 @@ import {User} from '../model/user.model';
  * /find-gardens?zip-code={zip-code}, with the value of the string 'zip-code' as {zip-code}.
  */
 export class FindGardensComponent implements OnInit {
-  displayInfo: Array<Garden> | null;
+  gardenList: Array<Garden> | null;
   gardenAdminNames: Map<string, string>;
   isLoaded = false;
   errorMessage = '';
@@ -142,7 +142,7 @@ export class FindGardensComponent implements OnInit {
     this.getNearbyGardenList(zipCode).subscribe({
       next: (response: HttpResponse<Array<Garden>>) => {
         // Successful responses are handled here.
-        this.displayInfo = response.body;
+        this.gardenList = response.body;
         this.createGardenAdminNames();
         this.isLoaded = true;
       },
@@ -150,13 +150,13 @@ export class FindGardensComponent implements OnInit {
         // Handle connection error
         if (error.error instanceof ErrorEvent) {
           console.error('Network error: ' + error.error.message);
-          this.displayInfo = null;
+          this.gardenList = null;
           this.errorMessage = 'Cannot connect to GrowPod Server';
           this.isLoaded = true;
           return;
         }
         console.error('Unexpected error: ' + error.statusText);
-        this.displayInfo = null;
+        this.gardenList = null;
         this.errorMessage =
           'Unexpected error ' + error.status + ': ' + error.statusText;
         this.isLoaded = true;
@@ -181,13 +181,13 @@ export class FindGardensComponent implements OnInit {
         // Handle connection error
         if (error.error instanceof ErrorEvent) {
           console.error('Network error: ' + error.error.message);
-          this.displayInfo = null;
+          this.gardenList = null;
           this.errorMessage = 'Cannot connect to GrowPod Server';
           this.isLoaded = true;
           return;
         }
         console.error('Unexpected error: ' + error.statusText);
-        this.displayInfo = null;
+        this.gardenList = null;
         this.errorMessage =
           'Unexpected error ' + error.status + ': ' + error.statusText;
         this.isLoaded = true;
@@ -202,7 +202,7 @@ export class FindGardensComponent implements OnInit {
   createGardenAdminNames(): void {
     // Initialize array
     this.gardenAdminNames = new Map<string, string>();
-    this.displayInfo.forEach(garden => {
+    this.gardenList.forEach(garden => {
       this.gardenAdminNames.set(garden.adminId, 'Loading...');
 
       // Obtain user names

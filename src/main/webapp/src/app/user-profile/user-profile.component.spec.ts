@@ -63,7 +63,7 @@ describe('UserProfileComponent', () => {
     expect(testRequest.request.method).toBe('GET');
   });
 
-  it('should populate displayInfo as a result of a mock OK response object', () => {
+  it('should populate userProfile as a result of a mock OK response object', () => {
     fixture.detectChanges();
 
     // Handle request
@@ -73,7 +73,7 @@ describe('UserProfileComponent', () => {
     testRequest.flush(TEST_OK_RESPONSE);
     fixture.detectChanges();
 
-    expect(component.displayInfo).toBe(TEST_OK_RESPONSE);
+    expect(component.userProfile).toBe(TEST_OK_RESPONSE);
   });
 
   it('should display an error message as a result of a mock error code 404', () => {
@@ -92,7 +92,7 @@ describe('UserProfileComponent', () => {
     );
     fixture.detectChanges();
 
-    expect(component.displayInfo).not.toBeTruthy();
+    expect(component.userProfile).toBeNull();
     expect(component.errorMessage).toBe(
       'Cannot see user profile for user id: ' + TEST_ARGUMENT
     );
@@ -114,7 +114,7 @@ describe('UserProfileComponent', () => {
     );
     fixture.detectChanges();
 
-    expect(component.displayInfo).not.toBeTruthy();
+    expect(component.userProfile).toBeNull();
     expect(component.errorMessage).toBe(
       'Unexpected error 405: Method not allowed'
     );
@@ -135,7 +135,7 @@ describe('UserProfileComponent', () => {
     );
     fixture.detectChanges();
 
-    expect(component.displayInfo).not.toBeTruthy();
+    expect(component.userProfile).toBeNull();
     expect(component.errorMessage).toBe('Cannot connect to GrowPod Server');
   });
 });

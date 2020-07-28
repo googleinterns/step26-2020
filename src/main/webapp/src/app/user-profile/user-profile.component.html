@@ -2,26 +2,26 @@
   <mat-card-content>
     <div *ngIf="isLoaded">
       <!-- Regular case -->
-      <div *ngIf="displayInfo; else elseBlock">
+      <div *ngIf="userProfile; else elseBlock">
         <div
           id="profile-pic"
           class="profile-pic-container-l mat-elevation-z4"
         ></div>
         <h1 class="text-center">
-          {{ displayInfo.preferredName }}
+          {{ userProfile.preferredName }}
         </h1>
         <h4 class="text-center">
           <mat-icon aria-label="User location:">location_on</mat-icon>
-          {{ displayInfo.zipCode }}
+          {{ userProfile.zipCode }}
         </h4>
         <a href="mailto:user@email.com">
           <p class="text-center">
-            {{ displayInfo.email }}
+            {{ userProfile.email }}
           </p>
         </a>
         <mat-card class="biography">
           <p>
-            {{ displayInfo.biography }}
+            {{ userProfile.biography }}
           </p>
         </mat-card>
       </div>

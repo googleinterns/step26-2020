@@ -1,8 +1,8 @@
 <div *ngIf="isLoaded">
-  <div *ngIf="displayInfo; else errorBlock">
-    <div *ngIf="displayInfo.length > 0; else emptyBlock">
+  <div *ngIf="gardenList; else errorBlock">
+    <div *ngIf="gardenList.length > 0; else emptyBlock">
       <owl-carousel-o [options]="customOptions">
-        <ng-template carouselSlide *ngFor="let garden of displayInfo">
+        <ng-template carouselSlide *ngFor="let garden of gardenList">
           <mat-card class="mat-elevation-z8 cards">
             <mat-card-header>
               <mat-card-title class="title"

@@ -42,7 +42,7 @@ import {User} from '../model/user.model';
  */
 export class UserProfileComponent implements OnInit {
   isLoaded = false;
-  displayInfo: User | null;
+  userProfile: User | null;
   errorMessage = '';
 
   /**
@@ -84,14 +84,14 @@ export class UserProfileComponent implements OnInit {
     this.getUserInfo(user).subscribe({
       next: (response: HttpResponse<User>) => {
         // Successful responses are handled here.
-        this.displayInfo = response.body;
+        this.userProfile = response.body;
         this.isLoaded = true;
       },
       error: (error: HttpErrorResponse) => {
         // Handle connection error
         if (error.error instanceof ErrorEvent) {
           console.error('Network error: ' + error.error.message);
-          this.displayInfo = null;
+          this.userProfile = null;
           this.errorMessage = 'Cannot connect to GrowPod Server';
           this.isLoaded = true;
           return;
@@ -99,14 +99,14 @@ export class UserProfileComponent implements OnInit {
         // Non-404 error codes
         if (error.status !== 404) {
           console.error('Unexpected error: ' + error.statusText);
-          this.displayInfo = null;
+          this.userProfile = null;
           this.errorMessage =
             'Unexpected error ' + error.status + ': ' + error.statusText;
           this.isLoaded = true;
           return;
         }
         console.error('Error ' + error.status + ': ' + error.statusText);
-        this.displayInfo = null;
+        this.userProfile = null;
         this.errorMessage = 'Cannot see user profile for user id: ' + user;
         this.isLoaded = true;
       },

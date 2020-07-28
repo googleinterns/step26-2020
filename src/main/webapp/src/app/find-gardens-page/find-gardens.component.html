@@ -1,5 +1,5 @@
 <div *ngIf="isLoaded">
-  <div *ngIf="displayInfo !== null; else errorBlock">
+  <div *ngIf="displayInfo; else errorBlock">
     <div *ngIf="displayInfo.length > 0; else emptyBlock">
       <owl-carousel-o [options]="customOptions">
         <ng-template carouselSlide *ngFor="let garden of displayInfo">

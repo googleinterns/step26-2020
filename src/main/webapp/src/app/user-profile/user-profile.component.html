@@ -2,7 +2,7 @@
   <mat-card-content>
     <div *ngIf="isLoaded">
       <!-- Regular case -->
-      <div *ngIf="displayInfo != null; else elseBlock">
+      <div *ngIf="displayInfo; else elseBlock">
         <div
           id="profile-pic"
           class="profile-pic-container-l mat-elevation-z4"

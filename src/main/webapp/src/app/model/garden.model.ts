@@ -19,7 +19,7 @@
 export interface Garden {
   id: string;
   name: string;
-  biography: string;
+  description: string;
   lat: number;
   lng: number;
   zipCode: string;

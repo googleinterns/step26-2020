@@ -22,7 +22,7 @@ describe('FindGardensComponent', () => {
   const TEST_GARDEN: Garden = {
     id: '0',
     name: 'Garden name',
-    biography: 'Garden biography',
+    description: 'Garden description',
     lat: 0,
     lng: 0,
     zipCode: TEST_ARGUMENT,

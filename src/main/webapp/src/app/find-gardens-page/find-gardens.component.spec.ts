@@ -166,7 +166,7 @@ describe('FindGardensComponent', () => {
     );
     fixture.detectChanges();
 
-    expect(component.displayInfo).not.toBeTruthy();
+    expect(component.displayInfo).toBeNull();
     expect(component.errorMessage).toBe('Cannot connect to GrowPod Server');
   });
 

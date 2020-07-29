@@ -17,8 +17,11 @@ package com.google.growpod.servlets;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.growpod.controllers.GardenDao;
 import com.google.growpod.data.Garden;
+import com.google.growpod.data.Plant;
 import com.google.gson.Gson;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.lang.StringBuilder;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -99,6 +102,48 @@ public class GardenServlet extends HttpServlet {
   }
 
   /**
+   * Processes HTTP POST requests for the /garden servlet. Dispatches functionality based on
+   * structure of POST request.
+   *
+   * @param request Information about the GET Request
+   * @param response Information about the servlet's response
+   */
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
+    /* uriList will have "" as element 0 */
+    String[] uriList = request.getRequestURI().split("/");
+    assert (uriList[1].equals("garden"));
+
+    // Dispatch based on method specified.
+    // /garden
+    if (uriList.length == 2) {
+      // TODO Add garden provided adminId = logged in user.
+      return;
+    }
+
+    if (uriList.length == 4) {
+      if (uriList[3].equals(PLANT_LIST_ARG)) {
+        // /garden/{gid}/plant-list
+        // TODO (Issue #34) Verify user
+        String jsonString = getBody(request);
+        Plant plant = new Gson().fromJson(jsonString, Plant.class);
+        boolean status = dao.addToGardenPlantList(uriList[2], plant);
+        if (!status) {
+          response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+          return;
+        }
+        response.setContentType("application/json;");
+        response.getWriter().println("{\"id\":" + uriList[4] + "}");
+        return;
+      }
+      // If the uriList does not match the above two methods, fall through.
+    }
+    response.sendError(
+        HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
+  }
+
+  /**
    * Processes HTTP DELETE requests for the /garden servlet. Dispatches functionality based on
    * structure of DELETE request.
    *
@@ -156,5 +201,24 @@ public class GardenServlet extends HttpServlet {
 
   public void setDao(GardenDao dao) {
     this.dao = dao;
+  }
+
+  /**
+   * Reads POST request body into string.
+   * 
+   * @param request Http Servlet Request.
+   * @return The request body.
+   */
+  private String getBody(HttpServletRequest request) throws IOException {
+    StringBuilder body = new StringBuilder();
+    BufferedReader reader = request.getReader();
+    String line = reader.readLine();
+    while (line != null) {
+      body.append(line);
+      // Here because readLine removes trailing newline which may separate JSON tokens.
+      body.append(System.lineSeparator());
+      line = reader.readLine();
+    }
+    return body.toString();
   }
 }

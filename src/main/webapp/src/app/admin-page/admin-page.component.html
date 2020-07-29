@@ -4,8 +4,8 @@
       <div class="card-padding">
         <mat-card>
           <button class="right-align" mat-button disabled>
-              <mat-icon color="warn">delete</mat-icon>
-            </button>
+            <mat-icon color="warn">delete</mat-icon>
+          </button>
           <h2>
             {{ gardenProfile.name }}
           </h2>
@@ -67,7 +67,12 @@
                     >
                       <mat-icon color="accent">account_circle</mat-icon>
                     </button>
-                    <div *ngIf="userId !== gardenProfile.adminId; else disableDelete">
+                    <div
+                      *ngIf="
+                        userId !== gardenProfile.adminId;
+                        else disableDelete
+                      "
+                    >
                       <button mat-button (click)="removeUser(userId)">
                         <mat-icon color="warn">delete</mat-icon>
                       </button>

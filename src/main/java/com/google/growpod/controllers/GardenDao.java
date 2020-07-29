@@ -17,7 +17,9 @@ package com.google.growpod.controllers;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.IncompleteKey;
 import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery;
@@ -25,6 +27,7 @@ import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.growpod.data.ContainsPlant;
 import com.google.growpod.data.Garden;
 import com.google.growpod.data.HasMember;
+import com.google.growpod.data.Plant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,6 +118,39 @@ public class GardenDao {
     }
 
     return plantList;
+  }
+
+  /**
+   * Adds a plant to a garden's plant list.
+   *
+   * @param gardenId the garden to add the plant to
+   * @param plant the plant object
+   * @return Whether the addition was successful
+   */
+  public boolean addToGardenPlantList(String gardenId, Plant plant) {
+    // Add plant to plant list first
+    plant.setId("0"); // Dummy key to make .toEntity(datastoreInstance) work.
+    KeyFactory keyFactory = datastore.newKeyFactory().setKind("Plant");
+    IncompleteKey incompleteKey = keyFactory.newKey();
+
+    Key key = datastore.allocateId(incompleteKey);
+
+    Entity newEntity = Entity.newBuilder(key, plant.toEntity(datastoreInstance)).build();
+    datastore.add(newEntity);
+
+    String plantId = Long.toString(newEntity.getKey().getId());
+
+    // Then add relation
+    ContainsPlant relation = new ContainsPlant("0", gardenId, plantId);
+
+    keyFactory = datastore.newKeyFactory().setKind("ContainsPlant");
+    incompleteKey = keyFactory.newKey();
+
+    key = datastore.allocateId(incompleteKey);
+
+    newEntity = Entity.newBuilder(key, relation.toEntity(datastoreInstance)).build();
+    datastore.add(newEntity);
+    return true;
   }
 
   /**

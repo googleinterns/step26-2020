@@ -73,6 +73,7 @@ export class AdminPageComponent implements OnInit {
     if (!gardenIdArg) {
       this.gardenProfile = null;
       this.errorMessage = 'No garden-id argument in the query string.';
+      this.isLoaded = true;
       return;
     }
     this.createAdminPage(gardenIdArg);
@@ -164,30 +165,36 @@ export class AdminPageComponent implements OnInit {
    * Deletes a plant from a garden.
    *
    * Performs GET: /garden/{{gardenProfile.id}}/plant-list/{id}
-   * 
+   *
    * @param id the plant id to delete.
    * @return the http response.
    */
   deleteFromGardenPlantList(id: string): Observable<HttpResponse<string>> {
-    return this.httpClient.delete<string>('/garden/' + this.gardenProfile.id + '/plant-list/' + id, {
-      observe: 'response',
-      responseType: 'json',
-    });
+    return this.httpClient.delete<string>(
+      '/garden/' + this.gardenProfile.id + '/plant-list/' + id,
+      {
+        observe: 'response',
+        responseType: 'json',
+      }
+    );
   }
 
   /**
    * Deletes a user from a garden.
    *
    * Performs GET: /garden/{{gardenProfile.id}}/user-list/{id}
-   * 
+   *
    * @param id the user id to delete.
    * @return the http response.
    */
   deleteFromGardenUserList(id: string): Observable<HttpResponse<string>> {
-    return this.httpClient.delete<string>('/garden/' + this.gardenProfile.id + '/user-list/' + id, {
-      observe: 'response',
-      responseType: 'json',
-    });
+    return this.httpClient.delete<string>(
+      '/garden/' + this.gardenProfile.id + '/user-list/' + id,
+      {
+        observe: 'response',
+        responseType: 'json',
+      }
+    );
   }
 
   /**
@@ -391,7 +398,7 @@ export class AdminPageComponent implements OnInit {
         }
         console.error('Unexpected error: ' + error.statusText);
       },
-    })
+    });
   }
 
   /**
@@ -412,6 +419,6 @@ export class AdminPageComponent implements OnInit {
         }
         console.error('Unexpected error: ' + error.statusText);
       },
-    })
+    });
   }
 }

@@ -15,14 +15,11 @@
 package com.google.growpod.servlets;
 
 import com.google.cloud.datastore.DatastoreOptions;
-import com.google.growpod.LoadTestData;
 import com.google.growpod.controllers.UserDao;
 import com.google.growpod.data.User;
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -126,7 +123,6 @@ public class UserServlet extends HttpServlet {
     }
   }
 
-  
   /** Getters and Setters for data access object. */
   public UserDao getDao() {
     return dao;

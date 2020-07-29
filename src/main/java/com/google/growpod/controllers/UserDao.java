@@ -24,7 +24,6 @@ import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
-import com.google.growpod.LoadTestData;
 import com.google.growpod.data.Garden;
 import com.google.growpod.data.HasMember;
 import com.google.growpod.data.User;
@@ -36,7 +35,7 @@ public class UserDao {
 
   private DatastoreOptions datastoreInstance;
   private Datastore datastore;
-  
+
   /**
    * Initializes a new user controller from a given Datastore.
    *

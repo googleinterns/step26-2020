@@ -79,7 +79,7 @@ export class LoginComponent {
    * This function is responsible for sending the POST request to the servlet.
    * It takes in a JSON object containing user data: id,email,name,bio,zip
    *
-   * @param data object holding user data that will be used as a param in the post request 
+   * @param data object holding user data that will be used as a param in the post request
    */
   postData(data: any): void {
     const httpOptions = {

@@ -170,6 +170,7 @@ public class GardenDao {
         Query.newEntityQueryBuilder()
             .setKind("HasMember")
             .setFilter(PropertyFilter.eq("garden-id", gardenId))
+            .setFilter(PropertyFilter.eq("user-id", userId))
             .build();
     QueryResults<Entity> results = datastore.run(query);
     if (!results.hasNext()) {
@@ -200,6 +201,7 @@ public class GardenDao {
         Query.newEntityQueryBuilder()
             .setKind("ContainsPlant")
             .setFilter(PropertyFilter.eq("garden-id", gardenId))
+            .setFilter(PropertyFilter.eq("plant-id", plantId))
             .build();
     QueryResults<Entity> results = datastore.run(query);
     if (!results.hasNext()) {

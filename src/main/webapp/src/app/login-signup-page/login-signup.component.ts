@@ -37,7 +37,7 @@ export class LoginComponent {
   ) {}
 
   /**
-   * @param data user data taken from google account: email and name
+   * @param accountData user data taken from google account: email and name
    */
   set userData(accountData: any) {
     this.user = accountData;
@@ -79,14 +79,14 @@ export class LoginComponent {
    * This function is responsible for sending the POST request to the servlet.
    * It takes in a JSON object containing user data: id,email,name,bio,zip
    *
-   * @param action string that represents if the user is logging in or signing up
+   * @param data object holding user data that will be used as a param in the post request 
    */
-  postData(createBody: any): void {
+  postData(data: any): void {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
-      params: new HttpParams().set('userData', JSON.stringify(createBody)),
+      params: new HttpParams().set('userData', JSON.stringify(data)),
     };
     this.httpClient.post<any>('/user', null, httpOptions);
   }

@@ -36,8 +36,7 @@ public class UserDao {
 
   private DatastoreOptions datastoreInstance;
   private Datastore datastore;
-  private LoadTestData data;
-
+  
   /**
    * Initializes a new user controller from a given Datastore.
    *

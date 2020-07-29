@@ -42,10 +42,8 @@ import javax.servlet.http.HttpServletResponse;
 public class UserServlet extends HttpServlet {
 
   static final long serialVersionUID = 1L;
-  Map<String, User> userMap = new HashMap<String, User>();
 
   private UserDao dao;
-  private LoadTestData data;
 
   private static final String CURRENT_USER_ARG = "current";
   private static final String GARDEN_LIST_ARG = "garden-list";
@@ -85,10 +83,8 @@ public class UserServlet extends HttpServlet {
 
     // Dispatch based on method specified.
     // /user/{id}
-
     if (uriList.length == 3) {
       User user = dao.getUserById(userKey);
-      // User user = getUserById(uriList[2]);
       if (user == null) {
         response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userKey);
         return;
@@ -129,20 +125,8 @@ public class UserServlet extends HttpServlet {
           HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
     }
   }
-  /**
-   * Retrieves a user in the database by id, or null if said id does not exist.
-   *
-   * @param id the user's id
-   * @return the user with id's data or null.
-   */
-  private User getUserById(String id) {
-    // MOCK IMPLEMENTATION
-    if (id.equals("current")) {
-      return userMap.get(CURRENT_USER_KEY);
-    }
-    return userMap.get(id);
-  }
 
+  
   /** Getters and Setters for data access object. */
   public UserDao getDao() {
     return dao;

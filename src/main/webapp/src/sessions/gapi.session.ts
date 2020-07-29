@@ -90,38 +90,42 @@ export class GapiSession {
     this.auth2.signOut();
   }
 
-  listEvents(selectedDate: string) {
+  listEvents(selectedDate: string, selectedDateMax: string) {
     gapi.client.load('calendar', 'v3', () => {
       gapi.client.calendar.events
         .list({
           calendarId: 'primary',
           timeMin: selectedDate,
+          timeMax: selectedDateMax,
           singleEvents: true,
           orderBy: 'startTime',
         })
         .then(response => {
           const events = response.result.items;
-
+          this.tasks.clearTasks();
           if (events.length > 0) {
             for (let i = 0; i < events.length; i++) {
               const event = events[i];
-
-              console.log(event.summary);
-              const task = this.tasks.createTaskElement(
-                '9:00am',
+              const eventTime = this.getEventTime(event.start.dateTime);
+              this.tasks.createTaskElement(
+                eventTime,
                 event.summary,
                 event.attendees,
                 event.description
               );
-              this.tasks.addTaskToComponent(task);
-              // console.log(event.summary);
-              // console.log(event.description);
-              // console.log(event.start.date);
-              // console.log(event.start.dateTime);
-              // console.log(event.attendees)
             }
           }
         });
     });
+  }
+
+  getEventTime(dateTime: string): string {
+    if(dateTime) {
+      const dateTimeSplit = dateTime.split('T');
+      return dateTimeSplit[1].split('-', 1);
+    }
+    else {
+      return "All Day";
+    }
   }
 }

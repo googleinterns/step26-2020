@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
 import {GapiSession} from '../../sessions/gapi.session';
 import {DatepickerComponent} from '../datepicker/datepicker.component';
 
@@ -28,7 +27,6 @@ import {DatepickerComponent} from '../datepicker/datepicker.component';
 export class SchedulePageComponent implements OnInit {
   @ViewChild('datepickerElem', {static: false})
   datepickerElem: DatepickerComponent;
-  private router: Router;
 
   constructor(private gapiSession: GapiSession) {}
 
@@ -36,10 +34,10 @@ export class SchedulePageComponent implements OnInit {
 
   signIn() {
     if (this.gapiSession.consent) {
-      this.gapiSession.listEvents(this.datepickerElem.selectedDate);
+      this.gapiSession.listEvents(this.datepickerElem.selectedDate, this.datepickerElem.selectedDateMax);
     } else {
       this.gapiSession.signIn().then(() => {
-        this.gapiSession.listEvents(this.datepickerElem.selectedDate);
+        this.gapiSession.listEvents(this.datepickerElem.selectedDate, this.datepickerElem.selectedDateMax);
       });
     }
   }

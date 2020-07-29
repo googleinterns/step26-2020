@@ -17,7 +17,9 @@ import {Component, OnInit} from '@angular/core';
 @Component({
   selector: 'calendar-tasks',
   templateUrl: './task.component.html',
-  styleUrls: ['../common/growpod-page-styles.css'],
+  styleUrls: [
+    './task.component.css',
+    '../common/growpod-page-styles.css'],
 })
 export class TaskComponent implements OnInit {
   constructor() {}
@@ -25,18 +27,20 @@ export class TaskComponent implements OnInit {
   ngOnInit(): void {}
 
   /**
-   * Update task component by appending a new task element
+   * Clear tasks before adding any new elements
    */
-  addTaskToComponent(task: HTMLElement): void {
-    const taskContainer = document.getElementById('all-tasks');
-    taskContainer.appendChild(task);
+  clearTasks(): void {
+    const tasksContainer = document.getElementById('all-tasks');
+    while(tasksContainer.firstChild) {
+      tasksContainer.removeChild(tasksContainer.lastChild);
+    }
   }
 
   /**
-   * Create a task element based on information provided
+   * Create a task element based on information provided and add it to DOM
    * @param time - event time on ISO format
    * @param title - event title
-   * @param members - list of participants emails
+   * @param members - (optional) list of participants emails
    * @param description - (optional) event description
    */
   createTaskElement(
@@ -44,30 +48,31 @@ export class TaskComponent implements OnInit {
     title: string,
     members?: any[],
     description?: string
-  ): HTMLElement {
-    const matCard = document.createElement('mat-card');
+  ): void {
+    const card = document.createElement('div');
+    card.className = 'task-card'
 
-    const matTitle = document.createElement('mat-card-title');
-    matTitle.appendChild(document.createTextNode(time + ' | ' + title));
+    const cardTitle = document.createElement('h2');
+    cardTitle.appendChild(document.createTextNode(time + ' | ' + title));
+    card.appendChild(cardTitle);
 
-    const matMembers = document.createElement('h3');
-    let allMembers = 'general event';
+    const cardMembers = document.createElement('h3');
+    let allMembers = 'general event (anyone)';
     if (members) {
       allMembers = this.membersToString(members);
     }
-    matMembers.appendChild(document.createTextNode('Member(s): ' + allMembers));
-
-    matCard.appendChild(matTitle);
-    matCard.appendChild(matMembers);
+    cardMembers.appendChild(document.createTextNode('Member(s): ' + allMembers));
+    card.appendChild(cardMembers);
 
     // If description was provided, add it to mat card
     if (description) {
-      const matDescription = document.createElement('mat-card-content');
-      matDescription.innerHTML = description;
-      matCard.appendChild(matDescription);
+      const cardDescription = document.createElement('p');
+      cardDescription.innerHTML = description;
+      card.appendChild(cardDescription);
     }
 
-    return matCard;
+    const taskContainer = document.getElementById('all-tasks');
+    taskContainer.appendChild(card);
   }
 
   /**

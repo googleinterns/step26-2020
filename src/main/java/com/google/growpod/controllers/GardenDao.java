@@ -67,9 +67,8 @@ public class GardenDao {
     List<String> userList = new ArrayList<String>();
 
     // Existence check
-    String projectId = datastoreInstance.getProjectId();
-    Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(id)).build();
-    if (datastore.get(key) == null) {
+    Garden garden = getGardenById(id);
+    if (garden == null) {
       return null;
     }
 
@@ -98,9 +97,8 @@ public class GardenDao {
     List<String> plantList = new ArrayList<String>();
 
     // Existence check
-    String projectId = datastoreInstance.getProjectId();
-    Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(id)).build();
-    if (datastore.get(key) == null) {
+    Garden garden = getGardenById(id);
+    if (garden == null) {
       return null;
     }
 
@@ -117,5 +115,74 @@ public class GardenDao {
     }
 
     return plantList;
+  }
+
+  /**
+   * Deletes a user id from the garden's user list.
+   *
+   * @param gardenId the garden's id
+   * @param userId the user's id
+   * @return whether the query was successful.
+   */
+  public boolean deleteFromGardenUserList(String gardenId, String userId) {
+    // Existence check for key
+    Garden garden = getGardenById(gardenId);
+    if (garden == null) {
+      return false;
+    }
+
+    // Match user and garden
+    StructuredQuery<Entity> query =
+        Query.newEntityQueryBuilder()
+            .setKind("HasMember")
+            .setFilter(PropertyFilter.eq("garden-id", gardenId))
+            .build();
+    QueryResults<Entity> results = datastore.run(query);
+    if (!results.hasNext()) {
+      return false;
+    }
+    Entity entity = results.next();
+
+    datastore.delete(entity.getKey());
+    return true;
+  }
+
+  /**
+   * Deletes a plant id, as well as a plant, from the garden's plant list.
+   *
+   * @param gardenId the garden's id
+   * @param plantId the plant's id
+   * @return whether the query was successful.
+   */
+  public boolean deleteFromGardenPlantList(String gardenId, String plantId) {
+    // Existence check for key
+    Garden garden = getGardenById(gardenId);
+    if (garden == null) {
+      return false;
+    }
+
+    // Deletes relation first
+    StructuredQuery<Entity> query =
+        Query.newEntityQueryBuilder()
+            .setKind("ContainsPlant")
+            .setFilter(PropertyFilter.eq("garden-id", gardenId))
+            .build();
+    QueryResults<Entity> results = datastore.run(query);
+    if (!results.hasNext()) {
+      return false;
+    }
+    Entity entity = results.next();
+    datastore.delete(entity.getKey());
+
+    // Then delete plant
+    String projectId = datastoreInstance.getProjectId();
+    Key key = Key.newBuilder(projectId, "Plant", Long.parseLong(plantId)).build();
+    Entity plantEntity = datastore.get(key);
+    if (plantEntity == null) {
+      return false;
+    }
+    datastore.delete(plantEntity.getKey());
+
+    return true;
   }
 }

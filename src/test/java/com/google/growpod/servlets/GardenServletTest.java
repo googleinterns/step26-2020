@@ -166,4 +166,56 @@ public final class GardenServletTest {
 
     assertEquals(MockHttpServletResponse.SC_METHOD_NOT_ALLOWED, response.getStatus());
   }
+
+  /** Tests successful query for DELETE: /garden/{gid}/user-list/{uid}. */
+  @Test
+  public void doDelete_successfulUserListQuery_successfulResult() throws IOException {
+    String testUrl = "/garden/0/user-list/0";
+
+    // Mocks
+    MockHttpServletRequest request = new MockHttpServletRequest("DELETE", testUrl);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    when(dao.deleteFromGardenUserList("0", "0")).thenReturn(true);
+
+    servlet.doDelete(request, response);
+
+    assertEquals("application/json;", response.getContentType());
+    assertEquals("{\"id\":0}", response.getContentAsString().trim());
+  }
+
+  // TODO test failed query when behavior becomes defined
+
+  /** Tests successful query for DELETE: /garden/{gid}/user-list/{uid}. */
+  @Test
+  public void doDelete_successfulPlantListQuery_successfulResult() throws IOException {
+    String testUrl = "/garden/0/plant-list/0";
+
+    // Mocks
+    MockHttpServletRequest request = new MockHttpServletRequest("DELETE", testUrl);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    when(dao.deleteFromGardenPlantList("0", "0")).thenReturn(true);
+
+    servlet.doDelete(request, response);
+
+    assertEquals("application/json;", response.getContentType());
+    assertEquals("{\"id\":0}", response.getContentAsString().trim());
+  }
+
+  // TODO test failed query when behavior becomes defined
+
+  /** Tests invalid method on DELETE. */
+  @Test
+  public void doDelete_invalidUrlQuery_returns405() throws IOException {
+    String testUrl = "/garden/peapod/cody-kayla-stephanie-caroline-jake";
+
+    // Mocks
+    MockHttpServletRequest request = new MockHttpServletRequest("DELETE", testUrl);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    servlet.doGet(request, response);
+
+    assertEquals(MockHttpServletResponse.SC_METHOD_NOT_ALLOWED, response.getStatus());
+  }
 }

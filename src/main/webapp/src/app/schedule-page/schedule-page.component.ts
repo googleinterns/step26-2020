@@ -34,10 +34,16 @@ export class SchedulePageComponent implements OnInit {
 
   signIn() {
     if (this.gapiSession.consent) {
-      this.gapiSession.listEvents(this.datepickerElem.selectedDate, this.datepickerElem.selectedDateMax);
+      this.gapiSession.listEvents(
+        this.datepickerElem.selectedDate,
+        this.datepickerElem.selectedDateMax
+      );
     } else {
       this.gapiSession.signIn().then(() => {
-        this.gapiSession.listEvents(this.datepickerElem.selectedDate, this.datepickerElem.selectedDateMax);
+        this.gapiSession.listEvents(
+          this.datepickerElem.selectedDate,
+          this.datepickerElem.selectedDateMax
+        );
       });
     }
   }

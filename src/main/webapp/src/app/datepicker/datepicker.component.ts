@@ -55,14 +55,14 @@ export class DatepickerComponent implements OnInit {
   }
 
   get selectedDate() {
-    let date = this.selectedDateIso.split('T', 1);
-    const timeMin = 'T00:00:01Z'
+    const date = this.selectedDateIso.split('T', 1);
+    const timeMin = 'T00:00:01Z';
     return date + timeMin;
   }
 
   get selectedDateMax() {
-    let date = this.selectedDateIso.split('T', 1);
-    const timeMax = 'T23:59:59Z'
+    const date = this.selectedDateIso.split('T', 1);
+    const timeMax = 'T23:59:59Z';
     return date + timeMax;
   }
 }

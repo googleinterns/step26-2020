@@ -120,12 +120,11 @@ export class GapiSession {
   }
 
   getEventTime(dateTime: string): string {
-    if(dateTime) {
+    if (dateTime) {
       const dateTimeSplit = dateTime.split('T');
       return dateTimeSplit[1].split('-', 1);
-    }
-    else {
-      return "All Day";
+    } else {
+      return 'All Day';
     }
   }
 }

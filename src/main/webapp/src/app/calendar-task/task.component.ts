@@ -17,9 +17,7 @@ import {Component, OnInit} from '@angular/core';
 @Component({
   selector: 'calendar-tasks',
   templateUrl: './task.component.html',
-  styleUrls: [
-    './task.component.css',
-    '../common/growpod-page-styles.css'],
+  styleUrls: ['./task.component.css', '../common/growpod-page-styles.css'],
 })
 export class TaskComponent implements OnInit {
   constructor() {}
@@ -31,7 +29,7 @@ export class TaskComponent implements OnInit {
    */
   clearTasks(): void {
     const tasksContainer = document.getElementById('all-tasks');
-    while(tasksContainer.firstChild) {
+    while (tasksContainer.firstChild) {
       tasksContainer.removeChild(tasksContainer.lastChild);
     }
   }
@@ -50,7 +48,7 @@ export class TaskComponent implements OnInit {
     description?: string
   ): void {
     const card = document.createElement('div');
-    card.className = 'task-card'
+    card.className = 'task-card';
 
     const cardTitle = document.createElement('h2');
     cardTitle.appendChild(document.createTextNode(time + ' | ' + title));
@@ -61,7 +59,9 @@ export class TaskComponent implements OnInit {
     if (members) {
       allMembers = this.membersToString(members);
     }
-    cardMembers.appendChild(document.createTextNode('Member(s): ' + allMembers));
+    cardMembers.appendChild(
+      document.createTextNode('Member(s): ' + allMembers)
+    );
     card.appendChild(cardMembers);
 
     // If description was provided, add it to mat card

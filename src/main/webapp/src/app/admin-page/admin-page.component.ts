@@ -42,12 +42,19 @@ import {User} from '../model/user.model';
  * their garden.
  */
 export class AdminPageComponent implements OnInit {
-  isLoaded = true;
+  isLoaded = false;
   gardenProfile: Garden | null;
+  gardenManager: string;
+
+  // User list
   gardenUserIdList: Array<string> | null = null;
-  gardenUserList: Array<User>;
+  gardenUserNameMap: Map<string, string>;
+  gardenUserIdListError = 'User list not loaded';
+
+  // Plant list
   gardenPlantIdList: Array<string> | null = null;
-  gardenPlantList: Array<Plant>;
+  gardenPlantNameMap: Map<string, string>;
+  gardenPlantIdListError = ''
   errorMessage = '';
 
   /**
@@ -90,7 +97,7 @@ export class AdminPageComponent implements OnInit {
    *
    * @return the http response.
    */
-  getCurrentGardenUserList(
+  getGardenUserList(
     garden: string
   ): Observable<HttpResponse<Array<String>>> {
     return this.httpClient.get<Array<String>>(
@@ -109,7 +116,7 @@ export class AdminPageComponent implements OnInit {
    *
    * @return the http response.
    */
-  getCurrentGardenPlantList(
+  getGardenPlantList(
     garden: string
   ): Observable<HttpResponse<Array<String>>> {
     return this.httpClient.get<Array<String>>(
@@ -167,6 +174,22 @@ export class AdminPageComponent implements OnInit {
         // Get rest of information
         this.createGardenUserList(garden);
         this.createGardenPlantList(garden);
+        this.gardenManager = "Loading";
+        this.getUserInfo(this.gardenProfile.adminId).subscribe({
+          next: (response: HttpResponse<User>) => {
+            this.gardenManager = response.body.preferredName;
+          },
+          error: (error: HttpErrorResponse) => {
+            // Handle connection error
+            if (error.error instanceof ErrorEvent) {
+              console.error('Network error: ' + error.error.message);
+              this.gardenManager = 'Cannot fetch name';
+              return;
+            }
+            console.error('Unexpected error: ' + error.statusText);
+            this.gardenManager = 'Cannot fetch name';
+          },
+        });
       },
       error: (error: HttpErrorResponse) => {
         // Handle connection error
@@ -188,7 +211,7 @@ export class AdminPageComponent implements OnInit {
         }
         console.error('Error ' + error.status + ': ' + error.statusText);
         this.gardenProfile = null;
-        this.errorMessage = 'Cannot see garden profile for user id: ' + garden;
+        this.errorMessage = 'Cannot see garden profile for garden id: ' + garden;
         this.isLoaded = true;
       },
     });
@@ -199,14 +222,120 @@ export class AdminPageComponent implements OnInit {
    *
    * @param garden The garden to create a user list of.
    */
-  createGardenUserList(garden: string): void {}
+  createGardenUserList(garden: string): void {
+    this.getGardenUserList(garden).subscribe({
+      next: (response: HttpResponse<Array<string>>) => {
+        // Successful responses are handled here.
+        this.gardenUserIdList = response.body;
+        // Gets user names
+        this.gardenUserNameMap = new Map<string, string>();
+        this.gardenUserIdList.forEach(id => {
+          this.gardenUserNameMap.set(id, "Loading...");
+          this.getUserInfo(id).subscribe({
+            // Obtain user names
+            next: (response: HttpResponse<User>) => {
+              // Successful responses are handled here.
+              this.gardenUserNameMap.set(
+                id,
+                response.body.preferredName
+              );
+            },
+            error: (error: HttpErrorResponse) => {
+              // Handle connection error
+              if (error.error instanceof ErrorEvent) {
+                console.error('Network error: ' + error.error.message);
+                this.gardenUserNameMap.set(id, 'Cannot fetch name');
+                return;
+              }
+              console.error('Unexpected error: ' + error.statusText);
+              this.gardenUserNameMap.set(id, 'Cannot fetch name');
+            },
+          });
+        });
+      },
+      error: (error: HttpErrorResponse) => {
+        // Handle connection error
+        if (error.error instanceof ErrorEvent) {
+          console.error('Network error: ' + error.error.message);
+          this.gardenUserIdList = null;
+          this.gardenUserIdListError = 'Cannot connect to GrowPod Server';
+          return;
+        }
+        // Non-404 error codes
+        if (error.status !== 404) {
+          console.error('Unexpected error: ' + error.statusText);
+          this.gardenUserIdList = null;
+          this.gardenUserIdListError =
+            'Unexpected error ' + error.status + ': ' + error.statusText;
+          return;
+        }
+        console.error('Error ' + error.status + ': ' + error.statusText);
+        this.gardenUserIdList = null;
+        this.gardenUserIdListError = 'Cannot see user list for garden id: ' + garden;
+        this.isLoaded = true;
+      },
+    });
+  }
 
   /**
    * Creates garden plant list.
    *
    * @param garden The garden to create a plant list of.
    */
-  createGardenPlantList(garden: string): void {}
+  createGardenPlantList(garden: string): void {
+    this.getGardenPlantList(garden).subscribe({
+      next: (response: HttpResponse<Array<string>>) => {
+        // Successful responses are handled here.
+        this.gardenPlantIdList = response.body;
+        // Get plant names
+        this.gardenPlantNameMap = new Map<string, string>();
+        this.gardenPlantIdList.forEach(id => {
+          this.gardenPlantNameMap.set(id, "Loading...");
+          this.getPlantInfo(id).subscribe({
+            // Obtain plant names
+            next: (response: HttpResponse<Plant>) => {
+              // Successful responses are handled here.
+              this.gardenPlantNameMap.set(
+                id,
+                response.body.nickname
+              );
+            },
+            error: (error: HttpErrorResponse) => {
+              // Handle connection error
+              if (error.error instanceof ErrorEvent) {
+                console.error('Network error: ' + error.error.message);
+                this.gardenPlantNameMap.set(id, 'Cannot fetch name');
+                return;
+              }
+              console.error('Unexpected error: ' + error.statusText);
+              this.gardenPlantNameMap.set(id, 'Cannot fetch name');
+            },
+          });
+        });
+      },
+      error: (error: HttpErrorResponse) => {
+        // Handle connection error
+        if (error.error instanceof ErrorEvent) {
+          console.error('Network error: ' + error.error.message);
+          this.gardenPlantIdList = null;
+          this.gardenPlantIdListError = 'Cannot connect to GrowPod Server';
+          return;
+        }
+        // Non-404 error codes
+        if (error.status !== 404) {
+          console.error('Unexpected error: ' + error.statusText);
+          this.gardenPlantIdList = null;
+          this.gardenPlantIdListError =
+            'Unexpected error ' + error.status + ': ' + error.statusText;
+          return;
+        }
+        console.error('Error ' + error.status + ': ' + error.statusText);
+        this.gardenPlantIdList = null;
+        this.gardenPlantIdListError = 'Cannot see plant list for garden id: ' + garden;
+        this.isLoaded = true;
+      },
+    });
+  }
 
   /**
    * Creates garden administration page based on the given garden id.

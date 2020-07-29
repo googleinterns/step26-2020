@@ -19,6 +19,7 @@ import static org.mockito.Mockito.*;
 
 import com.google.growpod.controllers.GardenDao;
 import com.google.growpod.data.Garden;
+import com.google.growpod.data.Plant;
 import com.google.growpod.servlets.GardenServlet;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -42,6 +43,7 @@ public final class GardenServletTest {
 
   /** Test values. */
   private final Garden TEST_GARDEN = new Garden("0", "x", "y", 0.0, 0.0, "0", "0");
+  private final Plant TEST_PLANT = new Plant("0", "x", 1, "y");
   /** Separate lists in case I change the type each query returns */
   private final List<String> TEST_USER_LIST = Arrays.asList("0");
 
@@ -167,6 +169,40 @@ public final class GardenServletTest {
     assertEquals(MockHttpServletResponse.SC_METHOD_NOT_ALLOWED, response.getStatus());
   }
 
+  /** Tests successful query for POST: /garden/{gid}/plant-list posting */
+  @Test
+  public void doPost_successfulPlantListQuery_successfulResult() throws IOException {
+    String testUrl = "/garden/0/plant-list";
+
+    // Mocks
+    MockHttpServletRequest request = new MockHttpServletRequest("POST", testUrl);
+    request.setContent(new Gson().toJson(TEST_PLANT).getBytes());
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    when(dao.addToGardenPlantList("0", TEST_PLANT)).thenReturn("0");
+
+    servlet.doPost(request, response);
+
+    assertEquals("application/json;", response.getContentType());
+    assertEquals("{\"id\":0}", response.getContentAsString().trim());
+  }
+
+  // TODO test failed query when behavior becomes defined
+
+  /** Tests invalid method on POST. */
+  @Test
+  public void doPost_invalidUrlQuery_returns405() throws IOException {
+    String testUrl = "/garden/peapod/cody-kayla-stephanie-caroline-jake";
+
+    // Mocks
+    MockHttpServletRequest request = new MockHttpServletRequest("POST", testUrl);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    servlet.doGet(request, response);
+
+    assertEquals(MockHttpServletResponse.SC_METHOD_NOT_ALLOWED, response.getStatus());
+  }
+
   /** Tests successful query for DELETE: /garden/{gid}/user-list/{uid}. */
   @Test
   public void doDelete_successfulUserListQuery_successfulResult() throws IOException {
@@ -186,7 +222,7 @@ public final class GardenServletTest {
 
   // TODO test failed query when behavior becomes defined
 
-  /** Tests successful query for DELETE: /garden/{gid}/user-list/{uid}. */
+  /** Tests successful query for DELETE: /garden/{gid}/plant-list/{uid}. */
   @Test
   public void doDelete_successfulPlantListQuery_successfulResult() throws IOException {
     String testUrl = "/garden/0/plant-list/0";

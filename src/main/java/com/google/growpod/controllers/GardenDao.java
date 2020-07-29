@@ -125,11 +125,11 @@ public class GardenDao {
    *
    * @param gardenId the garden to add the plant to
    * @param plant the plant object
-   * @return Whether the addition was successful
+   * @return The plant's key
    */
-  public boolean addToGardenPlantList(String gardenId, Plant plant) {
+  public String addToGardenPlantList(String gardenId, Plant plant) {
     // Add plant to plant list first
-    plant.setId("0"); // Dummy key to make .toEntity(datastoreInstance) work.
+    plant.setId("1"); // Dummy key to make .toEntity(datastoreInstance) work.
     KeyFactory keyFactory = datastore.newKeyFactory().setKind("Plant");
     IncompleteKey incompleteKey = keyFactory.newKey();
 
@@ -141,16 +141,15 @@ public class GardenDao {
     String plantId = Long.toString(newEntity.getKey().getId());
 
     // Then add relation
-    ContainsPlant relation = new ContainsPlant("0", gardenId, plantId);
-
     keyFactory = datastore.newKeyFactory().setKind("ContainsPlant");
     incompleteKey = keyFactory.newKey();
 
     key = datastore.allocateId(incompleteKey);
+    ContainsPlant relation = new ContainsPlant("1", gardenId, plantId);
 
     newEntity = Entity.newBuilder(key, relation.toEntity(datastoreInstance)).build();
     datastore.add(newEntity);
-    return true;
+    return plantId;
   }
 
   /**

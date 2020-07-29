@@ -21,7 +21,6 @@ import com.google.growpod.data.Plant;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.lang.StringBuilder;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -112,8 +111,7 @@ public class GardenServlet extends HttpServlet {
    * @param response Information about the servlet's response
    */
   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws IOException {
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     /* uriList will have "" as element 0 */
     String[] uriList = request.getRequestURI().split("/");
     assert (uriList[1].equals("garden"));
@@ -131,13 +129,13 @@ public class GardenServlet extends HttpServlet {
         // TODO (Issue #34) Verify user
         String jsonString = getBody(request);
         Plant plant = new Gson().fromJson(jsonString, Plant.class);
-        boolean status = dao.addToGardenPlantList(uriList[2], plant);
-        if (!status) {
+        String key = dao.addToGardenPlantList(uriList[2], plant);
+        if (key == null) {
           response.setStatus(HttpServletResponse.SC_NO_CONTENT);
           return;
         }
         response.setContentType("application/json;");
-        response.getWriter().println("{\"id\":" + uriList[4] + "}");
+        response.getWriter().println("{\"id\":" + key + "}");
         return;
       }
       // If the uriList does not match the above two methods, fall through.
@@ -208,7 +206,7 @@ public class GardenServlet extends HttpServlet {
 
   /**
    * Reads POST request body into string.
-   * 
+   *
    * @param request Http Servlet Request.
    * @return The request body.
    */

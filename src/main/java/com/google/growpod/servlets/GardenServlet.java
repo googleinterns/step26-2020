@@ -176,7 +176,9 @@ public class GardenServlet extends HttpServlet {
         boolean status = dao.deleteFromGardenUserList(uriList[2], uriList[4]);
         if (!status) {
           // Nothing to delete
-          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user: " + uriList[4] + " of garden: " + uriList[2]);
+          response.sendError(
+              HttpServletResponse.SC_NOT_FOUND,
+              "Invalid user: " + uriList[4] + " of garden: " + uriList[2]);
           return;
         }
         response.setContentType("application/json;");
@@ -186,7 +188,9 @@ public class GardenServlet extends HttpServlet {
         // /garden/{gid}/plant-list/{pid}
         boolean status = dao.deleteFromGardenPlantList(uriList[2], uriList[4]);
         if (!status) {
-          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid plant: " + uriList[4] + " of garden: " + uriList[2]);
+          response.sendError(
+              HttpServletResponse.SC_NOT_FOUND,
+              "Invalid plant: " + uriList[4] + " of garden: " + uriList[2]);
           return;
         }
         response.setContentType("application/json;");

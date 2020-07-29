@@ -165,7 +165,6 @@ public class UserServlet extends HttpServlet {
     resp.setContentType("application/json");
     String jsonString = req.getParameter("userData");
     User userData = gson.fromJson(jsonString, User.class);
-    System.out.println(userData + "userdata");
     dao.addToDS(userData);
   }
 }

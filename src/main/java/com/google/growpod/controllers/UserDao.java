@@ -59,6 +59,7 @@ public class UserDao {
     IncompleteKey incompleteKey = keyFactory.newKey();
 
     Key key = datastore.allocateId(incompleteKey);
+
     // placeholder id
     user.setId("1");
 

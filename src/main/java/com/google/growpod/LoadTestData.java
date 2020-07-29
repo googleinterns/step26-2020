@@ -71,11 +71,9 @@ public class LoadTestData {
 
     for (User user : TEST_USERS) {
       batch.add(user.toEntity(instance));
-      System.out.println("*******got here loop*******");
     }
 
     batch.submit();
-    System.out.println("*******got here load users*******");
   }
 
   private static void loadGardens(DatastoreOptions instance) {
@@ -129,7 +127,6 @@ public class LoadTestData {
     loadPlants(instance);
     loadHasMembers(instance);
     loadContainsPlants(instance);
-    System.out.println("*******got here load******");
   }
 
   /**

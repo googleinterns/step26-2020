@@ -71,6 +71,7 @@ export class AdminPageComponent implements OnInit {
     if (!gardenIdArg) {
       this.gardenProfile = null;
       this.errorMessage = 'No garden-id argument in the query string.';
+      this.isLoaded = true;
       return;
     }
     this.createAdminPage(gardenIdArg);

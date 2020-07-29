@@ -169,6 +169,41 @@ public final class GardenServletTest {
     assertEquals(MockHttpServletResponse.SC_METHOD_NOT_ALLOWED, response.getStatus());
   }
 
+  /** Tests invalid garden id response for POST: /garden/{gid}/plant-list */
+  @Test
+  public void doPost_invalidGidPlantListQuery_returns404() throws IOException {
+    String testUrl = "/garden/0/plant-list";
+
+    // Mocks
+    MockHttpServletRequest request = new MockHttpServletRequest("POST", testUrl);
+    request.setContent(new Gson().toJson(TEST_PLANT).getBytes());
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    when(dao.getGardenById("0")).thenReturn(null);
+
+    servlet.doPost(request, response);
+
+    assertEquals(MockHttpServletResponse.SC_NOT_FOUND, response.getStatus());
+  }
+
+  /** Tests invalid request body response for POST: /garden/{gid}/plant-list */
+  @Test
+  public void doPost_invalidRequestBodyPlantListQuery_returns400() throws IOException {
+    String testUrl = "/garden/0/plant-list";
+
+    // Mocks
+    MockHttpServletRequest request = new MockHttpServletRequest("POST", testUrl);
+    request.setContent(new Gson().toJson(TEST_PLANT).getBytes());
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    when(dao.addToGardenPlantList("0", TEST_PLANT)).thenReturn(null);
+    when(dao.getGardenById("0")).thenReturn(TEST_GARDEN);
+
+    servlet.doPost(request, response);
+
+    assertEquals(MockHttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+  }
+
   /** Tests successful query for POST: /garden/{gid}/plant-list posting */
   @Test
   public void doPost_successfulPlantListQuery_successfulResult() throws IOException {
@@ -180,14 +215,13 @@ public final class GardenServletTest {
     MockHttpServletResponse response = new MockHttpServletResponse();
 
     when(dao.addToGardenPlantList("0", TEST_PLANT)).thenReturn("0");
+    when(dao.getGardenById("0")).thenReturn(TEST_GARDEN);
 
     servlet.doPost(request, response);
 
     assertEquals("application/json;", response.getContentType());
     assertEquals("{\"id\":0}", response.getContentAsString().trim());
   }
-
-  // TODO test failed query when behavior becomes defined
 
   /** Tests invalid method on POST. */
   @Test
@@ -220,9 +254,23 @@ public final class GardenServletTest {
     assertEquals("{\"id\":0}", response.getContentAsString().trim());
   }
 
-  // TODO test failed query when behavior becomes defined
+  /** Tests failed query for DELETE: /garden/{gid}/user-list/{uid} */
+  @Test
+  public void doPost_invalidGidOrPidUserListQuery_returns404() throws IOException {
+    String testUrl = "/garden/0/user-list/0";
 
-  /** Tests successful query for DELETE: /garden/{gid}/plant-list/{uid}. */
+    // Mocks
+    MockHttpServletRequest request = new MockHttpServletRequest("DELETE", testUrl);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    when(dao.deleteFromGardenUserList("0", "0")).thenReturn(false);
+
+    servlet.doDelete(request, response);
+
+    assertEquals(MockHttpServletResponse.SC_NOT_FOUND, response.getStatus());
+  }
+
+  /** Tests successful query for DELETE: /garden/{gid}/plant-list/{pid}. */
   @Test
   public void doDelete_successfulPlantListQuery_successfulResult() throws IOException {
     String testUrl = "/garden/0/plant-list/0";
@@ -239,7 +287,21 @@ public final class GardenServletTest {
     assertEquals("{\"id\":0}", response.getContentAsString().trim());
   }
 
-  // TODO test failed query when behavior becomes defined
+  /** Tests failed query for DELETE: /garden/{gid}/plant-list/{pid} */
+  @Test
+  public void doPost_invalidGidOrPidPlantListQuery_returns404() throws IOException {
+    String testUrl = "/garden/0/plant-list/0";
+
+    // Mocks
+    MockHttpServletRequest request = new MockHttpServletRequest("DELETE", testUrl);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    when(dao.deleteFromGardenPlantList("0", "0")).thenReturn(false);
+
+    servlet.doDelete(request, response);
+
+    assertEquals(MockHttpServletResponse.SC_NOT_FOUND, response.getStatus());
+  }
 
   /** Tests invalid method on DELETE. */
   @Test

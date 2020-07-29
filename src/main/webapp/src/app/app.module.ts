@@ -50,9 +50,7 @@ import {AddPlantComponent} from './add-plant-form/add-plant-form.component';
     RouterModule,
     GrowpodUiModule,
   ],
-  entryComponents: [
-    AddPlantComponent,
-  ],
+  entryComponents: [AddPlantComponent],
 
   bootstrap: [AppComponent],
 })

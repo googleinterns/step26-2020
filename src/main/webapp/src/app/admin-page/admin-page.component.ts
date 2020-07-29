@@ -66,7 +66,11 @@ export class AdminPageComponent implements OnInit {
    *
    * @param route Contains arguments.
    */
-  constructor(private route: ActivatedRoute, private httpClient: HttpClient, private dialog: MatDialog) {}
+  constructor(
+    private route: ActivatedRoute,
+    private httpClient: HttpClient,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     const gardenIdArg = this.route.snapshot.paramMap.get('garden-id');

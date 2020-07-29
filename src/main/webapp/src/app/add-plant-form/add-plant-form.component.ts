@@ -32,10 +32,10 @@ import {Plant} from '../model/plant.model';
  */
 export class AddPlantComponent implements OnInit {
   plant: Plant = {
-    id: "1",
+    id: '1',
     nickname: undefined,
     count: undefined,
-    plantTypeId: "1",
+    plantTypeId: '1',
   };
   plantGroup: FormGroup;
 
@@ -49,9 +49,9 @@ export class AddPlantComponent implements OnInit {
       ]),
       count: new FormControl(this.plant.count, [
         Validators.required,
-        Validators.pattern("[0-9]+"),
+        Validators.pattern('[0-9]+'),
         Validators.min(1),
-      ])
+      ]),
     });
   }
 
@@ -67,8 +67,8 @@ export class AddPlantComponent implements OnInit {
   submit(): void {
     if (this.plantGroup.valid) {
       this.plant = this.plantGroup.value;
-      this.plant.id = "1";
-      this.plant.plantTypeId = "1";
+      this.plant.id = '1';
+      this.plant.plantTypeId = '1';
       this.dialogRef.close(this.plant);
     }
   }

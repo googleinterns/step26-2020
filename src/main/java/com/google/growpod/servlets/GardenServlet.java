@@ -126,11 +126,18 @@ public class GardenServlet extends HttpServlet {
         // TODO (Issue #34) Verify user
         String jsonString = getBody(request);
         Plant plant = new Gson().fromJson(jsonString, Plant.class);
-        String key = dao.addToGardenPlantList(uriList[2], plant);
-        if (key == null) {
-          response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        Garden garden = dao.getGardenById(uriList[2]);
+        if (garden == null) {
+          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid garden id: " + uriList[2]);
           return;
         }
+        String key = dao.addToGardenPlantList(uriList[2], plant);
+        if (key == null) {
+          response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid user body");
+          return;
+        }
+
+        response.setStatus(HttpServletResponse.SC_CREATED);
         response.setContentType("application/json;");
         response.getWriter().println("{\"id\":" + key + "}");
         return;
@@ -169,7 +176,7 @@ public class GardenServlet extends HttpServlet {
         boolean status = dao.deleteFromGardenUserList(uriList[2], uriList[4]);
         if (!status) {
           // Nothing to delete
-          response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user: " + uriList[4] + " of garden: " + uriList[2]);
           return;
         }
         response.setContentType("application/json;");
@@ -179,7 +186,7 @@ public class GardenServlet extends HttpServlet {
         // /garden/{gid}/plant-list/{pid}
         boolean status = dao.deleteFromGardenPlantList(uriList[2], uriList[4]);
         if (!status) {
-          response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid plant: " + uriList[4] + " of garden: " + uriList[2]);
           return;
         }
         response.setContentType("application/json;");

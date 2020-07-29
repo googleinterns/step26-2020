@@ -5,7 +5,10 @@ const USERS = 'users';
 
 @Injectable()
 export class UserRepository {
-  /* Adding signed in user to storage */
+  
+  /**
+   * Adding signed in user to storage 
+   */
   add(profile: gapi.auth2.BasicProfile) {
     const users = this.getAll();
 
@@ -37,7 +40,9 @@ export class UserRepository {
     }
   }
 
-  /* Save users into a local storage in the cliend side */
+  /**
+   * Save users into a local storage in the cliend side 
+   */
   save(users: User[]) {
     localStorage.setItem(USERS, JSON.stringify(users));
   }

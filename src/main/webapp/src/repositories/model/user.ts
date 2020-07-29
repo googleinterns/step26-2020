@@ -1,4 +1,6 @@
-/* User class for gapi authentication */
+/**
+ * User class for gapi authentication to obtain user's profile basic information
+ */
 export class User {
   id: string;
   email: string;

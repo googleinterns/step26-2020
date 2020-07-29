@@ -32,7 +32,11 @@ export class SchedulePageComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  signIn() {
+  /**
+   * Display consent popup for calendar API, list event based on selected date
+   * Consent prompt only appears once per session
+   */
+  fetchCalendarEvents() {
     if (this.gapiSession.consent) {
       this.gapiSession.listEvents(
         this.datepickerElem.selectedDate,

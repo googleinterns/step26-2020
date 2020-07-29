@@ -47,13 +47,16 @@ export class TaskComponent implements OnInit {
     members?: any[],
     description?: string
   ): void {
+    // Div element to represent the task card
     const card = document.createElement('div');
     card.className = 'task-card';
 
+    // Add title which includes a start time (or an all day) and the title of the event
     const cardTitle = document.createElement('h2');
     cardTitle.appendChild(document.createTextNode(time + ' | ' + title));
     card.appendChild(cardTitle);
 
+    // Include participants (optional) or set event as a general event for anyone 
     const cardMembers = document.createElement('h3');
     let allMembers = 'general event (anyone)';
     if (members) {
@@ -64,13 +67,14 @@ export class TaskComponent implements OnInit {
     );
     card.appendChild(cardMembers);
 
-    // If description was provided, add it to mat card
+    // (Optional) If description was provided, add it to mat card
     if (description) {
       const cardDescription = document.createElement('p');
       cardDescription.innerHTML = description;
       card.appendChild(cardDescription);
     }
 
+    // Add task card to the all tasks container
     const taskContainer = document.getElementById('all-tasks');
     taskContainer.appendChild(card);
   }

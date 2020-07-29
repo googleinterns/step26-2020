@@ -43,7 +43,9 @@ export class GapiSession {
     this.loadClient();
   }
 
-  // add docs
+  /**
+   * Load the Calendar API client and provide authentication 
+   */
   loadClient(): void {
     gapi.load('client:auth2', () => {
       gapi.auth2
@@ -62,18 +64,21 @@ export class GapiSession {
   }
 
   /**
-   * Include docs
+   * Returns whether user is signed in with Google 
    */
   get isSignedIn(): boolean {
     return this.auth2.isSignedIn.get();
   }
 
+  /**
+   * Returns whether the user has accepted the consent prompt in the current session
+   */
   get consent(): boolean {
     return this.hasConsent;
   }
 
   /**
-   * Include docs
+   * Google Authentication; displays consent prompt for Google Calendar API
    */
   signIn() {
     return this.auth2
@@ -86,10 +91,18 @@ export class GapiSession {
       });
   }
 
+  /**
+   * Sign out from Google Auth
+   */
   signOut(): void {
     this.auth2.signOut();
   }
 
+  /**
+   * Retrieve calendar events given a date and call function to display the events in the page
+   * @param selectedDate - start date and time (min)
+   * @param selectedDateMax - end of the day of selected date (max)
+   */
   listEvents(selectedDate: string, selectedDateMax: string) {
     gapi.client.load('calendar', 'v3', () => {
       gapi.client.calendar.events
@@ -119,10 +132,15 @@ export class GapiSession {
     });
   }
 
+  /**
+   * Get the start time of the event otherwise return an All Day string
+   * @param dateTime: string containing date and time
+   */
   getEventTime(dateTime: string): string {
     if (dateTime) {
       const dateTimeSplit = dateTime.split('T');
-      return dateTimeSplit[1].split('-', 1);
+      const time = dateTimeSplit[1].split('-', 1);
+      return time[0];
     } else {
       return 'All Day';
     }

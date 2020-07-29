@@ -29,7 +29,10 @@ export class DatepickerComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  /* Updates the displayed date whenever user chooses a date in the datepicker */
+  /**
+   * Updates the displayed date whenever user chooses a date in the datepicker 
+   * @param event - selected date from the datepicker element
+   */
   updateCurrDate(event: MatDatepickerInputEvent<Date>): void {
     if (event.value) {
       this.selectedDateIso = event.value.toISOString();
@@ -54,13 +57,17 @@ export class DatepickerComponent implements OnInit {
     return formattedDate;
   }
 
-  get selectedDate() {
-    const date = this.selectedDateIso.split('T', 1);
-    const timeMin = 'T00:00:01Z';
-    return date + timeMin;
+  /**
+   * Return the selected date; the time is by default the start of the day
+   */
+  get selectedDate(): string {
+    return this.selectedDateIso;
   }
 
-  get selectedDateMax() {
+  /**
+   * Return the selected date with the time being the end of the day
+   */
+  get selectedDateMax(): string {
     const date = this.selectedDateIso.split('T', 1);
     const timeMax = 'T23:59:59Z';
     return date + timeMax;

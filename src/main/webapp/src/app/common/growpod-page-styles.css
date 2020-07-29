@@ -91,3 +91,7 @@
 .right-align {
   margin-left: auto;
 }
+
+.div-center {
+  margin: 0 auto;
+}

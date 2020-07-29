@@ -36,6 +36,7 @@ import {LoginComponent} from './login-signup-page/login-signup.component';
 import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 import {DatepickerComponent} from './datepicker/datepicker.component';
 import {AdminPageComponent} from './admin-page/admin-page.component';
+import {AddPlantComponent} from './add-plant-form/add-plant-form.component';
 import {CLIENT_ID} from './SensitiveData';
 
 const google_oauth_client_id = CLIENT_ID;
@@ -51,6 +52,7 @@ const google_oauth_client_id = CLIENT_ID;
     CreateGardensComponent,
     DatepickerComponent,
     AdminPageComponent,
+    AddPlantComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,6 +77,9 @@ const google_oauth_client_id = CLIENT_ID;
         ],
       } as SocialAuthServiceConfig,
     },
+  ],
+  entryComponents: [
+    AddPlantComponent,
   ],
 
   bootstrap: [AppComponent],

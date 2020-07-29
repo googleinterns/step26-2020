@@ -3,9 +3,6 @@
     <mat-card class="growpod-main-section growpod-card">
       <div class="card-padding">
         <mat-card>
-          <button class="right-align" mat-button disabled>
-              <mat-icon color="warn">delete</mat-icon>
-            </button>
           <h2>
             {{ gardenProfile.name }}
           </h2>
@@ -28,7 +25,14 @@
 
             <mat-expansion-panel hideToggle>
               <mat-expansion-panel-header>
-                <mat-panel-title> Plants </mat-panel-title>
+                  <mat-panel-title> 
+                    Plants
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    <button class="right-align" mat-button (click)="addPlant()">
+                      <mat-icon color="accent">add_circle_outline</mat-icon>
+                    </button>
+                  </mat-panel-description>
               </mat-expansion-panel-header>
               <mat-list role="list">
                 <div *ngIf="gardenPlantIdList">

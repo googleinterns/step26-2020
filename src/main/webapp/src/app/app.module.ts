@@ -18,14 +18,8 @@ import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 
 import {AppRoutingModule} from './app-routing.module';
-//import {MaterialComponents} from './common/material-components';
-//import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-//import {MatFormFieldModule} from '@angular/material/form-field';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
-//import {MatSelectModule} from '@angular/material/select';
-//import {CarouselModule} from 'ngx-owl-carousel-o';
 import {MatExpansionModule} from '@angular/material/expansion';
-//import {MatCardModule} from '@angular/material/card';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -44,9 +38,9 @@ import {UserProfileComponent} from './user-profile/user-profile.component';
 import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 import {LoginComponent} from './login-signup-page/login-signup.component';
+import {CLIENT_ID} from './SensitiveData';
 
-const google_oauth_client_id =
-  '397696466543-0biqdptbuhjmkjmakg2mo2dsov74dl0s.apps.googleusercontent.com';
+const google_oauth_client_id= CLIENT_ID;
 
 import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 import {DatepickerComponent} from './datepicker/datepicker.component';

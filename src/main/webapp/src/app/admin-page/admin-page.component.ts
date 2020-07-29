@@ -20,6 +20,8 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {AddPlantComponent} from '../add-plant-form/add-plant-form.component';
 import {Garden} from '../model/garden.model';
 import {Plant} from '../model/plant.model';
 import {User} from '../model/user.model';
@@ -57,8 +59,6 @@ export class AdminPageComponent implements OnInit {
   gardenPlantIdListError = '';
 
   // General Error Handling
-  showModal = false;
-  modalMessage = '';
   errorMessage = '';
 
   /**
@@ -66,7 +66,7 @@ export class AdminPageComponent implements OnInit {
    *
    * @param route Contains arguments.
    */
-  constructor(private route: ActivatedRoute, private httpClient: HttpClient) {}
+  constructor(private route: ActivatedRoute, private httpClient: HttpClient, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     const gardenIdArg = this.route.snapshot.paramMap.get('garden-id');
@@ -159,6 +159,27 @@ export class AdminPageComponent implements OnInit {
       observe: 'response',
       responseType: 'json',
     });
+  }
+
+  /**
+   * Posts a plant to a garden.
+   *
+   * Performs POST: /garden/{{gardenProfile.id}}/plant-list, with
+   * body plant.
+   *
+   * @param plant the plant to post.
+   * @return the http response.
+   */
+  postToGardenPlantList(plant: Plant): Observable<HttpResponse<string>> {
+    console.log(JSON.stringify(plant));
+    return this.httpClient.post<string>(
+      '/garden/' + this.gardenProfile.id + '/plant-list',
+      plant,
+      {
+        observe: 'response',
+        responseType: 'json',
+      }
+    );
   }
 
   /**
@@ -378,6 +399,31 @@ export class AdminPageComponent implements OnInit {
    */
   createAdminPage(garden: string): void {
     this.createGardenSummary(garden);
+  }
+
+  /**
+   * Shows a modal to add a plant to the garden, then adds it.
+   *
+   */
+  addPlant(): void {
+    const inputModal = this.dialog.open(AddPlantComponent);
+    inputModal.afterClosed().subscribe((plant: Plant | undefined) => {
+      if (plant) {
+        this.postToGardenPlantList(plant).subscribe({
+          next: () => {
+            this.createGardenPlantList(this.gardenProfile.id);
+          },
+          error: (error: HttpErrorResponse) => {
+            // Do nothing visible for errors, yet
+            if (error.error instanceof ErrorEvent) {
+              console.error('Network error: ' + error.error.message);
+              return;
+            }
+            console.error('Unexpected error: ' + error.statusText);
+          },
+        });
+      }
+    });
   }
 
   /**

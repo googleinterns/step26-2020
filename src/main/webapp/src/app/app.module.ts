@@ -29,6 +29,7 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 import {DatepickerComponent} from './datepicker/datepicker.component';
 import {AdminPageComponent} from './admin-page/admin-page.component';
+import {AddPlantComponent} from './add-plant-form/add-plant-form.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import {AdminPageComponent} from './admin-page/admin-page.component';
     CreateGardensComponent,
     DatepickerComponent,
     AdminPageComponent,
+    AddPlantComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,6 +49,9 @@ import {AdminPageComponent} from './admin-page/admin-page.component';
     AppRoutingModule,
     RouterModule,
     GrowpodUiModule,
+  ],
+  entryComponents: [
+    AddPlantComponent,
   ],
 
   bootstrap: [AppComponent],

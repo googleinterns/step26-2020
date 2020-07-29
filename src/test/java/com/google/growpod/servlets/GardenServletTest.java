@@ -43,6 +43,7 @@ public final class GardenServletTest {
 
   /** Test values. */
   private final Garden TEST_GARDEN = new Garden("0", "x", "y", 0.0, 0.0, "0", "0");
+
   private final Plant TEST_PLANT = new Plant("0", "x", 1, "y");
   /** Separate lists in case I change the type each query returns */
   private final List<String> TEST_USER_LIST = Arrays.asList("0");

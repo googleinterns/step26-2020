@@ -44,7 +44,7 @@ export class GapiSession {
   }
 
   /**
-   * Load the Calendar API client and provide authentication 
+   * Load the Calendar API client and provide authentication
    */
   loadClient(): void {
     gapi.load('client:auth2', () => {
@@ -64,7 +64,7 @@ export class GapiSession {
   }
 
   /**
-   * Returns whether user is signed in with Google 
+   * Returns whether user is signed in with Google
    */
   get isSignedIn(): boolean {
     return this.auth2.isSignedIn.get();

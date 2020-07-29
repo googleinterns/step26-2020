@@ -30,7 +30,7 @@ export class DatepickerComponent implements OnInit {
   ngOnInit(): void {}
 
   /**
-   * Updates the displayed date whenever user chooses a date in the datepicker 
+   * Updates the displayed date whenever user chooses a date in the datepicker
    * @param event - selected date from the datepicker element
    */
   updateCurrDate(event: MatDatepickerInputEvent<Date>): void {

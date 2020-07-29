@@ -56,7 +56,7 @@ export class TaskComponent implements OnInit {
     cardTitle.appendChild(document.createTextNode(time + ' | ' + title));
     card.appendChild(cardTitle);
 
-    // Include participants (optional) or set event as a general event for anyone 
+    // Include participants (optional) or set event as a general event for anyone
     const cardMembers = document.createElement('h3');
     let allMembers = 'general event (anyone)';
     if (members) {

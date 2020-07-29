@@ -26,10 +26,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet that handles garden entities on the server.
- *
- */
+/** Servlet that handles garden entities on the server. */
 @WebServlet({"/garden", "/garden/*"})
 public class GardenServlet extends HttpServlet {
 
@@ -109,7 +106,8 @@ public class GardenServlet extends HttpServlet {
    * @param response Information about the servlet's response
    */
   @Override
-  public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doDelete(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
     /* uriList will have "" as element 0 */
     String[] uriList = request.getRequestURI().split("/");
     assert (uriList[1].equals("garden"));
@@ -150,7 +148,6 @@ public class GardenServlet extends HttpServlet {
     response.sendError(
         HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
   }
-
 
   /** Getters and Setters for data access object. */
   public GardenDao getDao() {

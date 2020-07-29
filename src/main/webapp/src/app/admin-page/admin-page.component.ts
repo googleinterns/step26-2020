@@ -55,6 +55,8 @@ export class AdminPageComponent implements OnInit {
   gardenPlantIdList: Array<string> | null = null;
   gardenPlantNameMap: Map<string, string>;
   gardenPlantIdListError = '';
+
+  // General Error Handling
   errorMessage = '';
 
   /**

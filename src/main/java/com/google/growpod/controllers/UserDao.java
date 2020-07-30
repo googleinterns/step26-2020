@@ -23,6 +23,7 @@ import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery;
+import com.google.cloud.datastore.StructuredQuery.CompositeFilter;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.growpod.data.Garden;
 import com.google.growpod.data.HasMember;
@@ -172,14 +173,14 @@ public class UserDao {
     StructuredQuery<Entity> query =
         Query.newEntityQueryBuilder()
             .setKind("HasMember")
-            .setFilter(PropertyFilter.eq("garden-id", gardenId))
-            .setFilter(PropertyFilter.eq("user-id", userId))
+            .setFilter(CompositeFilter.and(PropertyFilter.eq("garden-id", gardenId), PropertyFilter.eq("user-id", userId)))
             .build();
     QueryResults<Entity> results = datastore.run(query);
     if (!results.hasNext()) {
       return false;
     }
     Entity entity = results.next();
+    HasMember hasMember = HasMember.from(entity);
 
     datastore.delete(entity.getKey());
     return true;

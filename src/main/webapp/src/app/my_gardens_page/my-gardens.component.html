@@ -41,7 +41,22 @@
                   {{ garden.description }}
                 </p>
               </mat-card-content>
-              <mat-card-actions> </mat-card-actions>
+              <mat-card-actions>
+                <button
+                  mat-button
+                  class="button"
+                  [routerLink]="['/page/schedule', {'garden-id': garden.id}]"
+                >
+                  Garden Schedule
+                </button>
+                <button
+                  mat-button
+                  class="button"
+                  (click)="leaveGarden(garden.id)"
+                >
+                  Leave Garden
+                </button>
+              </mat-card-actions>
             </div>
             <ng-template #noGardenDataBlock>
               Cannot load garden with garden id: {{ gardenId }}.
@@ -57,7 +72,7 @@
             <mat-icon aria-label="No results" color="accent"
               >search_off</mat-icon
             >
-            You are not a member of any gardens.
+            You have not joined any gardens.
           </h4>
         </mat-card-content>
       </mat-card>
@@ -117,7 +132,22 @@
                   {{ garden.description }}
                 </p>
               </mat-card-content>
-              <mat-card-actions> </mat-card-actions>
+              <mat-card-actions>
+                <button
+                  mat-button
+                  class="button"
+                  [routerLink]="['/page/schedule', {'garden-id': garden.id}]"
+                >
+                  Garden Schedule
+                </button>
+                <button
+                  mat-button
+                  class="button"
+                  [routerLink]="['/page/admin-page', {'garden-id': garden.id}]"
+                >
+                  Admin Page
+                </button>
+              </mat-card-actions>
             </div>
             <ng-template #noGardenAdminDataBlock>
               Cannot load garden with garden id: {{ gardenId }}.

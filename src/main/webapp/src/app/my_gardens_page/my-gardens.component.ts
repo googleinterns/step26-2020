@@ -166,6 +166,24 @@ export class MyGardensComponent implements OnInit {
   }
 
   /**
+   * Deletes a garden from a user's garden list.
+   *
+   * Performs DELETE: /user/current/garden-list/{id}
+   *
+   * @param id the garden id to delete.
+   * @return the http response.
+   */
+  deleteFromUserGardenList(id: string): Observable<HttpResponse<string>> {
+    return this.httpClient.delete<string>(
+      '/user/current/garden-list/' + id,
+      {
+        observe: 'response',
+        responseType: 'json',
+      }
+    );
+  }
+
+  /**
    * Constructs a user garden admin list.
    * Step 1 in construction.
    *
@@ -316,5 +334,26 @@ export class MyGardensComponent implements OnInit {
    */
   createMyGardensPage(): void {
     this.createUserGardenAdminList();
+  }
+
+  /**
+   * Allows users to leave a garden they are a part of.
+   *
+   * @param id the id of the garden to leave.
+   */
+  leaveGarden(id: string): void {
+    this.deleteFromUserGardenList(id).subscribe({
+      next: () => {
+        this.createMyGardensPage();
+      },
+      error: (error: HttpErrorResponse) => {
+        // Do nothing visible for errors, yet
+        if (error.error instanceof ErrorEvent) {
+          console.error('Network error: ' + error.error.message);
+          return;
+        }
+        console.error('Unexpected error: ' + error.statusText);
+      },
+    });
   }
 }

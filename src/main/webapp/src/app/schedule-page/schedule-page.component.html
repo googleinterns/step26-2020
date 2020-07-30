@@ -1,73 +1,46 @@
-<div class="flex-container">
-  <div class="flex-split">
-    <div class="card-padding">
-      <mat-card>
-        <h2>Peapod Garden</h2>
-        <h4>Caroline | New York City, NY</h4>
-        <button md-raised-button class="button-style">Go back</button>
-      </mat-card>
+ <div *ngIf="displayInfo != null; else elseBlock"> 
+  <div class="flex-container">
+    <div class="flex-split">
+      <div class="card-padding">
+        <mat-card class="growpod-card">
+          <h1>{{ displayInfo.name }}</h1>
+          <!--TODO: Display Zipcode-->
+          <h3>Location: 12345</h3>
+          <button md-raised-button class="button">Go back</button>
+        </mat-card>
+      </div>
+
+      <div class="card-padding">
+        <mat-card class="growpod-card">
+          <!-- form -->
+        </mat-card>
+      </div>
     </div>
 
-    <div class="card-padding">
-      <mat-card>
-        <mat-accordion>
-          <mat-expansion-panel hideToggle>
-            <mat-expansion-panel-header>
-              <mat-panel-title> About the garden </mat-panel-title>
-            </mat-expansion-panel-header>
-            <p>Growing all the green things that look like peas.</p>
-          </mat-expansion-panel>
+    <div class="flex-split">
+      <div class="card-padding">
+        <mat-card class="growpod-card">
+          <mat-card-title> Schedule </mat-card-title>
 
-          <mat-expansion-panel hideToggle>
-            <mat-expansion-panel-header>
-              <mat-panel-title> Plants </mat-panel-title>
-            </mat-expansion-panel-header>
-            <ul>
-              <li>Pea plant</li>
-              <li>Pears</li>
-            </ul>
-          </mat-expansion-panel>
+          <datepicker #datepickerElem></datepicker>
 
-          <mat-expansion-panel hideToggle>
-            <mat-expansion-panel-header>
-              <mat-panel-title> Members </mat-panel-title>
-            </mat-expansion-panel-header>
-            <ul>
-              <li>Caroline (owner)</li>
-              <li>Jake</li>
-              <li>Kayla</li>
-              <li>Cody</li>
-              <li>Stephanie</li>
-            </ul>
-          </mat-expansion-panel>
-        </mat-accordion>
-      </mat-card>
+          <button md-raised-button class="button" (click)="fetchCalendarEvents()">
+            Show Events
+          </button>
+
+          <calendar-tasks #calendarTasks></calendar-tasks>
+        </mat-card>
+      </div>
     </div>
   </div>
+</div>
 
-  <div class="flex-split">
-    <div class="card-padding">
-      <mat-card>
-        <mat-card-title> Schedule </mat-card-title>
-
-        <datepicker></datepicker>
-
-        <mat-card>
-          <mat-card-title> 9:00 am | Water Plants </mat-card-title>
-          <h3>Member(s): Cody, Stephanie, Kayla</h3>
-          <mat-card-content>
-            <p>Make sure to water all plants in section 1A</p>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card>
-          <mat-card-title> 11:00 am | Pick pears </mat-card-title>
-          <h3>Member(s): Caroline, Jake</h3>
-          <mat-card-content>
-            <p>Put the pears in a basket for pickup for tomorrow.</p>
-          </mat-card-content>
-        </mat-card>
-      </mat-card>
-    </div>
-  </div>
+<div>
+  <!-- Error case -->
+    <ng-template #elseBlock>
+      <h4 class="text-center">
+        <mat-icon aria-label="Error" color="warn">error</mat-icon>
+        {{ errorMessage }}
+      </h4>
+    </ng-template>
 </div>

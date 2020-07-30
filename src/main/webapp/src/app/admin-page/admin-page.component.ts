@@ -56,7 +56,7 @@ export class AdminPageComponent implements OnInit {
   // Plant list
   gardenPlantIdList: Array<string> | null = null;
   gardenPlantNameMap: Map<string, string>;
-  gardenPlantIdListError = '';
+  gardenPlantIdListError = 'Plant list not loaded';
 
   // General Error Handling
   errorMessage = '';

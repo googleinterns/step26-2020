@@ -51,7 +51,7 @@ public class UserDao {
    *
    * @param user User object holding user data: id,email,name,bio,zip
    */
-  public void addToDS(User user) {
+  public void addToDatastore(User user) {
     // Generates key
     KeyFactory keyFactory = datastore.newKeyFactory().setKind("User");
     IncompleteKey incompleteKey = keyFactory.newKey();

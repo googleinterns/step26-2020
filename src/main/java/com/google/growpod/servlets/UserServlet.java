@@ -133,18 +133,16 @@ public class UserServlet extends HttpServlet {
   }
 
   /**
-   * Currently this Post function will get the user data in the form of a Json object,turn the Json
-   * object into a User object and call a function that will in Datastore.
+   * Processes a request to add a new user.
    *
    * @param req Information about the POST request
    * @param resp Information about the servlet's response
    */
   @Override
   public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    Gson gson = new Gson();
     resp.setContentType("application/json");
-    String jsonString = req.getParameter("userData");
-    User userData = gson.fromJson(jsonString, User.class);
-    dao.addToDS(userData);
+    String json = req.getParameter("userData");
+    User userData = new Gson().fromJson(json, User.class);
+    dao.addToDatastore(userData);
   }
 }

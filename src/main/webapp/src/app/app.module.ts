@@ -40,7 +40,7 @@ import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 import {LoginComponent} from './login-signup-page/login-signup.component';
 import {CLIENT_ID} from './SensitiveData';
 
-const google_oauth_client_id= CLIENT_ID;
+const google_oauth_client_id = CLIENT_ID;
 
 import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 import {DatepickerComponent} from './datepicker/datepicker.component';

@@ -132,6 +132,24 @@ export class FindGardensComponent implements OnInit {
   }
 
   /**
+   * Posts the id for the current user to join.
+   *
+   * Performs POST: /user/current/garden-list/{id}, with an empty body.
+   *
+   * @param id The garden id the user wishes to join
+   * @return the http response.
+   */
+  postAddUserGardenList(id: string): Observable<HttpResponse<string>> {
+    return this.httpClient.post<string>(
+      '/user/current/garden-list/' + id,
+      '',
+      {
+        observe: 'response',
+        responseType: 'json',
+    });
+  }
+
+  /**
    * Populates component with nearby gardens, shows a message to the user
    * saying there are no gardens, or displays an error message.
    *
@@ -225,6 +243,27 @@ export class FindGardensComponent implements OnInit {
           this.gardenAdminNames.set(garden.adminId, 'Cannot fetch name');
         },
       });
+    });
+  }
+
+  /**
+   * Joins a garden and refreshes the userGardenSet.
+   *
+   * @param id the id of the garden to join.
+   */
+  joinGarden(id: string): void {
+    this.postAddUserGardenList(id).subscribe({
+      next: () => {
+        this.createUserGardenSet();
+      },
+      error: (error: HttpErrorResponse) => {
+        // Silently log errors for now
+        if (error.error instanceof ErrorEvent) {
+          console.error('Network error: ' + error.error.message);
+          return;
+        }
+        console.error('Unexpected error: ' + error.statusText);
+      },
     });
   }
 }

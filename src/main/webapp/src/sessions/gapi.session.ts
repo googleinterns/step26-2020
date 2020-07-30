@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import {NgZone, Injectable} from '@angular/core';
-import {UserRepository} from '../repositories/user.repository';
 import {environment} from '../environments/environment';
 import {TaskComponent} from '../app/calendar-task/task.component';
 
@@ -31,12 +30,10 @@ declare const gapi: any;
 @Injectable()
 export class GapiSession {
   public auth2: any;
-  userRepository: UserRepository;
   hasConsent = false;
   tasks = new TaskComponent();
 
   constructor(private zone: NgZone) {
-    this.userRepository = new UserRepository();
   }
 
   ngOnInit() {
@@ -85,8 +82,7 @@ export class GapiSession {
       .signIn({
         prompt: 'consent',
       })
-      .then((googleUser: gapi.auth2.GoogleUser) => {
-        this.userRepository.add(googleUser.getBasicProfile());
+      .then(() => {
         this.hasConsent = true;
       });
   }

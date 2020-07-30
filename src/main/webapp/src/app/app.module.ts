@@ -31,7 +31,6 @@ import {DatepickerComponent} from './datepicker/datepicker.component';
 import {TaskComponent} from './calendar-task/task.component';
 
 import {GapiSession} from '../sessions/gapi.session';
-import {UserRepository} from '../repositories/user.repository';
 
 export function initGapi(gapiSession: GapiSession) {
   return () => gapiSession.loadClient();
@@ -64,8 +63,6 @@ export function initGapi(gapiSession: GapiSession) {
     },
 
     GapiSession,
-
-    UserRepository,
   ],
 
   bootstrap: [AppComponent],

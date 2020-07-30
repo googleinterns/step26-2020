@@ -17,7 +17,9 @@ package com.google.growpod.controllers;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.IncompleteKey;
 import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery;
@@ -68,9 +70,8 @@ public class UserDao {
     List<String> gardenList = new ArrayList<String>();
 
     // Existence check
-    String projectId = datastoreInstance.getProjectId();
-    Key key = Key.newBuilder(projectId, "User", Long.parseLong(id)).build();
-    if (datastore.get(key) == null) {
+    User user = getUserById(id);
+    if (user == null) {
       return null;
     }
 
@@ -100,9 +101,8 @@ public class UserDao {
     List<String> gardenList = new ArrayList<String>();
 
     // Existence check
-    String projectId = datastoreInstance.getProjectId();
-    Key key = Key.newBuilder(projectId, "User", Long.parseLong(id)).build();
-    if (datastore.get(key) == null) {
+    User user = getUserById(id);
+    if (user == null) {
       return null;
     }
 
@@ -119,5 +119,38 @@ public class UserDao {
     }
 
     return gardenList;
+  }
+
+  /**
+   * Record that a user has joined a garden.
+   *
+   * @param userId the user's id
+   * @param gardenId the garden's id
+   * @return whether the insert operation was successful.
+   */
+  public boolean addToUserGardenList(String userId, String gardenId) {
+    // Existence check for both parameters.
+    User user = getUserById(userId);
+    if (user == null) {
+      return false;
+    }
+
+    String projectId = datastoreInstance.getProjectId();
+    Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(gardenId)).build();
+    Entity gardenEntity = datastore.get(key);
+    if (gardenEntity == null) {
+      return false;
+    }
+
+    // Then add relation
+    KeyFactory keyFactory = datastore.newKeyFactory().setKind("HasMember");
+    IncompleteKey incompleteKey = keyFactory.newKey();
+
+    key = datastore.allocateId(incompleteKey);
+    HasMember relation = new HasMember("1", gardenId, userId);
+
+    Entity newEntity = Entity.newBuilder(key, relation.toEntity(datastoreInstance)).build();
+    datastore.add(newEntity);
+    return true;
   }
 }

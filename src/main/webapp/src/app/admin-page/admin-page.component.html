@@ -71,11 +71,17 @@
                     >
                       <mat-icon color="accent">account_circle</mat-icon>
                     </button>
-                    <div *ngIf="userId !== gardenProfile.adminId; else disableDelete">
+
+                    <span
+                      *ngIf="
+                        userId !== gardenProfile.adminId;
+                        else disableDelete
+                      "
+                    >
                       <button mat-button (click)="removeUser(userId)">
                         <mat-icon color="warn">delete</mat-icon>
                       </button>
-                    </div>
+                    </span>
                     <ng-template #disableDelete>
                       <button mat-button disabled>
                         <mat-icon>verified_user</mat-icon>

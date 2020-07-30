@@ -8,5 +8,30 @@
     <button class="button signup" on-click="signInWithGoogle('signup')">
       Sign up
     </button>
-  </div>
+
+      <mat-card class="mat-elevation-z8 form">
+  <mat-card-title>
+    Tell us a little more about yourself!
+  </mat-card-title>
+
+  <mat-card-content>
+    <mat-form-field>
+      <input matInput placeholder="Are you joining a garden or creating one?" /></mat-form-field
+          ><br />
+
+    <mat-form-field>
+      <input matInput placeholder="Zipcode" /></mat-form-field
+    ><br />
+
+    <mat-form-field>
+      <textarea
+        matInput
+        placeholder="Bio"
+      ></textarea></mat-form-field
+    ><br />
+
+    <button mat-button class="button">Create Account</button>
+  </mat-card-content>
+</mat-card>
+      </div>
 </body>

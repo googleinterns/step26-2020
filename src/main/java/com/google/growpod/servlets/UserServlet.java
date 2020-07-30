@@ -116,8 +116,6 @@ public class UserServlet extends HttpServlet {
         return;
       }
 
-      response.getWriter().println("{ \"status\": \"ok\", \"value\": \"test\" }");
-
       response.sendError(
           HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
     }

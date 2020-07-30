@@ -15,6 +15,8 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 
+const LOGIN_PAGE: String = '/page/login';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -24,10 +26,6 @@ export class AppComponent {
   constructor(private router: Router) {}
 
   isLoggedIn(): boolean {
-    if (this.router.url === '/page/login') {
-      return false;
-    } else {
-      return true;
-    }
+    return this.router.url !== LOGIN_PAGE;
   }
 }

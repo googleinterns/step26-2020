@@ -1,15 +1,15 @@
 <div class="flex-container">
   <div class="flex-split">
     <div class="card-padding">
-      <mat-card>
+      <mat-card class="growpod-card">
         <h2>Peapod Garden</h2>
-        <h4>Caroline | New York City, NY</h4>
-        <button md-raised-button class="button-style">Go back</button>
+        <h4>Owner | 12345</h4>
+        <button md-raised-button class="button">Go back</button>
       </mat-card>
     </div>
 
     <div class="card-padding">
-      <mat-card>
+      <mat-card class="growpod-card">
         <mat-accordion>
           <mat-expansion-panel hideToggle>
             <mat-expansion-panel-header>
@@ -47,14 +47,14 @@
 
   <div class="flex-split">
     <div class="card-padding">
-      <mat-card>
+      <mat-card class="growpod-card">
         <mat-card-title> Schedule </mat-card-title>
 
         <datepicker #datepickerElem></datepicker>
 
         <button
           md-raised-button
-          class="button-style"
+          class="button"
           (click)="fetchCalendarEvents()"
         >
           Show Events

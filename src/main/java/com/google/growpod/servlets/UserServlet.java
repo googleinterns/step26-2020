@@ -153,7 +153,8 @@ public class UserServlet extends HttpServlet {
         boolean result = dao.addToUserGardenList(userKey, uriList[4]);
         if (!result) {
           response.sendError(
-            HttpServletResponse.SC_NOT_FOUND, "Not found - user: " + userKey + " garden: " + uriList[4]);
+              HttpServletResponse.SC_NOT_FOUND,
+              "Not found - user: " + userKey + " garden: " + uriList[4]);
           return;
         }
         response.setStatus(HttpServletResponse.SC_CREATED);

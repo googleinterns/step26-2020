@@ -46,7 +46,11 @@
                 </button>
               </div>
               <ng-template #joinGardenBlock>
-                <button mat-button class="button" (click)="joinGarden(garden.id)">
+                <button
+                  mat-button
+                  class="button"
+                  (click)="joinGarden(garden.id)"
+                >
                   Join Garden
                 </button>
               </ng-template>
@@ -67,6 +71,20 @@
         </mat-card-content>
       </mat-card>
     </ng-template>
+    <br />
+    <div class="div-center">
+      <mat-form-field>
+        <mat-label>Search in another ZIP Code</mat-label>
+        <input
+          [formControl]="zipCodeControl"
+          matInput
+          placeholder="Enter a 5-digit ZIP code"
+        />
+        <mat-error *ngIf="zipCodeControl.hasError('pattern')">
+          Must be a valid ZIP (not ZIP+4) code
+        </mat-error>
+      </mat-form-field>
+    </div>
   </div>
   <!-- Error case -->
   <ng-template #errorBlock>

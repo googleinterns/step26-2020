@@ -162,4 +162,51 @@ public final class UserServletTest {
 
     assertEquals(MockHttpServletResponse.SC_METHOD_NOT_ALLOWED, response.getStatus());
   }
+
+  /** Tests successful query for DELETE: /user/{uid}/garden-list/{gid}. */
+  @Test
+  public void doDelete_successfulGardenListQuery_successfulResult() throws IOException {
+    String testUrl = "/user/0/garden-list/0";
+
+    // Mocks
+    MockHttpServletRequest request = new MockHttpServletRequest("DELETE", testUrl);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    when(dao.deleteFromUserGardenList("0", "0")).thenReturn(true);
+
+    servlet.doDelete(request, response);
+
+    assertEquals("application/json;", response.getContentType());
+    assertEquals("{\"id\":0}", response.getContentAsString().trim());
+  }
+
+  /** Tests failed query for DELETE: /user/{uid}/garden-list/{gid}. */
+  @Test
+  public void doPost_invalidUidOrGidGardenListQuery_returns404() throws IOException {
+    String testUrl = "/user/0/garden-list/0";
+
+    // Mocks
+    MockHttpServletRequest request = new MockHttpServletRequest("DELETE", testUrl);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    when(dao.deleteFromUserGardenList("0", "0")).thenReturn(false);
+
+    servlet.doDelete(request, response);
+
+    assertEquals(MockHttpServletResponse.SC_NOT_FOUND, response.getStatus());
+  }
+
+  /** Tests invalid method on DELETE. */
+  @Test
+  public void doDelete_invalidUrlQuery_returns405() throws IOException {
+    String testUrl = "/user/peapod/cody-kayla-stephanie-caroline-jake";
+
+    // Mocks
+    MockHttpServletRequest request = new MockHttpServletRequest("DELETE", testUrl);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    servlet.doGet(request, response);
+
+    assertEquals(MockHttpServletResponse.SC_METHOD_NOT_ALLOWED, response.getStatus());
+  }
 }

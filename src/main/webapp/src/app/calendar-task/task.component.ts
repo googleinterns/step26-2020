@@ -84,15 +84,7 @@ export class TaskComponent implements OnInit {
    * @param members - list of members as emails
    */
   membersToString(members: any[]): string {
-    let result = '';
-    for (let i = 0; i < members.length; i++) {
-      const currMember = members[i].email.split('@', 1);
-      if (i === members.length - 1) {
-        result += currMember;
-      } else {
-        result += currMember + ',';
-      }
-    }
-    return result;
+    let usernames = members.map(m => m.email.split('@')[0]);
+    return usernames.join(',');
   }
 }

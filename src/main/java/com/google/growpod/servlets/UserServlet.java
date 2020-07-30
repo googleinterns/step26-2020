@@ -120,6 +120,52 @@ public class UserServlet extends HttpServlet {
         HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
   }
 
+  /**
+   * Processes HTTP POST requests for the /user servlet. Dispatches functionality based on structure
+   * of POST request.
+   *
+   * @param request Information about the POST Request
+   * @param response Information about the servlet's response
+   */
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    /* uriList will have "" as element 0 */
+    String[] uriList = request.getRequestURI().split("/");
+    assert (uriList[1].equals("user"));
+
+    if (uriList.length < 3) {
+      response.sendError(
+          HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
+      return;
+    }
+
+    // Replace 'current' user with logged-in user.
+    String userKey = uriList[2];
+    if (userKey.equals(CURRENT_USER_ARG)) {
+      userKey = CURRENT_USER_KEY;
+    }
+
+    // Dispatch based on method specified.
+    if (uriList.length == 5) {
+      if (uriList[3].equals(GARDEN_LIST_ARG)) {
+        // /user/{uid}/garden-list/{gid}
+        // TODO (Issue #34) Authenticate user.
+        boolean result = dao.addToUserGardenList(userKey, uriList[4]);
+        if (!result) {
+          response.sendError(
+            HttpServletResponse.SC_NOT_FOUND, "Not found - user: " + userKey + " garden: " + uriList[4]);
+          return;
+        }
+        response.setStatus(HttpServletResponse.SC_CREATED);
+        response.setContentType("application/json;");
+        response.getWriter().println("{\"id\":" + uriList[4] + "}");
+        return;
+      }
+    }
+    response.sendError(
+        HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
+  }
+
   /** Getters and Setters for data access object. */
   public UserDao getDao() {
     return dao;

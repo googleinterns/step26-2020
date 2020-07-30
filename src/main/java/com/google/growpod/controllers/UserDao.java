@@ -17,7 +17,9 @@ package com.google.growpod.controllers;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.IncompleteKey;
 import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery;
@@ -42,6 +44,26 @@ public class UserDao {
   public UserDao(DatastoreOptions datastoreInstance) {
     this.datastoreInstance = datastoreInstance;
     this.datastore = datastoreInstance.getService();
+  }
+
+  /**
+   * Creates an Entity thats holds user data and adds it to Datastore.
+   *
+   * @param user User object holding user data: id,email,name,bio,zip
+   */
+  public void addToDatastore(User user) {
+    // Generates key
+    KeyFactory keyFactory = datastore.newKeyFactory().setKind("User");
+    IncompleteKey incompleteKey = keyFactory.newKey();
+
+    Key key = datastore.allocateId(incompleteKey);
+
+    // placeholder id
+    user.setId("1");
+
+    // Puts key into database
+    Entity newEntity = Entity.newBuilder(key, user.toEntity(datastoreInstance)).build();
+    datastore.add(newEntity);
   }
 
   /**

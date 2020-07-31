@@ -138,13 +138,12 @@ public class GardenDao {
     Entity newEntity = Entity.newBuilder(key, plant.toEntity(datastoreInstance)).build();
     datastore.add(newEntity);
 
-    String plantId = Long.toString(newEntity.getKey().getId());
-
     // Then add relation
     keyFactory = datastore.newKeyFactory().setKind("ContainsPlant");
     incompleteKey = keyFactory.newKey();
-
     key = datastore.allocateId(incompleteKey);
+
+    String plantId = Long.toString(newEntity.getKey().getId());
     ContainsPlant relation = new ContainsPlant("1", gardenId, plantId);
 
     newEntity = Entity.newBuilder(key, relation.toEntity(datastoreInstance)).build();

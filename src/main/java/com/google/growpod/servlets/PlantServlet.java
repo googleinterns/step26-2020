@@ -56,7 +56,7 @@ public class PlantServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     /* uriList will have "" as element 0 */
     String[] uriList = request.getRequestURI().split("/");
-    assert (uriList[1].equals("plant"));
+    assert (uriList.length >= 2 && uriList[1].equals("plant"));
 
     // Dispatch based on method specified.
     // /plant/{id}

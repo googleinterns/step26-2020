@@ -26,10 +26,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet that handles user entities on the server.
- *
- */
+/** Servlet that handles user entities on the server. */
 @WebServlet({"/user", "/user/*"})
 public class UserServlet extends HttpServlet {
 
@@ -61,7 +58,8 @@ public class UserServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     /* uriList will have "" as element 0 */
     String[] uriList = request.getRequestURI().split("/");
-    assert (uriList[1].equals("user"));
+    assert (uriList.length >= 2 && uriList[1].equals("user"));
+
     if (uriList.length < 3) {
       response.sendError(
           HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());

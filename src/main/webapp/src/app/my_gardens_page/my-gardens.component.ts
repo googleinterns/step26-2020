@@ -174,13 +174,10 @@ export class MyGardensComponent implements OnInit {
    * @return the http response.
    */
   deleteFromUserGardenList(id: string): Observable<HttpResponse<string>> {
-    return this.httpClient.delete<string>(
-      '/user/current/garden-list/' + id,
-      {
-        observe: 'response',
-        responseType: 'json',
-      }
-    );
+    return this.httpClient.delete<string>('/user/current/garden-list/' + id, {
+      observe: 'response',
+      responseType: 'json',
+    });
   }
 
   /**

@@ -173,7 +173,9 @@ public class UserDao {
     StructuredQuery<Entity> query =
         Query.newEntityQueryBuilder()
             .setKind("HasMember")
-            .setFilter(CompositeFilter.and(PropertyFilter.eq("garden-id", gardenId), PropertyFilter.eq("user-id", userId)))
+            .setFilter(
+                CompositeFilter.and(
+                    PropertyFilter.eq("garden-id", gardenId), PropertyFilter.eq("user-id", userId)))
             .build();
     QueryResults<Entity> results = datastore.run(query);
     if (!results.hasNext()) {

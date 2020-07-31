@@ -170,7 +170,7 @@ export class AdminPageComponent implements OnInit {
    * @param plant the plant to post.
    * @return the http response.
    */
-  postToGardenPlantList(plant: Plant): Observable<HttpResponse<string>> {
+  postPlantToGarden(plant: Plant): Observable<HttpResponse<string>> {
     console.log(JSON.stringify(plant));
     return this.httpClient.post<string>(
       '/garden/' + this.gardenProfile.id + '/plant-list',
@@ -190,7 +190,7 @@ export class AdminPageComponent implements OnInit {
    * @param id the plant id to delete.
    * @return the http response.
    */
-  deleteFromGardenPlantList(id: string): Observable<HttpResponse<string>> {
+  deletePlant(id: string): Observable<HttpResponse<string>> {
     return this.httpClient.delete<string>('/garden/' + this.gardenProfile.id + '/plant-list/' + id, {
       observe: 'response',
       responseType: 'json',
@@ -205,7 +205,7 @@ export class AdminPageComponent implements OnInit {
    * @param id the user id to delete.
    * @return the http response.
    */
-  deleteFromGardenUserList(id: string): Observable<HttpResponse<string>> {
+  deleteUser(id: string): Observable<HttpResponse<string>> {
     return this.httpClient.delete<string>('/garden/' + this.gardenProfile.id + '/user-list/' + id, {
       observe: 'response',
       responseType: 'json',
@@ -403,7 +403,7 @@ export class AdminPageComponent implements OnInit {
     const inputModal = this.dialog.open(AddPlantComponent);
     inputModal.afterClosed().subscribe((plant: Plant | undefined) => {
       if (plant) {
-        this.postToGardenPlantList(plant).subscribe({
+        this.postPlantToGarden(plant).subscribe({
           next: () => {
             this.createGardenPlantList(this.gardenProfile.id);
           },
@@ -426,7 +426,7 @@ export class AdminPageComponent implements OnInit {
    * @param id The plant id to delete.
    */
   removePlant(id: string): void {
-    this.deleteFromGardenPlantList(id).subscribe({
+    this.deletePlant(id).subscribe({
       next: () => {
         this.createGardenPlantList(this.gardenProfile.id);
       },
@@ -447,7 +447,7 @@ export class AdminPageComponent implements OnInit {
    * @param id The user id to delete.
    */
   removeUser(id: string): void {
-    this.deleteFromGardenUserList(id).subscribe({
+    this.deleteUser(id).subscribe({
       next: () => {
         this.createGardenUserList(this.gardenProfile.id);
       },

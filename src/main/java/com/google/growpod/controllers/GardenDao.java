@@ -127,7 +127,7 @@ public class GardenDao {
    * @param plant the plant object
    * @return The plant's key
    */
-  public String addToGardenPlantList(String gardenId, Plant plant) {
+  public String addPlant(String gardenId, Plant plant) {
     // Add plant to plant list first
     plant.setId("1"); // Dummy key to make .toEntity(datastoreInstance) work.
     KeyFactory keyFactory = datastore.newKeyFactory().setKind("Plant");
@@ -159,7 +159,7 @@ public class GardenDao {
    * @param userId the user's id
    * @return whether the query was successful.
    */
-  public boolean deleteFromGardenUserList(String gardenId, String userId) {
+  public boolean deleteUser(String gardenId, String userId) {
     // Existence check for key
     Garden garden = getGardenById(gardenId);
     if (garden == null) {
@@ -189,7 +189,7 @@ public class GardenDao {
    * @param plantId the plant's id
    * @return whether the query was successful.
    */
-  public boolean deleteFromGardenPlantList(String gardenId, String plantId) {
+  public boolean deletePlant(String gardenId, String plantId) {
     // Existence check for key
     Garden garden = getGardenById(gardenId);
     if (garden == null) {

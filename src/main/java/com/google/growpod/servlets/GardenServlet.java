@@ -76,11 +76,12 @@ public class GardenServlet extends HttpServlet {
     }
 
     if (uriList.length == 4) {
+      String gardenId = uriList[2];
       if (uriList[3].equals(USER_LIST_ARG)) {
         // /garden/{id}/user-list
-        List<String> list = dao.getGardenUserListById(uriList[2]);
+        List<String> list = dao.getGardenUserListById(gardenId);
         if (list == null) {
-          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid garden id: " + uriList[2]);
+          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid garden id: " + gardenId);
           return;
         }
         response.setContentType("application/json;");
@@ -88,9 +89,9 @@ public class GardenServlet extends HttpServlet {
         return;
       } else if (uriList[3].equals(PLANT_LIST_ARG)) {
         // /garden/{id}/plant-list
-        List<String> list = dao.getGardenPlantListById(uriList[2]);
+        List<String> list = dao.getGardenPlantListById(gardenId);
         if (list == null) {
-          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid garden id: " + uriList[2]);
+          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid garden id: " + gardenId);
           return;
         }
         response.setContentType("application/json;");
@@ -127,14 +128,15 @@ public class GardenServlet extends HttpServlet {
       if (uriList[3].equals(PLANT_LIST_ARG)) {
         // /garden/{gid}/plant-list
         // TODO (Issue #34) Verify user
-        String jsonString = getBody(request);
-        Plant plant = new Gson().fromJson(jsonString, Plant.class);
-        Garden garden = dao.getGardenById(uriList[2]);
+        String gardenId = uriList[2];
+        String json = getBody(request);
+        Plant plant = new Gson().fromJson(json, Plant.class);
+        Garden garden = dao.getGardenById(gardenId);
         if (garden == null) {
-          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid garden id: " + uriList[2]);
+          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid garden id: " + gardenId);
           return;
         }
-        String key = dao.addToGardenPlantList(uriList[2], plant);
+        String key = dao.addPlant(gardenId, plant);
         if (key == null) {
           response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid user body");
           return;
@@ -172,27 +174,30 @@ public class GardenServlet extends HttpServlet {
     }
 
     if (uriList.length == 5) {
+      String gardenId = uriList[2];
       if (uriList[3].equals(USER_LIST_ARG)) {
         // /garden/{gid}/user-list/{uid}
         // TODO (Issue #34) Verify user
-        boolean status = dao.deleteFromGardenUserList(uriList[2], uriList[4]);
+        String userId = uriList[4];
+        boolean status = dao.deleteUser(gardenId, userId);
         if (!status) {
           // Nothing to delete
-          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user: " + uriList[4] + " of garden: " + uriList[2]);
+          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user: " + userId + " of garden: " + gardenId);
           return;
         }
         response.setContentType("application/json;");
-        response.getWriter().println("{\"id\":" + uriList[4] + "}");
+        response.getWriter().println("{\"id\":" + userId + "}");
         return;
       } else if (uriList[3].equals(PLANT_LIST_ARG)) {
         // /garden/{gid}/plant-list/{pid}
-        boolean status = dao.deleteFromGardenPlantList(uriList[2], uriList[4]);
+        String plantId = uriList[4];
+        boolean status = dao.deletePlant(gardenId, plantId);
         if (!status) {
-          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid plant: " + uriList[4] + " of garden: " + uriList[2]);
+          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid plant: " + gardenId + " of garden: " + plantId);
           return;
         }
         response.setContentType("application/json;");
-        response.getWriter().println("{\"id\":" + uriList[4] + "}");
+        response.getWriter().println("{\"id\":" + plantId + "}");
         return;
       }
       // If the uriList does not match the above two methods, fall through.

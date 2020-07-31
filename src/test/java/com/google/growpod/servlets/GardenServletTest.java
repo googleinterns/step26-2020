@@ -196,7 +196,7 @@ public final class GardenServletTest {
     request.setContent(new Gson().toJson(TEST_PLANT).getBytes());
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(dao.addToGardenPlantList("0", TEST_PLANT)).thenReturn(null);
+    when(dao.addPlant("0", TEST_PLANT)).thenReturn(null);
     when(dao.getGardenById("0")).thenReturn(TEST_GARDEN);
 
     servlet.doPost(request, response);
@@ -214,7 +214,7 @@ public final class GardenServletTest {
     request.setContent(new Gson().toJson(TEST_PLANT).getBytes());
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(dao.addToGardenPlantList("0", TEST_PLANT)).thenReturn("0");
+    when(dao.addPlant("0", TEST_PLANT)).thenReturn("0");
     when(dao.getGardenById("0")).thenReturn(TEST_GARDEN);
 
     servlet.doPost(request, response);
@@ -246,7 +246,7 @@ public final class GardenServletTest {
     MockHttpServletRequest request = new MockHttpServletRequest("DELETE", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(dao.deleteFromGardenUserList("0", "0")).thenReturn(true);
+    when(dao.deleteUser("0", "0")).thenReturn(true);
 
     servlet.doDelete(request, response);
 
@@ -263,7 +263,7 @@ public final class GardenServletTest {
     MockHttpServletRequest request = new MockHttpServletRequest("DELETE", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(dao.deleteFromGardenUserList("0", "0")).thenReturn(false);
+    when(dao.deleteUser("0", "0")).thenReturn(false);
 
     servlet.doDelete(request, response);
 
@@ -279,7 +279,7 @@ public final class GardenServletTest {
     MockHttpServletRequest request = new MockHttpServletRequest("DELETE", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(dao.deleteFromGardenPlantList("0", "0")).thenReturn(true);
+    when(dao.deletePlant("0", "0")).thenReturn(true);
 
     servlet.doDelete(request, response);
 
@@ -296,7 +296,7 @@ public final class GardenServletTest {
     MockHttpServletRequest request = new MockHttpServletRequest("DELETE", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(dao.deleteFromGardenPlantList("0", "0")).thenReturn(false);
+    when(dao.deletePlant("0", "0")).thenReturn(false);
 
     servlet.doDelete(request, response);
 

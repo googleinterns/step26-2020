@@ -19,6 +19,7 @@ import {MyGardensComponent} from './my_gardens_page/my-gardens.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
+import {LoginComponent} from './login-signup-page/login-signup.component';
 import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 import {AdminPageComponent} from './admin-page/admin-page.component';
 
@@ -34,6 +35,7 @@ const routes: Routes = [
   {path: 'page/user-profile', component: UserProfileComponent},
   {path: 'page/find-gardens', component: FindGardensComponent},
   {path: 'page/schedule', component: SchedulePageComponent},
+  {path: 'page/login', component: LoginComponent},
   {path: 'page/create-garden', component: CreateGardensComponent},
   {path: 'page/admin-page', component: AdminPageComponent},
   /** Defaults to /my-gardens */

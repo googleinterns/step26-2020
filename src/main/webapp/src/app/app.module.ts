@@ -18,6 +18,12 @@ import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 
 import {AppRoutingModule} from './app-routing.module';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {
+  SocialLoginModule,
+  SocialAuthServiceConfig,
+} from 'angularx-social-login';
+import {GoogleLoginProvider} from 'angularx-social-login';
 import {GrowpodUiModule} from './common/growpod-ui.module';
 
 import {AppComponent} from './app.component';
@@ -26,10 +32,14 @@ import {MyGardensComponent} from './my_gardens_page/my-gardens.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
+import {LoginComponent} from './login-signup-page/login-signup.component';
 import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 import {DatepickerComponent} from './datepicker/datepicker.component';
 import {AdminPageComponent} from './admin-page/admin-page.component';
 import {AddPlantComponent} from './add-plant-form/add-plant-form.component';
+import {CLIENT_ID} from './SensitiveData';
+
+const google_oauth_client_id = CLIENT_ID;
 
 @NgModule({
   declarations: [
@@ -38,6 +48,7 @@ import {AddPlantComponent} from './add-plant-form/add-plant-form.component';
     UserProfileComponent,
     FindGardensComponent,
     SchedulePageComponent,
+    LoginComponent,
     CreateGardensComponent,
     DatepickerComponent,
     AdminPageComponent,
@@ -48,9 +59,26 @@ import {AddPlantComponent} from './add-plant-form/add-plant-form.component';
     HttpClientModule,
     AppRoutingModule,
     RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SocialLoginModule,
     GrowpodUiModule,
   ],
   entryComponents: [AddPlantComponent],
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(google_oauth_client_id),
+          },
+        ],
+      } as SocialAuthServiceConfig,
+    },
+  ],
 
   bootstrap: [AppComponent],
 })

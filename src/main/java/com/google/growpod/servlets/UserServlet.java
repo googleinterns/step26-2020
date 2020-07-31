@@ -67,7 +67,6 @@ public class UserServlet extends HttpServlet {
     /* uriList will have "" as element 0 */
     String[] uriList = request.getRequestURI().split("/");
     assert (uriList[1].equals("user"));
-
     if (uriList.length < 3) {
       response.sendError(
           HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
@@ -97,6 +96,7 @@ public class UserServlet extends HttpServlet {
       if (uriList[3].equals(GARDEN_LIST_ARG)) {
         // /user/{id}/garden-list
         List<String> list = dao.getUserGardenListById(userKey);
+
         if (list == null) {
           response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userKey);
           return;
@@ -107,6 +107,7 @@ public class UserServlet extends HttpServlet {
       } else if (uriList[3].equals(GARDEN_ADMIN_LIST_ARG)) {
         // /user/{id}/garden-admin-list
         List<String> list = dao.getUserGardenAdminListById(userKey);
+
         if (list == null) {
           response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userKey);
           return;
@@ -115,9 +116,10 @@ public class UserServlet extends HttpServlet {
         response.getWriter().println(new Gson().toJson(list));
         return;
       }
+
+      response.sendError(
+          HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
     }
-    response.sendError(
-        HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
   }
 
   /** Getters and Setters for data access object. */
@@ -127,5 +129,19 @@ public class UserServlet extends HttpServlet {
 
   public void setDao(UserDao dao) {
     this.dao = dao;
+  }
+
+  /**
+   * Processes a request to add a new user.
+   *
+   * @param req Information about the POST request
+   * @param resp Information about the servlet's response
+   */
+  @Override
+  public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    resp.setContentType("application/json");
+    String json = req.getParameter("userData");
+    User userData = new Gson().fromJson(json, User.class);
+    dao.addToDatastore(userData);
   }
 }

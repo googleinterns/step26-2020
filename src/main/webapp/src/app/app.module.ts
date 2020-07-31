@@ -30,6 +30,7 @@ import {CreateGardensComponent} from './create-gardens-form/create-gardens.compo
 import {DatepickerComponent} from './datepicker/datepicker.component';
 import {AdminPageComponent} from './admin-page/admin-page.component';
 import {AddPlantComponent} from './add-plant-form/add-plant-form.component';
+import {PlantModalComponent} from './plant-modal/plant-modal.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import {AddPlantComponent} from './add-plant-form/add-plant-form.component';
     DatepickerComponent,
     AdminPageComponent,
     AddPlantComponent,
+    PlantModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,7 +52,7 @@ import {AddPlantComponent} from './add-plant-form/add-plant-form.component';
     RouterModule,
     GrowpodUiModule,
   ],
-  entryComponents: [AddPlantComponent],
+  entryComponents: [AddPlantComponent, PlantModalComponent],
 
   bootstrap: [AppComponent],
 })

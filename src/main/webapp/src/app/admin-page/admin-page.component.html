@@ -42,7 +42,7 @@
                   >
                     {{ gardenPlantNameMap && gardenPlantNameMap.get(plantId) }}
                     <span class="right-align">
-                      <button mat-button>
+                      <button mat-button (click)="showPlantDetails(plantId)">
                         <mat-icon color="accent">info</mat-icon>
                       </button>
                       <button mat-button (click)="removePlant(plantId)">

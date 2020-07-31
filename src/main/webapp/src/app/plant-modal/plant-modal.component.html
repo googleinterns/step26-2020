@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>
+  Plant Detail
+</h2>
+
+<table class="div-center">
+  <tr>
+    <td>
+      <strong>Plant Nickname: </strong>
+    </td>
+    <td>
+      {{ plant.nickname }}
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <strong>Plant Count: </strong>
+    </td>
+    <td>
+      {{ plant.count }}
+    </td>
+  </tr>
+  <br />
+</table>
+
+<mat-dialog-actions>
+  <button mat-button class="button div-center" (click)="close()">Close</button>
+</mat-dialog-actions>

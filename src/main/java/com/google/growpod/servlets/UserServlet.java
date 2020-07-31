@@ -45,7 +45,8 @@ public class UserServlet extends HttpServlet {
   private static final String CURRENT_USER_ARG = "current";
   private static final String GARDEN_LIST_ARG = "garden-list";
   private static final String GARDEN_ADMIN_LIST_ARG = "garden-admin-list";
-  private static final String CURRENT_USER_KEY = "1";
+  private static final String CURRENT_USER_KEY =
+      "1"; // TODO(Issue #34): Replace value once oauth works
 
   /** Initializes the servlet. Connects it to Datastore. */
   @Override

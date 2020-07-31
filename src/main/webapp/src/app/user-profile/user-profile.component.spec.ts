@@ -15,16 +15,16 @@ describe('UserProfileComponent', () => {
   let httpTestingController: HttpTestingController;
 
   // Component-local mocks
-  const MOCK_ARGUMENT = '0';
+  const TEST_ARGUMENT = '0';
   const mockActivatedRoute = {
     snapshot: {
       paramMap: convertToParamMap({
-        id: MOCK_ARGUMENT,
+        id: TEST_ARGUMENT,
       }),
     },
   };
-  const MOCK_OK_RESPONSE: User = {
-    id: MOCK_ARGUMENT,
+  const TEST_OK_RESPONSE: User = {
+    id: TEST_ARGUMENT,
     email: 'example@example.com',
     preferredName: 'User name',
     biography: 'User biography',
@@ -57,23 +57,23 @@ describe('UserProfileComponent', () => {
     fixture.detectChanges();
 
     const testRequest = httpTestingController.expectOne(
-      '/user/' + MOCK_ARGUMENT,
+      '/user/' + TEST_ARGUMENT,
       "A properly-formed GET request to get a user's profile"
     );
     expect(testRequest.request.method).toBe('GET');
   });
 
-  it('should populate displayInfo as a result of a mock OK response object', () => {
+  it('should populate userProfile as a result of a mock OK response object', () => {
     fixture.detectChanges();
 
     // Handle request
     const testRequest = httpTestingController.expectOne(
-      '/user/' + MOCK_ARGUMENT
+      '/user/' + TEST_ARGUMENT
     );
-    testRequest.flush(MOCK_OK_RESPONSE);
+    testRequest.flush(TEST_OK_RESPONSE);
     fixture.detectChanges();
 
-    expect(component.displayInfo).toBe(MOCK_OK_RESPONSE);
+    expect(component.userProfile).toBe(TEST_OK_RESPONSE);
   });
 
   it('should display an error message as a result of a mock error code 404', () => {
@@ -81,7 +81,7 @@ describe('UserProfileComponent', () => {
 
     // Handle request
     const testRequest = httpTestingController.expectOne(
-      '/user/' + MOCK_ARGUMENT
+      '/user/' + TEST_ARGUMENT
     );
     testRequest.flush(
       {},
@@ -92,9 +92,9 @@ describe('UserProfileComponent', () => {
     );
     fixture.detectChanges();
 
-    expect(component.displayInfo).not.toBeTruthy();
+    expect(component.userProfile).toBeNull();
     expect(component.errorMessage).toBe(
-      'Cannot see user profile for user id: ' + MOCK_ARGUMENT
+      'Cannot see user profile for user id: ' + TEST_ARGUMENT
     );
   });
 
@@ -103,7 +103,7 @@ describe('UserProfileComponent', () => {
 
     // Handle request
     const testRequest = httpTestingController.expectOne(
-      '/user/' + MOCK_ARGUMENT
+      '/user/' + TEST_ARGUMENT
     );
     testRequest.flush(
       {},
@@ -114,7 +114,7 @@ describe('UserProfileComponent', () => {
     );
     fixture.detectChanges();
 
-    expect(component.displayInfo).not.toBeTruthy();
+    expect(component.userProfile).toBeNull();
     expect(component.errorMessage).toBe(
       'Unexpected error 405: Method not allowed'
     );
@@ -125,7 +125,7 @@ describe('UserProfileComponent', () => {
 
     // Handle request
     const testRequest = httpTestingController.expectOne(
-      '/user/' + MOCK_ARGUMENT
+      '/user/' + TEST_ARGUMENT
     );
     testRequest.error(
       new ErrorEvent('error', {
@@ -135,7 +135,7 @@ describe('UserProfileComponent', () => {
     );
     fixture.detectChanges();
 
-    expect(component.displayInfo).not.toBeTruthy();
+    expect(component.userProfile).toBeNull();
     expect(component.errorMessage).toBe('Cannot connect to GrowPod Server');
   });
 });

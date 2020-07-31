@@ -66,7 +66,7 @@ public class UserServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     /* uriList will have "" as element 0 */
     String[] uriList = request.getRequestURI().split("/");
-    assert (uriList[1].equals("user"));
+    assert (uriList.length >= 2 && uriList[1].equals("user"));
 
     if (uriList.length < 3) {
       response.sendError(
@@ -131,7 +131,7 @@ public class UserServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     /* uriList will have "" as element 0 */
     String[] uriList = request.getRequestURI().split("/");
-    assert (uriList[1].equals("user"));
+    assert (uriList.length >= 2 && uriList[1].equals("user"));
 
     if (uriList.length < 3) {
       response.sendError(

@@ -66,7 +66,11 @@ export class AdminPageComponent implements OnInit {
    *
    * @param route Contains arguments.
    */
-  constructor(private route: ActivatedRoute, private httpClient: HttpClient, private dialog: MatDialog) {}
+  constructor(
+    private route: ActivatedRoute,
+    private httpClient: HttpClient,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     const gardenIdArg = this.route.snapshot.paramMap.get('garden-id');
@@ -186,30 +190,36 @@ export class AdminPageComponent implements OnInit {
    * Deletes a plant from a garden.
    *
    * Performs GET: /garden/{{gardenProfile.id}}/plant-list/{id}
-   * 
+   *
    * @param id the plant id to delete.
    * @return the http response.
    */
   deletePlant(id: string): Observable<HttpResponse<string>> {
-    return this.httpClient.delete<string>('/garden/' + this.gardenProfile.id + '/plant-list/' + id, {
-      observe: 'response',
-      responseType: 'json',
-    });
+    return this.httpClient.delete<string>(
+      '/garden/' + this.gardenProfile.id + '/plant-list/' + id,
+      {
+        observe: 'response',
+        responseType: 'json',
+      }
+    );
   }
 
   /**
    * Deletes a user from a garden.
    *
    * Performs GET: /garden/{{gardenProfile.id}}/user-list/{id}
-   * 
+   *
    * @param id the user id to delete.
    * @return the http response.
    */
   deleteUser(id: string): Observable<HttpResponse<string>> {
-    return this.httpClient.delete<string>('/garden/' + this.gardenProfile.id + '/user-list/' + id, {
-      observe: 'response',
-      responseType: 'json',
-    });
+    return this.httpClient.delete<string>(
+      '/garden/' + this.gardenProfile.id + '/user-list/' + id,
+      {
+        observe: 'response',
+        responseType: 'json',
+      }
+    );
   }
 
   /**
@@ -438,7 +448,7 @@ export class AdminPageComponent implements OnInit {
         }
         console.error('Unexpected error: ' + error.statusText);
       },
-    })
+    });
   }
 
   /**
@@ -459,6 +469,6 @@ export class AdminPageComponent implements OnInit {
         }
         console.error('Unexpected error: ' + error.statusText);
       },
-    })
+    });
   }
 }

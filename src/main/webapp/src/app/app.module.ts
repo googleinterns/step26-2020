@@ -78,9 +78,7 @@ const google_oauth_client_id = CLIENT_ID;
       } as SocialAuthServiceConfig,
     },
   ],
-  entryComponents: [
-    AddPlantComponent,
-  ],
+  entryComponents: [AddPlantComponent],
 
   bootstrap: [AppComponent],
 })

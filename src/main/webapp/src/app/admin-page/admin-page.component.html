@@ -5,7 +5,8 @@
         <mat-card>
           <h2>{{ gardenProfile.name }}</h2>
           <h4>
-            {{ gardenManager }} | {{ gardenProfile.lat + " -- " + gardenProfile.lng }}
+            {{ gardenManager }} |
+            {{ gardenProfile.lat + ' -- ' + gardenProfile.lng }}
           </h4>
         </mat-card>
       </div>
@@ -26,7 +27,10 @@
               </mat-expansion-panel-header>
               <mat-list role="list">
                 <div *ngIf="gardenPlantIdList">
-                  <mat-list-item role="list-item" *ngFor="let plantId of gardenPlantIdList">
+                  <mat-list-item
+                    role="list-item"
+                    *ngFor="let plantId of gardenPlantIdList"
+                  >
                     {{ gardenPlantNameMap && gardenPlantNameMap.get(plantId) }}
                     <span class="mat-list-item-right-align">
                       <button mat-button>
@@ -46,10 +50,16 @@
                 <mat-panel-title> Members </mat-panel-title>
               </mat-expansion-panel-header>
               <mat-list role="list">
-                <mat-list-item role="list-item" *ngFor="let userId of gardenUserIdList">
+                <mat-list-item
+                  role="list-item"
+                  *ngFor="let userId of gardenUserIdList"
+                >
                   {{ gardenUserNameMap && gardenUserNameMap.get(userId) }}
                   <span class="mat-list-item-right-align">
-                    <button mat-button [routerLink]="['/page/user-profile', {id: userId}]">
+                    <button
+                      mat-button
+                      [routerLink]="['/page/user-profile', {id: userId}]"
+                    >
                       <mat-icon color="accent">account_circle</mat-icon>
                     </button>
                     <button mat-button>

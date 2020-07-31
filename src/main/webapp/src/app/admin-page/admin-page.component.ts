@@ -54,7 +54,7 @@ export class AdminPageComponent implements OnInit {
   // Plant list
   gardenPlantIdList: Array<string> | null = null;
   gardenPlantNameMap: Map<string, string>;
-  gardenPlantIdListError = ''
+  gardenPlantIdListError = '';
   errorMessage = '';
 
   /**
@@ -97,9 +97,7 @@ export class AdminPageComponent implements OnInit {
    *
    * @return the http response.
    */
-  getGardenUserList(
-    garden: string
-  ): Observable<HttpResponse<Array<String>>> {
+  getGardenUserList(garden: string): Observable<HttpResponse<Array<String>>> {
     return this.httpClient.get<Array<String>>(
       '/garden/' + garden + '/user-list',
       {
@@ -116,9 +114,7 @@ export class AdminPageComponent implements OnInit {
    *
    * @return the http response.
    */
-  getGardenPlantList(
-    garden: string
-  ): Observable<HttpResponse<Array<String>>> {
+  getGardenPlantList(garden: string): Observable<HttpResponse<Array<String>>> {
     return this.httpClient.get<Array<String>>(
       '/garden/' + garden + '/plant-list',
       {
@@ -174,7 +170,7 @@ export class AdminPageComponent implements OnInit {
         // Get rest of information
         this.createGardenUserList(garden);
         this.createGardenPlantList(garden);
-        this.gardenManager = "Loading";
+        this.gardenManager = 'Loading';
         this.getUserInfo(this.gardenProfile.adminId).subscribe({
           next: (response: HttpResponse<User>) => {
             this.gardenManager = response.body.preferredName;
@@ -211,7 +207,8 @@ export class AdminPageComponent implements OnInit {
         }
         console.error('Error ' + error.status + ': ' + error.statusText);
         this.gardenProfile = null;
-        this.errorMessage = 'Cannot see garden profile for garden id: ' + garden;
+        this.errorMessage =
+          'Cannot see garden profile for garden id: ' + garden;
         this.isLoaded = true;
       },
     });
@@ -230,15 +227,12 @@ export class AdminPageComponent implements OnInit {
         // Gets user names
         this.gardenUserNameMap = new Map<string, string>();
         this.gardenUserIdList.forEach(id => {
-          this.gardenUserNameMap.set(id, "Loading...");
+          this.gardenUserNameMap.set(id, 'Loading...');
           this.getUserInfo(id).subscribe({
             // Obtain user names
             next: (response: HttpResponse<User>) => {
               // Successful responses are handled here.
-              this.gardenUserNameMap.set(
-                id,
-                response.body.preferredName
-              );
+              this.gardenUserNameMap.set(id, response.body.preferredName);
             },
             error: (error: HttpErrorResponse) => {
               // Handle connection error
@@ -271,7 +265,8 @@ export class AdminPageComponent implements OnInit {
         }
         console.error('Error ' + error.status + ': ' + error.statusText);
         this.gardenUserIdList = null;
-        this.gardenUserIdListError = 'Cannot see user list for garden id: ' + garden;
+        this.gardenUserIdListError =
+          'Cannot see user list for garden id: ' + garden;
         this.isLoaded = true;
       },
     });
@@ -290,15 +285,12 @@ export class AdminPageComponent implements OnInit {
         // Get plant names
         this.gardenPlantNameMap = new Map<string, string>();
         this.gardenPlantIdList.forEach(id => {
-          this.gardenPlantNameMap.set(id, "Loading...");
+          this.gardenPlantNameMap.set(id, 'Loading...');
           this.getPlantInfo(id).subscribe({
             // Obtain plant names
             next: (response: HttpResponse<Plant>) => {
               // Successful responses are handled here.
-              this.gardenPlantNameMap.set(
-                id,
-                response.body.nickname
-              );
+              this.gardenPlantNameMap.set(id, response.body.nickname);
             },
             error: (error: HttpErrorResponse) => {
               // Handle connection error
@@ -331,7 +323,8 @@ export class AdminPageComponent implements OnInit {
         }
         console.error('Error ' + error.status + ': ' + error.statusText);
         this.gardenPlantIdList = null;
-        this.gardenPlantIdListError = 'Cannot see plant list for garden id: ' + garden;
+        this.gardenPlantIdListError =
+          'Cannot see plant list for garden id: ' + garden;
         this.isLoaded = true;
       },
     });

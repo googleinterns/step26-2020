@@ -52,7 +52,7 @@ export class LoginComponent {
 
   buildUserProfile():void{
       console.log("user profle****");
-      this.userProfile={id:this.user.email,email:this.user.email,preferredName:this.user.name,bio:this.bio,zipCode:this.zipCode};
+      this.userProfile={id:this.user.email,email:this.user.email,preferredName:this.user.name,biography:this.bio,zipCode:this.zipCode};
       console.log("this is up"+ this.userProfile.bio);
       this.postData(this.userProfile);
   }
@@ -113,6 +113,8 @@ export class LoginComponent {
       params: new HttpParams().set('userData', JSON.stringify(data)),
     };
     console.log(JSON.stringify(data)+ " stringifyed data");
-    this.httpClient.post<any>('/user', null, httpOptions);
+    this.httpClient.post<any>('/user', null, httpOptions).subscribe((result)=>{
+        console.log("got here postdata 2*****")
+    });
   }
 }

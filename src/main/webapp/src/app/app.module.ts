@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {NgModule} from '@angular/core';
+import {NgModule, APP_INITIALIZER} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
@@ -44,6 +44,13 @@ const google_oauth_client_id = CLIENT_ID;
 
 import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 import {DatepickerComponent} from './datepicker/datepicker.component';
+import {TaskComponent} from './calendar-task/task.component';
+
+import {GapiSession} from '../sessions/gapi.session';
+
+export function initGapi(gapiSession: GapiSession) {
+  return () => gapiSession.loadClient();
+}
 
 @NgModule({
   declarations: [
@@ -55,6 +62,7 @@ import {DatepickerComponent} from './datepicker/datepicker.component';
     LoginComponent,
     CreateGardensComponent,
     DatepickerComponent,
+    TaskComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,6 +92,14 @@ import {DatepickerComponent} from './datepicker/datepicker.component';
         ],
       } as SocialAuthServiceConfig,
     },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initGapi,
+      deps: [GapiSession],
+      multi: true,
+    },
+
+    GapiSession,
   ],
 
   bootstrap: [AppComponent],

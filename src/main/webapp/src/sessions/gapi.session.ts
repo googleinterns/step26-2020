@@ -15,9 +15,9 @@
 import {NgZone, Injectable} from '@angular/core';
 import {environment} from '../environments/environment';
 import {TaskComponent} from '../app/calendar-task/task.component';
+import {CLIENT_ID} from '../app/SensitiveData';
 
-const CLIENT_ID =
-  '397696466543-0biqdptbuhjmkjmakg2mo2dsov74dl0s.apps.googleusercontent.com';
+const GAPI_CLIENT_ID = CLIENT_ID;
 const API_KEY = environment.calendar_key;
 
 const DISCOVERY_DOCS = [
@@ -33,8 +33,7 @@ export class GapiSession {
   hasConsent = false;
   tasks = new TaskComponent();
 
-  constructor(private zone: NgZone) {
-  }
+  constructor(private zone: NgZone) {}
 
   ngOnInit() {
     this.loadClient();
@@ -48,7 +47,7 @@ export class GapiSession {
       gapi.auth2
         .init({
           apiKey: API_KEY,
-          clientId: CLIENT_ID,
+          clientId: GAPI_CLIENT_ID,
           discoveryDocs: DISCOVERY_DOCS,
           scope: SCOPES,
         })

@@ -1,4 +1,4 @@
- <div *ngIf="displayInfo != null; else elseBlock"> 
+<div *ngIf="displayInfo != null; else elseBlock">
   <div class="flex-container">
     <div class="flex-split">
       <div class="card-padding">
@@ -12,7 +12,7 @@
 
       <div class="card-padding">
         <mat-card class="growpod-card">
-          <!-- form -->
+          <create-event-form></create-event-form>
         </mat-card>
       </div>
     </div>
@@ -24,7 +24,11 @@
 
           <datepicker #datepickerElem></datepicker>
 
-          <button md-raised-button class="button" (click)="fetchCalendarEvents()">
+          <button
+            md-raised-button
+            class="button"
+            (click)="fetchCalendarEvents()"
+          >
             Show Events
           </button>
 
@@ -37,10 +41,10 @@
 
 <div>
   <!-- Error case -->
-    <ng-template #elseBlock>
-      <h4 class="text-center">
-        <mat-icon aria-label="Error" color="warn">error</mat-icon>
-        {{ errorMessage }}
-      </h4>
-    </ng-template>
+  <ng-template #elseBlock>
+    <h4 class="text-center">
+      <mat-icon aria-label="Error" color="warn">error</mat-icon>
+      {{ errorMessage }}
+    </h4>
+  </ng-template>
 </div>

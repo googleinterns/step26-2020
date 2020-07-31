@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { GapiSession } from '../../sessions/gapi.session';
-import { DatepickerComponent } from '../datepicker/datepicker.component';
-import { Garden } from '../model/garden.model';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {GapiSession} from '../../sessions/gapi.session';
+import {DatepickerComponent} from '../datepicker/datepicker.component';
+import {Garden} from '../model/garden.model';
 
 @Component({
   selector: 'schedule-page',
@@ -29,18 +29,22 @@ import { Garden } from '../model/garden.model';
   ],
 })
 export class SchedulePageComponent implements OnInit {
-  @ViewChild('datepickerElem', { static: false })
+  @ViewChild('datepickerElem', {static: false})
   datepickerElem: DatepickerComponent;
   displayInfo: Garden | null;
   errorMessage: string;
 
-  constructor(private gapiSession: GapiSession, private route: ActivatedRoute, private httpClient: HttpClient) { 
+  constructor(
+    private gapiSession: GapiSession,
+    private route: ActivatedRoute,
+    private httpClient: HttpClient
+  ) {
     const idArg = route.snapshot.paramMap.get('id');
     const id = idArg ?? 'current';
     this.createGardenProfile(id);
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   /**
    * Populates component to create a garden, or shows an
@@ -63,7 +67,7 @@ export class SchedulePageComponent implements OnInit {
     });
   }
 
-   /**
+  /**
    * Gets garden information for the specified garden from
    * the server. Returns an observable HTTP response.
    *

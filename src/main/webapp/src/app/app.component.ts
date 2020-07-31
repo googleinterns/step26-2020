@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,6 +13,9 @@
 // limitations under the License.
 
 import {Component} from '@angular/core';
+import {Router} from '@angular/router';
+
+const LOGIN_PAGE: String = '/page/login';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +23,9 @@ import {Component} from '@angular/core';
   styleUrls: ['./app.component.css', './common/growpod-page-styles.css'],
 })
 export class AppComponent {
-  // For the mockup, the user is always logged in
-  loggedIn = true;
+  constructor(private router: Router) {}
+
+  isLoggedIn(): boolean {
+    return this.router.url !== LOGIN_PAGE;
+  }
 }

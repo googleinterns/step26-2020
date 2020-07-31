@@ -25,6 +25,7 @@
     "@types/gapi": "0.0.39",
     "@types/gapi.auth2": "0.0.52",
     "@types/gapi.client.calendar": "^3.0.5",
+    "angularx-social-login": "^3.2.0",
     "concurrently": "^5.2.0",
     "ngx-owl-carousel-o": "^3.0.1"
   }

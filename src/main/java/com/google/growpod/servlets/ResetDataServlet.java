@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,28 +14,31 @@
 
 package com.google.growpod.servlets;
 
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.growpod.LoadTestData;
 import java.io.IOException;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that sends a sample response. */
-@WebServlet("/test")
-public class TestServlet extends HttpServlet {
+/** Servlet to reset all user data to presets. */
+@WebServlet("/reset-data")
+public class ResetDataServlet extends HttpServlet {
 
-  static final long serialVersionUID = 1L;
+  static final long serialVersionUID = 2L;
 
-  /**
-   * Processes HTTP GET requests for the /test servlet. Returns a test response -- a very simple
-   * JSON structure with 'status' and 'value' fields.
-   *
-   * @param request Information about the GET Request
-   * @param response Information about the servlet's response
-   */
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+    DatastoreOptions instance = DatastoreOptions.getDefaultInstance();
+
+    // Deletes and repopulates everything.
+    LoadTestData.clear(instance);
+    LoadTestData.load(instance);
+
     response.setContentType("application/json;");
-    response.getWriter().println("{ \"status\": \"ok\", \"value\": \"test\" }");
+    response.getWriter().println("{}");
   }
 }

@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,16 @@
 
 package com.google.growpod.data;
 
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Entity.Builder;
+import com.google.cloud.datastore.Key;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 /** User data class. */
+@Data
+@AllArgsConstructor
 public class User {
 
   /** A unique id. */
@@ -36,60 +45,35 @@ public class User {
   private String zipCode;
 
   /**
-   * Constructs a new User.
+   * Generates a user from an entity.
    *
-   * @param id A unique ID for the user. This value must be supplied by the user.
-   * @param email The user's email.
-   * @param preferredName The user's preferred name.
-   * @param biography A user-submitted biography.
-   * @param zipCode The user's postal code.
+   * @param entity the entity to generate the user from
+   * @return the new user with the entity's information.
    */
-  public User(String id, String email, String preferredName, String biography, String zipCode) {
-    this.id = id;
-    this.email = email;
-    this.preferredName = preferredName;
-    this.biography = biography;
-    this.zipCode = zipCode;
+  public static User from(Entity entity) {
+    String id = entity.getKey().getId().toString();
+    String email = entity.getString("email");
+    String preferredName = entity.getString("preferred-name");
+    String biography = entity.getString("biography");
+    String zipCode = entity.getString("zip-code");
+    return new User(id, email, preferredName, biography, zipCode);
   }
 
-  /* Getters and setters. */
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getPreferredName() {
-    return preferredName;
-  }
-
-  public void setPreferredName(String name) {
-    this.preferredName = name;
-  }
-
-  public String getBiography() {
-    return biography;
-  }
-
-  public void setBiography(String biography) {
-    this.biography = biography;
-  }
-
-  public String getZipCode() {
-    return zipCode;
-  }
-
-  public void setZipCode(String location) {
-    this.zipCode = location;
+  /**
+   * Generates an entity from a user.
+   *
+   * @param instance The datastore instance the new entity will be associated with.
+   * @return the new entity representing a user.
+   */
+  public Entity toEntity(DatastoreOptions instance) {
+    // I use a different API here than in the portfolio
+    String projectId = instance.getProjectId();
+    Key key = Key.newBuilder(projectId, "User", Long.parseLong(id)).build();
+    Builder builder = Entity.newBuilder(key);
+    builder.set("email", email);
+    builder.set("preferred-name", preferredName);
+    builder.set("biography", biography);
+    builder.set("zip-code", zipCode);
+    return builder.build();
   }
 }

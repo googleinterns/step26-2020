@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,14 +14,13 @@
 
 package com.google.growpod.servlets;
 
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.growpod.controllers.UserDao;
 import com.google.growpod.data.User;
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -41,39 +40,19 @@ public class UserServlet extends HttpServlet {
 
   static final long serialVersionUID = 1L;
 
-  /** Static test data. */
-  private static final String CURRENT_USER_KEY = "0";
+  private UserDao dao;
 
-  private static final Map<String, User> USER_MAP = createUserMap();
+  private static final String CURRENT_USER_ARG = "current";
+  private static final String GARDEN_LIST_ARG = "garden-list";
+  private static final String GARDEN_ADMIN_LIST_ARG = "garden-admin-list";
+  private static final String CURRENT_USER_KEY =
+      "1"; // TODO(Issue #34): Replace value once oauth works
 
-  private static Map<String, User> createUserMap() {
-    Map<String, User> map = new HashMap<String, User>();
-    map.put(
-        "0", new User("0", "ladd@example.com", "David Ladd", "My SSN is: 143-46-6098", "11201"));
-    map.put("1", new User("1", "caroqliu@google.com", "Caroline Liu", "Plants are fun", "11201"));
-    map.put("2", new User("2", "friedj@google.com", "Jake Fried", "Plants are fun too", "11201"));
-    return Collections.unmodifiableMap(map);
-  }
-
-  private static final Map<String, List<String>> USER_GARDEN_LIST_MAP = createUserGardenListMap();
-
-  private static Map<String, List<String>> createUserGardenListMap() {
-    Map<String, List<String>> map = new HashMap<String, List<String>>();
-    map.put("0", Arrays.asList("0", "1"));
-    map.put("1", Arrays.asList("1"));
-    map.put("2", Arrays.asList("1"));
-    return Collections.unmodifiableMap(map);
-  }
-
-  private static final Map<String, List<String>> USER_GARDEN_ADMIN_LIST_MAP =
-      createUserGardenAdminListMap();
-
-  private static Map<String, List<String>> createUserGardenAdminListMap() {
-    Map<String, List<String>> map = new HashMap<String, List<String>>();
-    map.put("0", Arrays.asList("0"));
-    map.put("1", Arrays.asList("1"));
-    map.put("2", Arrays.asList());
-    return Collections.unmodifiableMap(map);
+  /** Initializes the servlet. Connects it to Datastore. */
+  @Override
+  public void init() throws ServletException {
+    DatastoreOptions datastoreInstance = DatastoreOptions.getDefaultInstance();
+    this.dao = new UserDao(datastoreInstance);
   }
 
   /**
@@ -88,13 +67,24 @@ public class UserServlet extends HttpServlet {
     /* uriList will have "" as element 0 */
     String[] uriList = request.getRequestURI().split("/");
     assert (uriList[1].equals("user"));
+    if (uriList.length < 3) {
+      response.sendError(
+          HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
+      return;
+    }
+
+    // Replace 'current' user with logged-in user.
+    String userKey = uriList[2];
+    if (userKey.equals(CURRENT_USER_ARG)) {
+      userKey = CURRENT_USER_KEY;
+    }
 
     // Dispatch based on method specified.
     // /user/{id}
     if (uriList.length == 3) {
-      User user = getUserById(uriList[2]);
+      User user = dao.getUserById(userKey);
       if (user == null) {
-        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + uriList[2]);
+        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userKey);
         return;
       }
       response.setContentType("application/json;");
@@ -103,73 +93,55 @@ public class UserServlet extends HttpServlet {
     }
 
     if (uriList.length == 4) {
-      if (uriList[3].equals("garden-list")) {
+      if (uriList[3].equals(GARDEN_LIST_ARG)) {
         // /user/{id}/garden-list
-        List<String> list = getUserGardenListById(uriList[2]);
+        List<String> list = dao.getUserGardenListById(userKey);
+
         if (list == null) {
-          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + uriList[2]);
+          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userKey);
           return;
         }
         response.setContentType("application/json;");
         response.getWriter().println(new Gson().toJson(list));
         return;
-      } else if (uriList[3].equals("garden-admin-list")) {
+      } else if (uriList[3].equals(GARDEN_ADMIN_LIST_ARG)) {
         // /user/{id}/garden-admin-list
-        List<String> list = getUserGardenAdminListById(uriList[2]);
+        List<String> list = dao.getUserGardenAdminListById(userKey);
+
         if (list == null) {
-          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + uriList[2]);
+          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userKey);
           return;
         }
         response.setContentType("application/json;");
         response.getWriter().println(new Gson().toJson(list));
         return;
       }
+
+      response.sendError(
+          HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
     }
-    response.sendError(
-        HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
+  }
+
+  /** Getters and Setters for data access object. */
+  public UserDao getDao() {
+    return dao;
+  }
+
+  public void setDao(UserDao dao) {
+    this.dao = dao;
   }
 
   /**
-   * Retrieves a user in the database by id, or null if said id does not exist.
+   * Processes a request to add a new user.
    *
-   * @param id the user's id
-   * @return the user with id's data or null.
+   * @param req Information about the POST request
+   * @param resp Information about the servlet's response
    */
-  private User getUserById(String id) {
-    // MOCK IMPLEMENTATION
-    if (id.equals("current")) {
-      return USER_MAP.get(CURRENT_USER_KEY);
-    }
-    return USER_MAP.get(id);
-  }
-
-  /**
-   * Retrieves a list of gardens the user with a given id is a member of. Returns an empty list if
-   * the user is a member of no gardens, and null if the user does not exist.
-   *
-   * @param id the user's id
-   * @return a list of gardens the user is a part of, or an empty list, or null.
-   */
-  private List<String> getUserGardenListById(String id) {
-    // MOCK IMPLEMENTATION
-    if (id.equals("current")) {
-      return USER_GARDEN_LIST_MAP.get(CURRENT_USER_KEY);
-    }
-    return USER_GARDEN_LIST_MAP.get(id);
-  }
-
-  /**
-   * Retrieves a list of gardens the user with a given id administers. Returns an empty list if the
-   * user administers no gardens, and null if the user does not exist.
-   *
-   * @param id the user's id
-   * @return a list of gardens the user administers, or an empty list, or null.
-   */
-  private List<String> getUserGardenAdminListById(String id) {
-    // MOCK IMPLEMENTATION
-    if (id.equals("current")) {
-      return USER_GARDEN_ADMIN_LIST_MAP.get(CURRENT_USER_KEY);
-    }
-    return USER_GARDEN_ADMIN_LIST_MAP.get(id);
+  @Override
+  public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    resp.setContentType("application/json");
+    String json = req.getParameter("userData");
+    User userData = new Gson().fromJson(json, User.class);
+    dao.addToDatastore(userData);
   }
 }

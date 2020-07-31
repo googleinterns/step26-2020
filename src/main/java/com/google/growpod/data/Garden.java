@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,17 @@
 
 package com.google.growpod.data;
 
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Entity.Builder;
+import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.LatLng;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 /** Garden data class. */
+@Data
+@AllArgsConstructor
 public class Garden {
 
   /** A unique id. */
@@ -23,70 +33,54 @@ public class Garden {
   /** The garden's name. */
   private String name;
 
+  /** The garden's description. */
+  private String description;
+
   /** Latitude of garden. */
   private double lat;
 
   /** Longitude of garden. */
   private double lng;
 
+  /** Postal code of garden. */
+  private String zipCode;
+
   /** Foreign Key to this garden's administrator. Must be a valid user key. */
   private String adminId;
 
   /**
-   * Constructs a new Garden.
+   * Generates a garden from an entity.
    *
-   * @param id A unique ID for the garden. This value must be supplied by the user.
-   * @param name The garden's name
-   * @param lat The garden's latitude
-   * @param lng The garden's longitude
-   * @param adminId The garden's administrator. Must be a valid user key.
+   * @param entity the entity to generate the garden from
+   * @return the new garden with the entity's information.
    */
-  public Garden(String id, String name, double lat, double lng, String adminId) {
-    this.id = id;
-    this.name = name;
-    this.lat = lat;
-    this.lng = lng;
-    this.adminId = adminId;
+  public static Garden from(Entity entity) {
+    String id = entity.getKey().getId().toString();
+    String name = entity.getString("name");
+    String description = entity.getString("description");
+    LatLng latLng = entity.getLatLng("lat-lng");
+    String zipCode = entity.getString("zip-code");
+    String adminId = entity.getString("admin-id");
+    return new Garden(
+        id, name, description, latLng.getLatitude(), latLng.getLongitude(), zipCode, adminId);
   }
 
-  /* Getters and setters. */
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public double getLat() {
-    return lat;
-  }
-
-  public void setLat(double lat) {
-    this.lat = lat;
-  }
-
-  public double getLng() {
-    return lng;
-  }
-
-  public void setLng(double lng) {
-    this.lng = lng;
-  }
-
-  public String getAdminId() {
-    return adminId;
-  }
-
-  public void setAdminId(String id) {
-    this.adminId = id;
+  /**
+   * Generates an entity from a garden.
+   *
+   * @param instance The datastore instance the new entity will be associated with.
+   * @return the new entity representing a garden.
+   */
+  public Entity toEntity(DatastoreOptions instance) {
+    // I use a different API here than in the portfolio
+    String projectId = instance.getProjectId();
+    Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(id)).build();
+    Builder builder = Entity.newBuilder(key);
+    builder.set("name", name);
+    builder.set("description", description);
+    builder.set("lat-lng", LatLng.of(lat, lng));
+    builder.set("zip-code", zipCode);
+    builder.set("admin-id", adminId);
+    return builder.build();
   }
 }

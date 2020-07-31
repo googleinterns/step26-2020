@@ -1,5 +1,5 @@
 <!-- Displays app contents if user is logged in, otherwise directs user to a home/login page -->
-<div *ngIf="loggedIn; else homePage">
+<div *ngIf="isLoggedIn(); else loginPage">
   <mat-toolbar color="primary">
     <mat-toolbar-row>
       <a routerLink="/page/index"><span>GrowPod</span></a>
@@ -36,7 +36,7 @@
   <!-- Routed page contents -->
   <router-outlet></router-outlet>
 </div>
-<!-- Error homepage -->
-<ng-template #homePage>
-  <h1>You aren't signed into GrowPod )-;</h1>
+
+<ng-template #loginPage>
+  <login></login>
 </ng-template>

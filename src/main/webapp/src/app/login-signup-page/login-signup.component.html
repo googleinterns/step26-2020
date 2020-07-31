@@ -1,5 +1,5 @@
 <body>
-  <div class="content">
+ <!-- <div class="content">-->
     <h1 class="greeting">Welcome To GrowPod</h1>
     <button class="button login" on-click="signInWithGoogle('login')">
       Login
@@ -15,23 +15,28 @@
   </mat-card-title>
 
   <mat-card-content>
+    
     <mat-form-field>
-      <input matInput placeholder="Are you joining a garden or creating one?" /></mat-form-field
-          ><br />
-
-    <mat-form-field>
-      <input matInput placeholder="Zipcode" /></mat-form-field
+      <input matInput placeholder="Zipcode" type="text" [(ngModel)]="zipCode" /></mat-form-field
     ><br />
 
     <mat-form-field>
       <textarea
         matInput
-        placeholder="Bio"
+        placeholder="Bio"  type="text" [(ngModel)]="bio"
       ></textarea></mat-form-field
     ><br />
 
-    <button mat-button class="button">Create Account</button>
+    <mat-form-field appearance="fill">
+    <mat-label>Are you joining a garden or creating one?</mat-label>
+    <mat-select>
+      <mat-option value="option">Joining</mat-option>
+       <mat-option value="option">Creating</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+    <button mat-button class="button" on-click="buildUserProfile()">Create Account</button>
   </mat-card-content>
 </mat-card>
-      </div>
+    <!--  </div>-->
 </body>

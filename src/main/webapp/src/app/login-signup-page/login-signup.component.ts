@@ -18,6 +18,7 @@ import {GoogleLoginProvider} from 'angularx-social-login';
 import {HttpClient} from '@angular/common/http';
 import {HttpHeaders, HttpParams} from '@angular/common/http';
 import {Router} from '@angular/router';
+import {FormControl, Validators} from '@angular/forms';
 
 @Component({
   selector: 'login',
@@ -29,6 +30,9 @@ import {Router} from '@angular/router';
 })
 export class LoginComponent {
   user: any;
+  bio:String;
+  zipCode:String;
+  userProfile:any;
 
   constructor(
     private authService: SocialAuthService,
@@ -36,6 +40,22 @@ export class LoginComponent {
     private router: Router
   ) {}
 
+  //email = new FormControl('', [Validators.required]);
+
+  //getErrorMessage() {
+   // if (this.email.hasError('required')) {
+     // return 'You must enter a value';
+   // }
+
+    //return this.email.hasError('email') ? 'Not a valid email' : '';
+  //}
+
+  buildUserProfile():void{
+      console.log("user profle****");
+      this.userProfile={id:this.user.email,email:this.user.email,preferredName:this.user.name,bio:this.bio,zipCode:this.zipCode};
+      console.log("this is up"+ this.userProfile.bio);
+      this.postData(this.userProfile);
+  }
   /**
    * @param accountData user data taken from google account: email and name
    */
@@ -65,6 +85,9 @@ export class LoginComponent {
       if (action === 'login') {
         this.router.navigate(['page/my-gardens']);
       }
+      else{
+          console.log("got here sign up*****");
+      }
     });
   }
 
@@ -82,12 +105,14 @@ export class LoginComponent {
    * @param data object holding user data that will be used as a param in the post request
    */
   postData(data: any): void {
+      console.log("got here postdata*****")
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
       params: new HttpParams().set('userData', JSON.stringify(data)),
     };
+    console.log(JSON.stringify(data)+ " stringifyed data");
     this.httpClient.post<any>('/user', null, httpOptions);
   }
 }

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {NgModule} from '@angular/core';
+import {NgModule, APP_INITIALIZER} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
@@ -36,9 +36,15 @@ import {LoginComponent} from './login-signup-page/login-signup.component';
 import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 import {DatepickerComponent} from './datepicker/datepicker.component';
 import {AdminPageComponent} from './admin-page/admin-page.component';
+import {TaskComponent} from './calendar-task/task.component';
+import {GapiSession} from '../sessions/gapi.session';
 import {CLIENT_ID} from './SensitiveData';
 
 const google_oauth_client_id = CLIENT_ID;
+
+export function initGapi(gapiSession: GapiSession) {
+  return () => gapiSession.loadClient();
+}
 
 @NgModule({
   declarations: [
@@ -51,6 +57,7 @@ const google_oauth_client_id = CLIENT_ID;
     CreateGardensComponent,
     DatepickerComponent,
     AdminPageComponent,
+    TaskComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,6 +82,14 @@ const google_oauth_client_id = CLIENT_ID;
         ],
       } as SocialAuthServiceConfig,
     },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initGapi,
+      deps: [GapiSession],
+      multi: true,
+    },
+
+    GapiSession,
   ],
 
   bootstrap: [AppComponent],

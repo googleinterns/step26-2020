@@ -130,6 +130,7 @@
       ]
     },
     "no-conflicting-lifecycle": true,
+    "no-explicit-any": false,
     "no-host-metadata-property": true,
     "no-input-rename": true,
     "no-inputs-metadata-property": true,

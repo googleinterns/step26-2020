@@ -1,5 +1,5 @@
 <!--<body>-->
-     <div class="content" *ngIf="newUser==false; else newUserForm">
+<div class="content" *ngIf="newUser == false; else newUserForm">
   <h1 class="greeting">Welcome To GrowPod</h1>
   <button class="button login" on-click="signInWithGoogle('login')">
     Login
@@ -12,8 +12,5 @@
 <!--</body> -->
 
 <ng-template #newUserForm>
-    <new-user-form></new-user-form>
+  <new-user-form></new-user-form>
 </ng-template>
-     
-
-

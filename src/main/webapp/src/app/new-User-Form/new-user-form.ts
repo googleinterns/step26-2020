@@ -18,7 +18,7 @@ import {Component} from '@angular/core';
 //import {HttpClient} from '@angular/common/http';
 //import {HttpHeaders, HttpParams} from '@angular/common/http';
 //import {Router} from '@angular/router';
-import {FormControl, Validators,FormGroup} from '@angular/forms';
+import {FormControl, Validators, FormGroup} from '@angular/forms';
 //import {User} from '../model/user.model';
 import {MatDialog} from '@angular/material/dialog';
 
@@ -35,8 +35,8 @@ export class NewUserFormComponent {
   bio: string;
   zipCode: string;
   //newUser=false;
-  choice:string;
-/*
+  choice: string;
+  /*
   userProfile: User = {
     id: undefined,
     email: undefined,
@@ -46,17 +46,15 @@ export class NewUserFormComponent {
   };
 */
   constructor(
-   // private authService: SocialAuthService,
+    // private authService: SocialAuthService,
     //private httpClient: HttpClient,
     //private router: Router,
-    public dialog: MatDialog,
+    public dialog: MatDialog
   ) {}
 
-  userGroup:FormGroup;
+  userGroup: FormGroup;
 
-  
-
-ngOnInit(): void {
+  ngOnInit(): void {
     this.userGroup = new FormGroup({
       zipCodeValidator: new FormControl(this.zipCode, [
         Validators.required,
@@ -67,15 +65,11 @@ ngOnInit(): void {
         //Validators.pattern('[0-9]+'),
         //Validators.min(1),
       ]),
-       gardenValidator: new FormControl(this.choice, [
+      gardenValidator: new FormControl(this.choice, [
         Validators.required,
         //Validators.pattern('[0-9]+'),
         //Validators.min(1),
       ]),
     });
   }
-  
- 
-
- 
 }

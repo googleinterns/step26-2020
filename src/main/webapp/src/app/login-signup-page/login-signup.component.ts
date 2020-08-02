@@ -21,7 +21,6 @@ import {Router} from '@angular/router';
 //import {FormControl, Validators,FormGroup} from '@angular/forms';
 import {User} from '../model/user.model';
 
-
 //import {MatDialog} from '@angular/material/dialog';
 
 @Component({
@@ -36,7 +35,7 @@ export class LoginComponent {
   user: any;
   //bio: string;
   //zipCode: string;
-  newUser=false;
+  newUser = false;
   //choice:string;
 
   userProfile: User = {
@@ -50,9 +49,9 @@ export class LoginComponent {
   constructor(
     private authService: SocialAuthService,
     private httpClient: HttpClient,
-    private router: Router,
-  //  public dialog: MatDialog,
-  ) {}
+    private router: Router
+  ) //  public dialog: MatDialog,
+  {}
 
   //userGroup:FormGroup;
 
@@ -120,7 +119,7 @@ ngOnInit(): void {
         this.router.navigate(['page/my-gardens']);
       } else {
         console.log('got here sign up*****');
-        this.newUser=true;
+        this.newUser = true;
       }
     });
   }

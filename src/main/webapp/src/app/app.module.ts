@@ -44,7 +44,7 @@ const google_oauth_client_id = CLIENT_ID;
 
 import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 import {DatepickerComponent} from './datepicker/datepicker.component';
-
+import{HiComponent} from './hi2/hi.component';
 @NgModule({
   declarations: [
     AppComponent,

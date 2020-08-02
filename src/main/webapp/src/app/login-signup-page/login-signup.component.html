@@ -1,42 +1,19 @@
-<body>
- <!-- <div class="content">-->
-    <h1 class="greeting">Welcome To GrowPod</h1>
-    <button class="button login" on-click="signInWithGoogle('login')">
-      Login
-    </button>
-    <br />
-    <button class="button signup" on-click="signInWithGoogle('signup')">
-      Sign up
-    </button>
+<!--<body>-->
+     <div class="content" *ngIf="newUser==false; else newUserForm">
+  <h1 class="greeting">Welcome To GrowPod</h1>
+  <button class="button login" on-click="signInWithGoogle('login')">
+    Login
+  </button>
+  <br />
+  <button class="button signup" on-click="signInWithGoogle('signup')">
+    Sign up
+  </button>
+</div>
+<!--</body> -->
 
-      <mat-card class="mat-elevation-z8 form">
-  <mat-card-title>
-    Tell us a little more about yourself!
-  </mat-card-title>
+<ng-template #newUserForm>
+    <new-user-form></new-user-form>
+</ng-template>
+     
 
-  <mat-card-content>
-    
-    <mat-form-field>
-      <input matInput placeholder="Zipcode" type="text" [(ngModel)]="zipCode" /></mat-form-field
-    ><br />
 
-    <mat-form-field>
-      <textarea
-        matInput
-        placeholder="Bio"  type="text" [(ngModel)]="bio"
-      ></textarea></mat-form-field
-    ><br />
-
-    <mat-form-field appearance="fill">
-    <mat-label>Are you joining a garden or creating one?</mat-label>
-    <mat-select>
-      <mat-option value="option">Joining</mat-option>
-       <mat-option value="option">Creating</mat-option>
-    </mat-select>
-  </mat-form-field>
-
-    <button mat-button class="button" on-click="buildUserProfile()">Create Account</button>
-  </mat-card-content>
-</mat-card>
-    <!--  </div>-->
-</body>

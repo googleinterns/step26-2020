@@ -1,11 +1,10 @@
-  <mat-card class="mat-elevation-z8 form">
-    <mat-card-title>
-      Tell us a little more about yourself!
-    </mat-card-title>
-    
+<mat-card class="mat-elevation-z8 form">
+  <mat-card-title>
+    Tell us a little more about yourself!
+  </mat-card-title>
 
-    <mat-card-content>
-        <form [formGroup]="userGroup">
+  <mat-card-content>
+    <form [formGroup]="userGroup">
       <mat-form-field appearance="fill">
         <input
           matInput
@@ -13,15 +12,14 @@
           type="text"
           [(ngModel)]="zipCode"
           formControlName="zipCodeValidator"
-          />
-          <mat-error
-      *ngIf="
+        />
+        <mat-error
+          *ngIf="
         userGroup.controls.zipCodeValidator.hasError('required')
       "
-    >
-      Zipcode is required
-    </mat-error>
-          </mat-form-field
+        >
+          Zipcode is required
+        </mat-error> </mat-form-field
       ><br />
 
       <mat-form-field appearance="fill">
@@ -32,14 +30,13 @@
           [(ngModel)]="bio"
           formControlName="bioValidator"
         ></textarea>
-          <mat-error
-      *ngIf="
+        <mat-error
+          *ngIf="
         userGroup.controls.bioValidator.hasError('required')
       "
-    >
-      Biography is required
-    </mat-error>
-          </mat-form-field
+        >
+          Biography is required
+        </mat-error> </mat-form-field
       ><br />
 
       <mat-form-field appearance="fill">
@@ -49,17 +46,16 @@
           <mat-option value="option">Creating</mat-option>
         </mat-select>
         <mat-error
-      *ngIf="
+          *ngIf="
         userGroup.controls.gardenValidator.hasError('required')
       "
-    >
-     </mat-error>
-     </mat-form-field>
+        >
+        </mat-error>
+      </mat-form-field>
 
       <button mat-button class="button" on-click="buildUserProfile()">
         Create Account
       </button>
-    
-     
-
-
+    </form></mat-card-content
+  ></mat-card
+>

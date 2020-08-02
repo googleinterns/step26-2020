@@ -49,33 +49,30 @@ export class LoginComponent {
   constructor(
     private authService: SocialAuthService,
     private httpClient: HttpClient,
-    private router: Router
-  ) //  public dialog: MatDialog,
-  {}
+    private router: Router //  public dialog: MatDialog,
+  ) {}
 
   //userGroup:FormGroup;
-
   /*
 ngOnInit(): void {
     this.userGroup = new FormGroup({
       zipCodeValidator: new FormControl(this.userProfile.zipCode, [
         Validators.required,
-       // newUserForm 
-        //Validators.minLength(1),
+       newUserForm
+      Validators.minLength(1),
       ]),
       bioValidator: new FormControl(this.userProfile.biography, [
         Validators.required,
-        //Validators.pattern('[0-9]+'),
-        //Validators.min(1),
+        Validators.pattern('[0-9]+'),
+        Validators.min(1),
       ]),
        gardenValidator: new FormControl(this.choice, [
         Validators.required,
-        //Validators.pattern('[0-9]+'),
-        //Validators.min(1),
+        Validators.pattern('[0-9]+'),
+        Validators.min(1),
       ]),
     });
   }
-  
   buildUserProfile(): void {
     console.log('user profle****');
     this.userProfile = {

@@ -47,6 +47,26 @@ public class UserDao {
   }
 
   /**
+   * Creates an Entity thats holds user data and adds it to Datastore.
+   *
+   * @param user User object holding user data: id,email,name,bio,zip
+   */
+  public void addToDatastore(User user) {
+    // Generates key
+    KeyFactory keyFactory = datastore.newKeyFactory().setKind("User");
+    IncompleteKey incompleteKey = keyFactory.newKey();
+
+    Key key = datastore.allocateId(incompleteKey);
+
+    // placeholder id
+    user.setId("1");
+
+    // Puts key into database
+    Entity newEntity = Entity.newBuilder(key, user.toEntity(datastoreInstance)).build();
+    datastore.add(newEntity);
+  }
+
+  /**
    * Retrieves a user in the database by id, or null if said id does not exist.
    *
    * @param id the user's id

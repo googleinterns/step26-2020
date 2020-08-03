@@ -61,9 +61,10 @@ public class PlantServlet extends HttpServlet {
     // Dispatch based on method specified.
     // /plant/{id}
     if (uriList.length == 3) {
-      Plant plant = dao.getPlantById(uriList[2]);
+      String plantId = uriList[2];
+      Plant plant = dao.getPlantById(plantId);
       if (plant == null) {
-        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid plant id: " + uriList[2]);
+        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid plant id: " + plantId);
         return;
       }
       response.setContentType("application/json;");

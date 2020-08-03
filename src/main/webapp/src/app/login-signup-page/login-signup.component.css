@@ -1,0 +1,16 @@
+.greeting {
+  font-size: 50px;
+  text-align: center;
+}
+body {
+  background-color: var(--primary-darker-color);
+}
+
+.content {
+  padding: 350px 0;
+  text-align: center;
+}
+.login,
+.signup {
+  margin: 20px auto;
+}

@@ -140,7 +140,6 @@ public class UserServlet extends HttpServlet {
   public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     resp.setContentType("application/json");
     String json = req.getParameter("userData");
-    System.out.printf("got here post serv**************", json);
     User userData = new Gson().fromJson(json, User.class);
     dao.addToDatastore(userData);
   }

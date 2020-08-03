@@ -157,7 +157,7 @@ export class AdminPageComponent implements OnInit {
   }
 
   /**
-   * Creates garden summary.
+   * Creates garden summary on the page.
    *
    * @param garden The garden to create an admin page of.
    */
@@ -215,7 +215,7 @@ export class AdminPageComponent implements OnInit {
   }
 
   /**
-   * Creates garden user list.
+   * Creates garden user list on the page.
    *
    * @param garden The garden to create a user list of.
    */
@@ -273,7 +273,7 @@ export class AdminPageComponent implements OnInit {
   }
 
   /**
-   * Creates garden plant list.
+   * Creates garden plant list on the page.
    *
    * @param garden The garden to create a plant list of.
    */

@@ -43,7 +43,7 @@ import {User} from '../model/user.model';
  */
 export class AdminPageComponent implements OnInit {
   isLoaded = false;
-  gardenProfile: Garden | null;
+  gardenProfile: Garden | null = null;
   gardenManager: string;
 
   // User list
@@ -67,8 +67,8 @@ export class AdminPageComponent implements OnInit {
   ngOnInit(): void {
     const gardenIdArg = this.route.snapshot.paramMap.get('garden-id');
     if (!gardenIdArg) {
-      this.gardenProfile = null;
       this.errorMessage = 'No garden-id argument in the query string.';
+      this.isLoaded = true;
       return;
     }
     this.createAdminPage(gardenIdArg);

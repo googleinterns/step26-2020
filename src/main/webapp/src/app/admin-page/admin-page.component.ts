@@ -170,12 +170,12 @@ export class AdminPageComponent implements OnInit {
    *
    * Performs POST: /garden/{{gardenProfile.id}}/plant-list, with
    * body plant.
+   * TODO validate login
    *
    * @param plant the plant to post.
    * @return the http response.
    */
   postPlantToGarden(plant: Plant): Observable<HttpResponse<string>> {
-    console.log(JSON.stringify(plant));
     return this.httpClient.post<string>(
       '/garden/' + this.gardenProfile.id + '/plant-list',
       plant,
@@ -190,6 +190,7 @@ export class AdminPageComponent implements OnInit {
    * Deletes a plant from a garden.
    *
    * Performs GET: /garden/{{gardenProfile.id}}/plant-list/{id}
+   * TODO validate login
    *
    * @param id the plant id to delete.
    * @return the http response.
@@ -208,6 +209,7 @@ export class AdminPageComponent implements OnInit {
    * Deletes a user from a garden.
    *
    * Performs GET: /garden/{{gardenProfile.id}}/user-list/{id}
+   * TODO validate login
    *
    * @param id the user id to delete.
    * @return the http response.

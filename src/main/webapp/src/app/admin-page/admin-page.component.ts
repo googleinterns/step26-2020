@@ -45,7 +45,7 @@ import {User} from '../model/user.model';
  */
 export class AdminPageComponent implements OnInit {
   isLoaded = false;
-  gardenProfile: Garden | null;
+  gardenProfile: Garden | null = null;
   gardenManager: string;
 
   // User list
@@ -75,7 +75,6 @@ export class AdminPageComponent implements OnInit {
   ngOnInit(): void {
     const gardenIdArg = this.route.snapshot.paramMap.get('garden-id');
     if (!gardenIdArg) {
-      this.gardenProfile = null;
       this.errorMessage = 'No garden-id argument in the query string.';
       this.isLoaded = true;
       return;
@@ -225,7 +224,7 @@ export class AdminPageComponent implements OnInit {
   }
 
   /**
-   * Creates garden summary.
+   * Creates garden summary on the page.
    *
    * @param garden The garden to create an admin page of.
    */
@@ -256,34 +255,28 @@ export class AdminPageComponent implements OnInit {
         });
       },
       error: (error: HttpErrorResponse) => {
-        // Handle connection error
+        this.gardenProfile = null;
         if (error.error instanceof ErrorEvent) {
+          // Connection Error
           console.error('Network error: ' + error.error.message);
-          this.gardenProfile = null;
           this.errorMessage = 'Cannot connect to GrowPod Server';
-          this.isLoaded = true;
-          return;
-        }
-        // Non-404 error codes
-        if (error.status !== 404) {
+        } else if (error.status !== 404) {
+          // Non-404 statuses
           console.error('Unexpected error: ' + error.statusText);
-          this.gardenProfile = null;
           this.errorMessage =
             'Unexpected error ' + error.status + ': ' + error.statusText;
-          this.isLoaded = true;
-          return;
+        } else {
+          console.error('Error ' + error.status + ': ' + error.statusText);
+          this.errorMessage =
+            'Cannot see garden profile for garden id: ' + garden;
         }
-        console.error('Error ' + error.status + ': ' + error.statusText);
-        this.gardenProfile = null;
-        this.errorMessage =
-          'Cannot see garden profile for garden id: ' + garden;
         this.isLoaded = true;
       },
     });
   }
 
   /**
-   * Creates garden user list.
+   * Creates garden user list on the page.
    *
    * @param garden The garden to create a user list of.
    */
@@ -316,32 +309,27 @@ export class AdminPageComponent implements OnInit {
         });
       },
       error: (error: HttpErrorResponse) => {
-        // Handle connection error
+        this.gardenUserIdList = null;
         if (error.error instanceof ErrorEvent) {
+          // Handle connection error
           console.error('Network error: ' + error.error.message);
-          this.gardenUserIdList = null;
           this.gardenUserIdListError = 'Cannot connect to GrowPod Server';
-          return;
-        }
-        // Non-404 error codes
-        if (error.status !== 404) {
+        } else if (error.status !== 404) {
+          // Non-404 errors
           console.error('Unexpected error: ' + error.statusText);
-          this.gardenUserIdList = null;
           this.gardenUserIdListError =
             'Unexpected error ' + error.status + ': ' + error.statusText;
-          return;
+        } else {
+          console.error('Error ' + error.status + ': ' + error.statusText);
+          this.gardenUserIdListError =
+            'Cannot see user list for garden id: ' + garden;
         }
-        console.error('Error ' + error.status + ': ' + error.statusText);
-        this.gardenUserIdList = null;
-        this.gardenUserIdListError =
-          'Cannot see user list for garden id: ' + garden;
-        this.isLoaded = true;
       },
     });
   }
 
   /**
-   * Creates garden plant list.
+   * Creates garden plant list on the page.
    *
    * @param garden The garden to create a plant list of.
    */

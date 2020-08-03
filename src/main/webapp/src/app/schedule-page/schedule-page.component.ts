@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {GapiSession} from '../../sessions/gapi.session';
+import {DatepickerComponent} from '../datepicker/datepicker.component';
 
 @Component({
   selector: 'schedule-page',
@@ -23,7 +25,30 @@ import {Component, OnInit} from '@angular/core';
   ],
 })
 export class SchedulePageComponent implements OnInit {
-  constructor() {}
+  @ViewChild('datepickerElem', {static: false})
+  datepickerElem: DatepickerComponent;
+
+  constructor(private gapiSession: GapiSession) {}
 
   ngOnInit(): void {}
+
+  /**
+   * Display consent popup for calendar API, list event based on selected date
+   * Consent prompt only appears once per session
+   */
+  fetchCalendarEvents() {
+    if (this.gapiSession.consent) {
+      this.gapiSession.listEvents(
+        this.datepickerElem.selectedDate,
+        this.datepickerElem.selectedDateMax
+      );
+    } else {
+      this.gapiSession.signIn().then(() => {
+        this.gapiSession.listEvents(
+          this.datepickerElem.selectedDate,
+          this.datepickerElem.selectedDateMax
+        );
+      });
+    }
+  }
 }

@@ -1,0 +1,88 @@
+<div *ngIf="isLoaded">
+  <div *ngIf="gardenProfile; else errorBlock">
+    <mat-card class="growpod-main-section growpod-card">
+      <div class="card-padding">
+        <mat-card>
+          <h2>{{ gardenProfile.name }}</h2>
+          <h4>
+            {{ gardenManager }} |
+            {{ gardenProfile.lat + ' -- ' + gardenProfile.lng }}
+          </h4>
+        </mat-card>
+      </div>
+
+      <div class="card-padding">
+        <mat-card>
+          <mat-accordion>
+            <mat-expansion-panel hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title> About the garden </mat-panel-title>
+              </mat-expansion-panel-header>
+              <p>{{ gardenProfile.description }}</p>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title> Plants </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-list role="list">
+                <div *ngIf="gardenPlantIdList">
+                  <mat-list-item
+                    role="list-item"
+                    *ngFor="let plantId of gardenPlantIdList"
+                  >
+                    {{ gardenPlantNameMap && gardenPlantNameMap.get(plantId) }}
+                    <span class="mat-list-item-right-align">
+                      <button mat-button>
+                        <mat-icon color="accent">info</mat-icon>
+                      </button>
+                      <button mat-button>
+                        <mat-icon color="warn">delete</mat-icon>
+                      </button>
+                    </span>
+                  </mat-list-item>
+                </div>
+              </mat-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title> Members </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-list role="list">
+                <mat-list-item
+                  role="list-item"
+                  *ngFor="let userId of gardenUserIdList"
+                >
+                  {{ gardenUserNameMap && gardenUserNameMap.get(userId) }}
+                  <span class="mat-list-item-right-align">
+                    <button
+                      mat-button
+                      [routerLink]="['/page/user-profile', {id: userId}]"
+                    >
+                      <mat-icon color="accent">account_circle</mat-icon>
+                    </button>
+                    <button mat-button>
+                      <mat-icon color="warn">delete</mat-icon>
+                    </button>
+                  </span>
+                </mat-list-item>
+              </mat-list>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-card>
+      </div>
+    </mat-card>
+  </div>
+  <!-- Error case -->
+  <ng-template #errorBlock>
+    <mat-card class="growpod-main-section growpod-card">
+      <mat-card-content>
+        <h4 class="text-center">
+          <mat-icon aria-label="Error" color="warn">error</mat-icon>
+          {{ errorMessage }}
+        </h4>
+      </mat-card-content>
+    </mat-card>
+  </ng-template>
+</div>

@@ -28,6 +28,15 @@ import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 import {DatepickerComponent} from './datepicker/datepicker.component';
+import {TaskComponent} from './calendar-task/task.component';
+import {CreateEventComponent} from './calendar-create/create-event-form.component';
+
+import {GapiSession} from '../sessions/gapi.session';
+import {UserRepository} from '../repositories/user.repository';
+
+export function initGapi(gapiSession: GapiSession) {
+  return () => gapiSession.loadClient();
+}
 
 @NgModule({
   declarations: [
@@ -38,6 +47,11 @@ import {DatepickerComponent} from './datepicker/datepicker.component';
     SchedulePageComponent,
     CreateGardensComponent,
     DatepickerComponent,
+<<<<<<< HEAD
+=======
+    TaskComponent,
+    CreateEventComponent,
+>>>>>>> 558c9b9... Create Events API (Replace 'some email' with an email on the createevent ts
   ],
   imports: [
     BrowserModule,

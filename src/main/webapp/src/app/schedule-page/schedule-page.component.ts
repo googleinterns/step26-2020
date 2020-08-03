@@ -17,6 +17,7 @@ import {ActivatedRoute} from '@angular/router';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {GapiSession} from '../../sessions/gapi.session';
+import {CreateEventComponent} from '../calendar-create/create-event-form.component';
 import {DatepickerComponent} from '../datepicker/datepicker.component';
 import {Garden} from '../model/garden.model';
 
@@ -29,8 +30,13 @@ import {Garden} from '../model/garden.model';
   ],
 })
 export class SchedulePageComponent implements OnInit {
+  
+  @ViewChild('eventForm', {static: false})
+  eventForm: CreateEventComponent;
+
   @ViewChild('datepickerElem', {static: false})
   datepickerElem: DatepickerComponent;
+
   displayInfo: Garden | null;
   errorMessage: string;
 
@@ -88,12 +94,13 @@ export class SchedulePageComponent implements OnInit {
    * Consent prompt only appears once per session
    */
   fetchCalendarEvents() {
-    // Normal flow; check if user has consented and signed in
+    // User has already provided consent to the calendar API
     if (this.gapiSession.consent) {
       this.gapiSession.listEvents(
         this.datepickerElem.selectedDate,
         this.datepickerElem.selectedDateMax
       );
+    // User gives consent to the API for the first time in the current session
     } else {
       this.gapiSession.signIn().then(() => {
         this.gapiSession.listEvents(
@@ -103,4 +110,39 @@ export class SchedulePageComponent implements OnInit {
       });
     }
   }
+
+  /**
+   *
+   */
+  createCalendarEvent() {
+    // User has already provided consent to the calendar API
+    if (this.gapiSession.consent) {
+      this.eventForm.submit();
+      console.log("AA first (a)");
+
+      if(this.eventForm.submitSuccess) {
+      console.log("AA second (a)");
+      this.gapiSession.createEvent(this.eventForm.eventInfo.title, this.eventForm.startDateTime, this.eventForm.endDateTime, this.eventForm.eventInfo.timezone, this.eventForm.eventInfo.participants);
+      this.eventForm.submitSuccess = false;
+      }
+
+    }
+     // User gives consent to the API for the first time in the current session
+    else {
+      this.gapiSession.signIn().then(() => {
+        this.eventForm.submit();
+        console.log("BB first (b)");
+
+      if(this.eventForm.submitSuccess) {
+        console.log("BB second (b)");
+        this.gapiSession.createEvent(this.eventForm.eventInfo.title, this.eventForm.startDateTime, this.eventForm.endDateTime, this.eventForm.eventInfo.timezone, this.eventForm.eventInfo.participants);
+        this.eventForm.submitSuccess = false;
+      }
+
+      });
+    }
+
+    
+  }
+
 }

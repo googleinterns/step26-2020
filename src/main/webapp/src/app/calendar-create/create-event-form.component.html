@@ -1,17 +1,19 @@
 <h1>Create an Event</h1>
 <h4>After creating your event, it will be available in your calendar</h4>
 
-<form [formGroup]="gardenGroup">
-	<mat-form-field class="div-center">
+<form [formGroup]="eventGroup">
+	<mat-form-field>
 		<mat-label>Title</mat-label>
 		<input formControlName="title" matInput placeholder="Enter a title" />
 		<mat-error *ngIf="
-        gardenGroup.controls.title.hasError('required') ||
-        gardenGroup.controls.title.hasError('minLength')
+        eventGroup.controls.title.hasError('required') ||
+        eventGroup.controls.title.hasError('minLength')
       ">
 			Event title is <strong>required</strong>
 		</mat-error>
 	</mat-form-field>
+
+  <br />
 
   <mat-form-field>
   <mat-label>Date</mat-label>
@@ -24,7 +26,7 @@
   <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
   <mat-datepicker #datepicker disabled="false"></mat-datepicker>
   <mat-error *ngIf="
-      gardenGroup.controls.dateTime.hasError('required')">
+      eventGroup.controls.dateTime.hasError('required')">
     	Event date is <strong>required</strong>
 	</mat-error>
   </mat-form-field>
@@ -35,7 +37,7 @@
         <mat-label>Start Time</mat-label>
 				<input formControlName="startTime" type="time">
         <mat-error *ngIf="
-          gardenGroup.controls.dateTime.hasError('required')">
+          eventGroup.controls.startTime.hasError('required')">
     	    Starting time is <strong>required</strong>
       	</mat-error>
       </td>
@@ -43,19 +45,21 @@
 				<mat-label>End Time</mat-label>
 				<input formControlName="endTime" type="time">
         <mat-error *ngIf="
-          gardenGroup.controls.dateTime.hasError('required')">
+          eventGroup.controls.endTime.hasError('required')">
     	    Ending time is <strong>required</strong>
 	      </mat-error>
       </td>
 		</tr>
 	</table>
 
+  <br />
+
   <mat-label>Timezone</mat-label>
     <select formControlName="timezone">
      <option *ngFor="let tz of timezoneUS" [value]="tz">{{tz}}</option>
     </select>
     <mat-error *ngIf="
-        gardenGroup.controls.timezone.hasError('required')
+        eventGroup.controls.timezone.hasError('required')
       ">
 			Timezone is <strong>required</strong>
 		</mat-error>
@@ -72,11 +76,10 @@
 		</mat-error>
 	</mat-form-field>
   -->
+  <br />
 
 	<mat-form-field class="div-center">
 		<mat-label>Description</mat-label>
 		<input formControlName="description" matInput placeholder="(Optional) Enter a description" />
 	</mat-form-field>
 </form>
-
-<button mat-button class="button" (click)="submit()">Create Event</button>

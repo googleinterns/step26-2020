@@ -15,7 +15,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 import { EventInfo }    from '../calendar-event/event-info';
-import { TIMEZONES } from './timezones.ts'
+import { TIMEZONES } from './timezones'
 
 @Component({
   selector: 'create-event-form',
@@ -28,6 +28,8 @@ import { TIMEZONES } from './timezones.ts'
  */
 export class CreateEventComponent implements OnInit {
   timezoneUS = TIMEZONES;
+
+  // Information available on the form
   eventInfo : EventInfo = {
     title: undefined,
     dateTime: new Date(),
@@ -37,29 +39,58 @@ export class CreateEventComponent implements OnInit {
     participants: ['user@example.com'],
     description: '',
   };
-  gardenGroup: FormGroup;
+
+  // Values will be update after sucessfully calling this.submit
+  startDateTime: string;
+  endDateTime: string;
+
+  submitSuccess: boolean = false;
+  eventGroup: FormGroup;
   
 
   constructor() {}
 
   ngOnInit():void {
-    this.gardenGroup = new FormGroup({
+    this.eventGroup = new FormGroup({
       title: new FormControl(this.eventInfo.title, [
         Validators.required,
         Validators.minLength(1),
       ]),
+      dateTime: new FormControl(this.eventInfo.dateTime, [
+        Validators.required,
+      ]),
+       startTime: new FormControl(this.eventInfo.startTime, [
+        Validators.required,
+      ]),
+      endTime: new FormControl(this.eventInfo.endTime, [
+        Validators.required,
+      ]),
      timezone: new FormControl(this.eventInfo.timezone, [
         Validators.required,
       ]),
+      description: new FormControl(this.eventInfo.description),
     });
   }
 
-  onSubmit():void { 
-    if (this.gardenGroup.valid) {
-      this.eventInfo = new EventInfo();
+  /**
+   *
+   */
+  submit():void { 
+    if (this.eventGroup.valid) {
+      this.submitSuccess = true;
+      this.eventInfo = this.eventGroup.value;
+      this.eventInfo.participants = ['some email'];
+      this.startDateTime = this.getDateTime(this.eventInfo.dateTime.toISOString(), this.eventInfo.startTime);
+      this.endDateTime = this.getDateTime(this.eventInfo.dateTime.toISOString(), this.eventInfo.endTime);
     }
   }
 
-  
-
+  /** 
+   *
+   */
+  getDateTime(dateTime: string, time: string): string {
+    const dateISO = dateTime.split('T', 1);
+    const result = dateISO + 'T' + time + ':00-07:00';
+    return result;
+  }
 }

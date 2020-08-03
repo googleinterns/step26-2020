@@ -12,7 +12,8 @@
 
       <div class="card-padding">
         <mat-card class="growpod-card">
-          <create-event-form></create-event-form>
+          <create-event-form  #eventForm></create-event-form>
+          <button mat-button class="button" (click)="createCalendarEvent()">Create Event</button>
         </mat-card>
       </div>
     </div>

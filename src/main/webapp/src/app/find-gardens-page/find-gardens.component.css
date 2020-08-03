@@ -29,3 +29,14 @@
 .title {
   text-align: center;
 }
+
+.div-center-contents {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.div-center-item {
+  text-align: center;
+}

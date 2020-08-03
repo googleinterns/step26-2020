@@ -14,6 +14,7 @@
 
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
+import {FormControl, Validators} from '@angular/forms';
 import {
   HttpClient,
   HttpResponse,
@@ -48,6 +49,7 @@ export class FindGardensComponent implements OnInit {
   isLoaded = false;
   errorMessage = '';
   userGardenSet: Set<string>;
+  zipCodeControl: FormControl;
 
   /**
    * Option to display a certian number of slides based off of browser window size along with
@@ -71,11 +73,27 @@ export class FindGardensComponent implements OnInit {
    *
    * @param route Contains arguments.
    */
-  constructor(private route: ActivatedRoute, private httpClient: HttpClient) {}
+  constructor(private route: ActivatedRoute, private httpClient: HttpClient) {
+    // Add simple regex zip code validation.
+    this.zipCodeControl = new FormControl('', [
+      Validators.pattern('^$|^([0-9]{5})$'),
+    ]);
+  }
 
   ngOnInit(): void {
     const zipCodeArg = this.route.snapshot.paramMap.get('zip-code');
     this.createNearbyGardenList(zipCodeArg);
+    // Changes to zipCodeControl change nearby garden list.
+    this.zipCodeControl.valueChanges.subscribe(() => {
+      if (this.zipCodeControl.valid) {
+        if (this.zipCodeControl.value) {
+          this.createNearbyGardenList(this.zipCodeControl.value);
+          return;
+        }
+        // Empty String == Search near me.
+        this.createNearbyGardenList(zipCodeArg); // Capture enclosing scope.
+      }
+    });
   }
 
   /**
@@ -126,6 +144,21 @@ export class FindGardensComponent implements OnInit {
    */
   getUserInfo(user: string): Observable<HttpResponse<User>> {
     return this.httpClient.get<User>('/user/' + user, {
+      observe: 'response',
+      responseType: 'json',
+    });
+  }
+
+  /**
+   * Posts the garden id for the current user to join.
+   *
+   * Performs POST: /user/current/garden-list/{id}, with an empty body.
+   *
+   * @param id The garden id the user wishes to join
+   * @return the http response.
+   */
+  postJoinGarden(id: string): Observable<HttpResponse<string>> {
+    return this.httpClient.post<string>('/user/current/garden-list/' + id, '', {
       observe: 'response',
       responseType: 'json',
     });
@@ -225,6 +258,27 @@ export class FindGardensComponent implements OnInit {
           this.gardenAdminNames.set(garden.adminId, 'Cannot fetch name');
         },
       });
+    });
+  }
+
+  /**
+   * Joins a garden and refreshes the userGardenSet.
+   *
+   * @param id the id of the garden to join.
+   */
+  joinGarden(id: string): void {
+    this.postJoinGarden(id).subscribe({
+      next: () => {
+        this.createUserGardenSet();
+      },
+      error: (error: HttpErrorResponse) => {
+        // Silently log errors for now
+        if (error.error instanceof ErrorEvent) {
+          console.error('Network error: ' + error.error.message);
+          return;
+        }
+        console.error('Unexpected error: ' + error.statusText);
+      },
     });
   }
 }

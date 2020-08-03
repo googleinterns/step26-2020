@@ -88,10 +88,6 @@
   border-radius: 50%;
 }
 
-.right-align {
+.mat-list-item-right-align {
   margin-left: auto;
-}
-
-.div-center {
-  margin: 0 auto;
 }

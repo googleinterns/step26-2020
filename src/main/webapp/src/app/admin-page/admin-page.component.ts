@@ -188,27 +188,21 @@ export class AdminPageComponent implements OnInit {
         });
       },
       error: (error: HttpErrorResponse) => {
-        // Handle connection error
+        this.gardenProfile = null;
         if (error.error instanceof ErrorEvent) {
+          // Connection Error
           console.error('Network error: ' + error.error.message);
-          this.gardenProfile = null;
           this.errorMessage = 'Cannot connect to GrowPod Server';
-          this.isLoaded = true;
-          return;
-        }
-        // Non-404 error codes
-        if (error.status !== 404) {
+        } else if (error.status !== 404) {
+          // Non-404 statuses
           console.error('Unexpected error: ' + error.statusText);
-          this.gardenProfile = null;
           this.errorMessage =
             'Unexpected error ' + error.status + ': ' + error.statusText;
-          this.isLoaded = true;
-          return;
+        } else {
+          console.error('Error ' + error.status + ': ' + error.statusText);
+          this.errorMessage =
+            'Cannot see garden profile for garden id: ' + garden;
         }
-        console.error('Error ' + error.status + ': ' + error.statusText);
-        this.gardenProfile = null;
-        this.errorMessage =
-          'Cannot see garden profile for garden id: ' + garden;
         this.isLoaded = true;
       },
     });
@@ -248,26 +242,21 @@ export class AdminPageComponent implements OnInit {
         });
       },
       error: (error: HttpErrorResponse) => {
-        // Handle connection error
+        this.gardenUserIdList = null;
         if (error.error instanceof ErrorEvent) {
+          // Handle connection error
           console.error('Network error: ' + error.error.message);
-          this.gardenUserIdList = null;
           this.gardenUserIdListError = 'Cannot connect to GrowPod Server';
-          return;
-        }
-        // Non-404 error codes
-        if (error.status !== 404) {
+        } else if (error.status !== 404) {
+          // Non-404 errors
           console.error('Unexpected error: ' + error.statusText);
-          this.gardenUserIdList = null;
           this.gardenUserIdListError =
             'Unexpected error ' + error.status + ': ' + error.statusText;
-          return;
+        } else {
+          console.error('Error ' + error.status + ': ' + error.statusText);
+          this.gardenUserIdListError =
+            'Cannot see user list for garden id: ' + garden;
         }
-        console.error('Error ' + error.status + ': ' + error.statusText);
-        this.gardenUserIdList = null;
-        this.gardenUserIdListError =
-          'Cannot see user list for garden id: ' + garden;
-        this.isLoaded = true;
       },
     });
   }

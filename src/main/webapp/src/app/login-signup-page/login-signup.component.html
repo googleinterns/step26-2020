@@ -1,16 +1,76 @@
-<!--<body>-->
-<div class="content" *ngIf="newUser == false; else newUserForm">
-  <h1 class="greeting">Welcome To GrowPod</h1>
-  <button class="button login" on-click="signInWithGoogle('login')">
-    Login
-  </button>
-  <br />
-  <button class="button signup" on-click="signInWithGoogle('signup')">
-    Sign up
-  </button>
-</div>
-<!--</body> -->
+<body>
+  <div class="content" *ngIf="newUser == false; else newUserForm">
+    <h1 class="greeting">Welcome To GrowPod</h1>
+    <button class="button login" on-click="signInWithGoogle('login')">
+      Login
+    </button>
+    <br />
+    <button class="button signup" on-click="signInWithGoogle('signup')">
+      Sign up
+    </button>
+  </div>
+</body>
 
 <ng-template #newUserForm>
-  <new-user-form></new-user-form>
+  <mat-card class="mat-elevation-z8 form">
+    <mat-card-title>
+      Tell us a little more about yourself!
+    </mat-card-title>
+
+    <mat-card-content>
+      <form [formGroup]="userGroup">
+        <mat-form-field appearance="fill">
+          <input
+            matInput
+            placeholder="Zipcode"
+            type="text"
+            [(ngModel)]="zipCode"
+            formControlName="zipCodeValidator"
+          />
+          <mat-error
+            *ngIf="userGroup.controls.zipCodeValidator.hasError('required')"
+          >
+            Zipcode is required
+          </mat-error> </mat-form-field
+        ><br />
+
+        <mat-form-field appearance="fill">
+          <textarea
+            matInput
+            placeholder="Bio"
+            type="text"
+            [(ngModel)]="bio"
+            formControlName="bioValidator"
+          ></textarea>
+          <mat-error
+            *ngIf="userGroup.controls.bioValidator.hasError('required')"
+          >
+            Biography is required
+          </mat-error> </mat-form-field
+        ><br />
+
+        <mat-form-field appearance="fill">
+          <mat-label>Are you joining or creating a garden?</mat-label>
+          <mat-select formControlName="gardenValidator">
+            <mat-option value="option">Joining</mat-option>
+            <mat-option value="option">Creating</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="userGroup.controls.gardenValidator.hasError('required')"
+          >
+            This field is required
+          </mat-error>
+        </mat-form-field>
+
+        <button
+          mat-button
+          class="button"
+          id="createAccount"
+          on-click="buildUserProfile()"
+        >
+          Create Account
+        </button>
+      </form></mat-card-content
+    ></mat-card
+  >
 </ng-template>

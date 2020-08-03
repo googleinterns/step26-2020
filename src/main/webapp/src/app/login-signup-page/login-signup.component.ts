@@ -17,11 +17,10 @@ import {SocialAuthService} from 'angularx-social-login';
 import {GoogleLoginProvider} from 'angularx-social-login';
 import {HttpClient} from '@angular/common/http';
 import {HttpHeaders, HttpParams} from '@angular/common/http';
-import {Router} from '@angular/router';
-//import {FormControl, Validators,FormGroup} from '@angular/forms';
-import {User} from '../model/user.model';
+import {FormControl, Validators, FormGroup} from '@angular/forms';
 
-//import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {User} from '../model/user.model';
 
 @Component({
   selector: 'login',
@@ -33,10 +32,10 @@ import {User} from '../model/user.model';
 })
 export class LoginComponent {
   user: any;
-  //bio: string;
-  //zipCode: string;
+  bio: string;
+  zipCode: string;
   newUser = false;
-  //choice:string;
+  choice: string; //joining or creating a garden
 
   userProfile: User = {
     id: undefined,
@@ -49,43 +48,30 @@ export class LoginComponent {
   constructor(
     private authService: SocialAuthService,
     private httpClient: HttpClient,
-    private router: Router //  public dialog: MatDialog,
+    private router: Router
   ) {}
 
-  //userGroup:FormGroup;
-  /*
-ngOnInit(): void {
+  userGroup: FormGroup;
+
+  ngOnInit(): void {
     this.userGroup = new FormGroup({
-      zipCodeValidator: new FormControl(this.userProfile.zipCode, [
-        Validators.required,
-       newUserForm
-      Validators.minLength(1),
-      ]),
-      bioValidator: new FormControl(this.userProfile.biography, [
-        Validators.required,
-        Validators.pattern('[0-9]+'),
-        Validators.min(1),
-      ]),
-       gardenValidator: new FormControl(this.choice, [
-        Validators.required,
-        Validators.pattern('[0-9]+'),
-        Validators.min(1),
-      ]),
+      zipCodeValidator: new FormControl(this.zipCode, [Validators.required]),
+      bioValidator: new FormControl(this.bio, [Validators.required]),
+      gardenValidator: new FormControl(this.choice, [Validators.required]),
     });
   }
+
   buildUserProfile(): void {
-    console.log('user profle****');
     this.userProfile = {
-      id:'1',
+      id: '1',
       email: this.user.email,
       preferredName: this.user.name,
       biography: this.bio,
       zipCode: this.zipCode,
     };
-    console.log('this is up' + this.userProfile.biography);
     this.postData(this.userProfile);
   }
-  */
+
   /**
    * @param accountData user data taken from google account: email and name
    */
@@ -115,7 +101,6 @@ ngOnInit(): void {
       if (action === 'login') {
         this.router.navigate(['page/my-gardens']);
       } else {
-        console.log('got here sign up*****');
         this.newUser = true;
       }
     });
@@ -135,16 +120,14 @@ ngOnInit(): void {
    * @param data object holding user data that will be used as a param in the post request
    */
   postData(data: User): void {
-    console.log('got here postdata*****');
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
       params: new HttpParams().set('userData', JSON.stringify(data)),
     };
-    console.log(JSON.stringify(data) + ' stringifyed data');
-    this.httpClient.post<any>('/user', null, httpOptions).subscribe(result => {
-      console.log('got here postdata 2*****');
-    });
+    this.httpClient
+      .post<any>('/user', null, httpOptions)
+      .subscribe(result => {});
   }
 }

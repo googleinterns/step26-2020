@@ -58,6 +58,7 @@ public final class UserServletTest {
     String testUrl = "/user/0";
 
     // Mocks
+
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
@@ -75,6 +76,7 @@ public final class UserServletTest {
     String testUrl = "/user/0";
 
     // Mocks
+
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
@@ -91,6 +93,7 @@ public final class UserServletTest {
     String testUrl = "/user/0/garden-list";
 
     // Mocks
+
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
@@ -124,6 +127,7 @@ public final class UserServletTest {
     String testUrl = "/user/peapod/cody-kayla-stephanie-caroline-jake";
 
     // Mocks
+
     MockHttpServletRequest request = new MockHttpServletRequest("GET", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
@@ -141,7 +145,7 @@ public final class UserServletTest {
     MockHttpServletRequest request = new MockHttpServletRequest("POST", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(dao.addToUserGardenList("0", "0")).thenReturn(true);
+    when(dao.addGarden("0", "0")).thenReturn(true);
 
     servlet.doPost(request, response);
 

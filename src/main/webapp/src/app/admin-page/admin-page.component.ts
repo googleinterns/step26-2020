@@ -45,7 +45,7 @@ import {User} from '../model/user.model';
  */
 export class AdminPageComponent implements OnInit {
   isLoaded = false;
-  gardenProfile: Garden | null;
+  gardenProfile: Garden | null = null;
   gardenManager: string;
 
   // User list
@@ -56,7 +56,7 @@ export class AdminPageComponent implements OnInit {
   // Plant list
   gardenPlantIdList: Array<string> | null = null;
   gardenPlantNameMap: Map<string, string>;
-  gardenPlantIdListError = '';
+  gardenPlantIdListError = 'Plant list not loaded';
 
   // General Error Handling
   errorMessage = '';
@@ -75,7 +75,6 @@ export class AdminPageComponent implements OnInit {
   ngOnInit(): void {
     const gardenIdArg = this.route.snapshot.paramMap.get('garden-id');
     if (!gardenIdArg) {
-      this.gardenProfile = null;
       this.errorMessage = 'No garden-id argument in the query string.';
       this.isLoaded = true;
       return;
@@ -170,12 +169,12 @@ export class AdminPageComponent implements OnInit {
    *
    * Performs POST: /garden/{{gardenProfile.id}}/plant-list, with
    * body plant.
+   * TODO validate login
    *
    * @param plant the plant to post.
    * @return the http response.
    */
-  postToGardenPlantList(plant: Plant): Observable<HttpResponse<string>> {
-    console.log(JSON.stringify(plant));
+  postPlantToGarden(plant: Plant): Observable<HttpResponse<string>> {
     return this.httpClient.post<string>(
       '/garden/' + this.gardenProfile.id + '/plant-list',
       plant,
@@ -190,11 +189,12 @@ export class AdminPageComponent implements OnInit {
    * Deletes a plant from a garden.
    *
    * Performs GET: /garden/{{gardenProfile.id}}/plant-list/{id}
+   * TODO validate login
    *
    * @param id the plant id to delete.
    * @return the http response.
    */
-  deleteFromGardenPlantList(id: string): Observable<HttpResponse<string>> {
+  deletePlant(id: string): Observable<HttpResponse<string>> {
     return this.httpClient.delete<string>(
       '/garden/' + this.gardenProfile.id + '/plant-list/' + id,
       {
@@ -208,11 +208,12 @@ export class AdminPageComponent implements OnInit {
    * Deletes a user from a garden.
    *
    * Performs GET: /garden/{{gardenProfile.id}}/user-list/{id}
+   * TODO validate login
    *
    * @param id the user id to delete.
    * @return the http response.
    */
-  deleteFromGardenUserList(id: string): Observable<HttpResponse<string>> {
+  deleteUser(id: string): Observable<HttpResponse<string>> {
     return this.httpClient.delete<string>(
       '/garden/' + this.gardenProfile.id + '/user-list/' + id,
       {
@@ -223,7 +224,7 @@ export class AdminPageComponent implements OnInit {
   }
 
   /**
-   * Creates garden summary.
+   * Creates garden summary on the page.
    *
    * @param garden The garden to create an admin page of.
    */
@@ -254,34 +255,28 @@ export class AdminPageComponent implements OnInit {
         });
       },
       error: (error: HttpErrorResponse) => {
-        // Handle connection error
+        this.gardenProfile = null;
         if (error.error instanceof ErrorEvent) {
+          // Connection Error
           console.error('Network error: ' + error.error.message);
-          this.gardenProfile = null;
           this.errorMessage = 'Cannot connect to GrowPod Server';
-          this.isLoaded = true;
-          return;
-        }
-        // Non-404 error codes
-        if (error.status !== 404) {
+        } else if (error.status !== 404) {
+          // Non-404 statuses
           console.error('Unexpected error: ' + error.statusText);
-          this.gardenProfile = null;
           this.errorMessage =
             'Unexpected error ' + error.status + ': ' + error.statusText;
-          this.isLoaded = true;
-          return;
+        } else {
+          console.error('Error ' + error.status + ': ' + error.statusText);
+          this.errorMessage =
+            'Cannot see garden profile for garden id: ' + garden;
         }
-        console.error('Error ' + error.status + ': ' + error.statusText);
-        this.gardenProfile = null;
-        this.errorMessage =
-          'Cannot see garden profile for garden id: ' + garden;
         this.isLoaded = true;
       },
     });
   }
 
   /**
-   * Creates garden user list.
+   * Creates garden user list on the page.
    *
    * @param garden The garden to create a user list of.
    */
@@ -314,32 +309,27 @@ export class AdminPageComponent implements OnInit {
         });
       },
       error: (error: HttpErrorResponse) => {
-        // Handle connection error
+        this.gardenUserIdList = null;
         if (error.error instanceof ErrorEvent) {
+          // Handle connection error
           console.error('Network error: ' + error.error.message);
-          this.gardenUserIdList = null;
           this.gardenUserIdListError = 'Cannot connect to GrowPod Server';
-          return;
-        }
-        // Non-404 error codes
-        if (error.status !== 404) {
+        } else if (error.status !== 404) {
+          // Non-404 errors
           console.error('Unexpected error: ' + error.statusText);
-          this.gardenUserIdList = null;
           this.gardenUserIdListError =
             'Unexpected error ' + error.status + ': ' + error.statusText;
-          return;
+        } else {
+          console.error('Error ' + error.status + ': ' + error.statusText);
+          this.gardenUserIdListError =
+            'Cannot see user list for garden id: ' + garden;
         }
-        console.error('Error ' + error.status + ': ' + error.statusText);
-        this.gardenUserIdList = null;
-        this.gardenUserIdListError =
-          'Cannot see user list for garden id: ' + garden;
-        this.isLoaded = true;
       },
     });
   }
 
   /**
-   * Creates garden plant list.
+   * Creates garden plant list on the page.
    *
    * @param garden The garden to create a plant list of.
    */
@@ -413,7 +403,7 @@ export class AdminPageComponent implements OnInit {
     const inputModal = this.dialog.open(AddPlantComponent);
     inputModal.afterClosed().subscribe((plant: Plant | undefined) => {
       if (plant) {
-        this.postToGardenPlantList(plant).subscribe({
+        this.postPlantToGarden(plant).subscribe({
           next: () => {
             this.createGardenPlantList(this.gardenProfile.id);
           },
@@ -436,7 +426,7 @@ export class AdminPageComponent implements OnInit {
    * @param id The plant id to delete.
    */
   removePlant(id: string): void {
-    this.deleteFromGardenPlantList(id).subscribe({
+    this.deletePlant(id).subscribe({
       next: () => {
         this.createGardenPlantList(this.gardenProfile.id);
       },
@@ -457,7 +447,7 @@ export class AdminPageComponent implements OnInit {
    * @param id The user id to delete.
    */
   removeUser(id: string): void {
-    this.deleteFromGardenUserList(id).subscribe({
+    this.deleteUser(id).subscribe({
       next: () => {
         this.createGardenUserList(this.gardenProfile.id);
       },

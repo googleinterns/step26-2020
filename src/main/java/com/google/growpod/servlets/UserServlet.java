@@ -26,15 +26,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet that handles user entities on the server.
- *
- * <p>API DOCUMENTATION: /user/{id} - {id} -- A user id, or `current` for the logged in user GET:
- * Retrieves the user data structure for {id} - No parameters - Returns data in JSON format along
- * with (200 OK), otherwise (404 NOT FOUND) /user/{id}/garden-list - {id} -- A user id, or `current`
- * for the logged in user GET: Retrieves the list of gardens user {id} is a member of - No
- * parameters - Returns data in JSON format along with (200 OK), otherwise (404 NOT FOUND)
- */
+/** Servlet that handles user entities on the server. */
 @WebServlet({"/user", "/user/*"})
 public class UserServlet extends HttpServlet {
 
@@ -66,7 +58,84 @@ public class UserServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     /* uriList will have "" as element 0 */
     String[] uriList = request.getRequestURI().split("/");
-    assert (uriList[1].equals("user"));
+    assert (uriList.length >= 2 && uriList[1].equals("user"));
+
+    if (uriList.length < 3) {
+      response.sendError(
+          HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
+      return;
+    }
+
+    // Replace 'current' user with logged-in user.
+    String userId = uriList[2];
+    if (userId.equals(CURRENT_USER_ARG)) {
+      userId = CURRENT_USER_KEY;
+    }
+
+    // Dispatch based on method specified.
+    // /user/{id}
+    if (uriList.length == 3) {
+      User user = dao.getUserById(userId);
+      if (user == null) {
+        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userId);
+        return;
+      }
+      response.setContentType("application/json;");
+      response.getWriter().println(new Gson().toJson(user));
+      return;
+    }
+
+    if (uriList.length == 4) {
+      if (uriList[3].equals(GARDEN_LIST_ARG)) {
+        // /user/{id}/garden-list
+        List<String> list = dao.getUserGardenListById(userId);
+
+        if (list == null) {
+          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userId);
+          return;
+        }
+        response.setContentType("application/json;");
+        response.getWriter().println(new Gson().toJson(list));
+        return;
+      } else if (uriList[3].equals(GARDEN_ADMIN_LIST_ARG)) {
+        // /user/{id}/garden-admin-list
+        List<String> list = dao.getUserGardenAdminListById(userId);
+
+        if (list == null) {
+          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userId);
+          return;
+        }
+        response.setContentType("application/json;");
+        response.getWriter().println(new Gson().toJson(list));
+        return;
+      }
+
+      response.sendError(
+          HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
+    }
+  }
+
+  /**
+   * Processes HTTP POST requests for the /user servlet. Dispatches functionality based on structure
+   * of POST request.
+   *
+   * @param request Information about the POST Request
+   * @param response Information about the servlet's response
+   */
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    /* uriList will have "" as element 0 */
+    String[] uriList = request.getRequestURI().split("/");
+    assert (uriList.length >= 2 && uriList[1].equals("user"));
+
+    if (uriList.length == 2) {
+      // /user
+      response.setContentType("application/json");
+      String json = request.getParameter("userData");
+      User userData = new Gson().fromJson(json, User.class);
+      dao.addToDatastore(userData);
+      return;
+    }
 
     if (uriList.length < 3) {
       response.sendError(
@@ -81,38 +150,20 @@ public class UserServlet extends HttpServlet {
     }
 
     // Dispatch based on method specified.
-    // /user/{id}
-    if (uriList.length == 3) {
-      User user = dao.getUserById(userKey);
-      if (user == null) {
-        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userKey);
-        return;
-      }
-      response.setContentType("application/json;");
-      response.getWriter().println(new Gson().toJson(user));
-      return;
-    }
-
-    if (uriList.length == 4) {
+    if (uriList.length == 5) {
       if (uriList[3].equals(GARDEN_LIST_ARG)) {
-        // /user/{id}/garden-list
-        List<String> list = dao.getUserGardenListById(userKey);
-        if (list == null) {
-          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userKey);
+        // /user/{uid}/garden-list/{gid}
+        // TODO (Issue #34) Authenticate user.
+        boolean result = dao.addGarden(userKey, uriList[4]);
+        if (!result) {
+          response.sendError(
+              HttpServletResponse.SC_NOT_FOUND,
+              "Not found - user: " + userKey + " garden: " + uriList[4]);
           return;
         }
+        response.setStatus(HttpServletResponse.SC_CREATED);
         response.setContentType("application/json;");
-        response.getWriter().println(new Gson().toJson(list));
-        return;
-      } else if (uriList[3].equals(GARDEN_ADMIN_LIST_ARG)) {
-        // /user/{id}/garden-admin-list
-        List<String> list = dao.getUserGardenAdminListById(userKey);
-        if (list == null) {
-          response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid user id: " + userKey);
-          return;
-        }
-        response.setContentType("application/json;");
-        response.getWriter().println(new Gson().toJson(list));
+        response.getWriter().println("{\"id\":" + uriList[4] + "}");
         return;
       }
     }

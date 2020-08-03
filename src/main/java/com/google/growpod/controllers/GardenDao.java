@@ -128,7 +128,7 @@ public class GardenDao {
    * @param plant the plant object
    * @return The plant's key
    */
-  public String addToGardenPlantList(String gardenId, Plant plant) {
+  public String addPlant(String gardenId, Plant plant) {
     // Add plant to plant list first
     plant.setId("1"); // Dummy key to make .toEntity(datastoreInstance) work.
     KeyFactory keyFactory = datastore.newKeyFactory().setKind("Plant");
@@ -143,9 +143,9 @@ public class GardenDao {
     keyFactory = datastore.newKeyFactory().setKind("ContainsPlant");
     incompleteKey = keyFactory.newKey();
 
-    key = datastore.allocateId(incompleteKey);
     String plantId = Long.toString(newEntity.getKey().getId());
     ContainsPlant relation = new ContainsPlant("1", gardenId, plantId);
+    key = datastore.allocateId(incompleteKey);
 
     newEntity = Entity.newBuilder(key, relation.toEntity(datastoreInstance)).build();
     datastore.add(newEntity);
@@ -159,7 +159,7 @@ public class GardenDao {
    * @param userId the user's id
    * @return whether the query was successful.
    */
-  public boolean deleteFromGardenUserList(String gardenId, String userId) {
+  public boolean deleteUser(String gardenId, String userId) {
     // Existence check for key
     Garden garden = getGardenById(gardenId);
     if (garden == null) {
@@ -191,7 +191,7 @@ public class GardenDao {
    * @param plantId the plant's id
    * @return whether the query was successful.
    */
-  public boolean deleteFromGardenPlantList(String gardenId, String plantId) {
+  public boolean deletePlant(String gardenId, String plantId) {
     // Existence check for key
     Garden garden = getGardenById(gardenId);
     if (garden == null) {
@@ -202,8 +202,10 @@ public class GardenDao {
     StructuredQuery<Entity> query =
         Query.newEntityQueryBuilder()
             .setKind("ContainsPlant")
-            .setFilter(PropertyFilter.eq("garden-id", gardenId))
-            .setFilter(PropertyFilter.eq("plant-id", plantId))
+            .setFilter(
+                CompositeFilter.and(
+                    PropertyFilter.eq("garden-id", gardenId),
+                    PropertyFilter.eq("plant-id", plantId)))
             .build();
     QueryResults<Entity> results = datastore.run(query);
     if (!results.hasNext()) {

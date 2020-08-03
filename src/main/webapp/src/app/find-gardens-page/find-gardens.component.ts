@@ -150,14 +150,14 @@ export class FindGardensComponent implements OnInit {
   }
 
   /**
-   * Posts the id for the current user to join.
+   * Posts the garden id for the current user to join.
    *
    * Performs POST: /user/current/garden-list/{id}, with an empty body.
    *
    * @param id The garden id the user wishes to join
    * @return the http response.
    */
-  postAddUserGardenList(id: string): Observable<HttpResponse<string>> {
+  postJoinGarden(id: string): Observable<HttpResponse<string>> {
     return this.httpClient.post<string>('/user/current/garden-list/' + id, '', {
       observe: 'response',
       responseType: 'json',
@@ -267,7 +267,7 @@ export class FindGardensComponent implements OnInit {
    * @param id the id of the garden to join.
    */
   joinGarden(id: string): void {
-    this.postAddUserGardenList(id).subscribe({
+    this.postJoinGarden(id).subscribe({
       next: () => {
         this.createUserGardenSet();
       },

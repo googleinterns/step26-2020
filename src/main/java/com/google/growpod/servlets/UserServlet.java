@@ -128,6 +128,15 @@ public class UserServlet extends HttpServlet {
     String[] uriList = request.getRequestURI().split("/");
     assert (uriList.length >= 2 && uriList[1].equals("user"));
 
+    if (uriList.length == 2) {
+      // /user
+      response.setContentType("application/json");
+      String json = request.getParameter("userData");
+      User userData = new Gson().fromJson(json, User.class);
+      dao.addToDatastore(userData);
+      return;
+    }
+
     if (uriList.length < 3) {
       response.sendError(
           HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Unimplemented: " + request.getRequestURI());
@@ -145,7 +154,7 @@ public class UserServlet extends HttpServlet {
       if (uriList[3].equals(GARDEN_LIST_ARG)) {
         // /user/{uid}/garden-list/{gid}
         // TODO (Issue #34) Authenticate user.
-        boolean result = dao.addToUserGardenList(userKey, uriList[4]);
+        boolean result = dao.addGarden(userKey, uriList[4]);
         if (!result) {
           response.sendError(
               HttpServletResponse.SC_NOT_FOUND,
@@ -169,19 +178,5 @@ public class UserServlet extends HttpServlet {
 
   public void setDao(UserDao dao) {
     this.dao = dao;
-  }
-
-  /**
-   * Processes a request to add a new user.
-   *
-   * @param req Information about the POST request
-   * @param resp Information about the servlet's response
-   */
-  @Override
-  public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    resp.setContentType("application/json");
-    String json = req.getParameter("userData");
-    User userData = new Gson().fromJson(json, User.class);
-    dao.addToDatastore(userData);
   }
 }

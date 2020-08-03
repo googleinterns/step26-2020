@@ -145,7 +145,7 @@ public final class UserServletTest {
     MockHttpServletRequest request = new MockHttpServletRequest("POST", testUrl);
     MockHttpServletResponse response = new MockHttpServletResponse();
 
-    when(dao.addToUserGardenList("0", "0")).thenReturn(true);
+    when(dao.addGarden("0", "0")).thenReturn(true);
 
     servlet.doPost(request, response);
 

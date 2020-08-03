@@ -148,7 +148,7 @@ public class UserDao {
    * @param gardenId the garden's id
    * @return whether the insert operation was successful.
    */
-  public boolean addToUserGardenList(String userId, String gardenId) {
+  public boolean addGarden(String userId, String gardenId) {
     // Existence check for both parameters.
     User user = getUserById(userId);
     if (user == null) {

@@ -30,7 +30,6 @@ import {Garden} from '../model/garden.model';
   ],
 })
 export class SchedulePageComponent implements OnInit {
-  
   @ViewChild('eventForm', {static: false})
   eventForm: CreateEventComponent;
 
@@ -100,7 +99,7 @@ export class SchedulePageComponent implements OnInit {
         this.datepickerElem.selectedDate,
         this.datepickerElem.selectedDateMax
       );
-    // User gives consent to the API for the first time in the current session
+      // User gives consent to the API for the first time in the current session
     } else {
       this.gapiSession.signIn().then(() => {
         this.gapiSession.listEvents(
@@ -118,31 +117,38 @@ export class SchedulePageComponent implements OnInit {
     // User has already provided consent to the calendar API
     if (this.gapiSession.consent) {
       this.eventForm.submit();
-      console.log("AA first (a)");
+      console.log('AA first (a)');
 
-      if(this.eventForm.submitSuccess) {
-      console.log("AA second (a)");
-      this.gapiSession.createEvent(this.eventForm.eventInfo.title, this.eventForm.startDateTime, this.eventForm.endDateTime, this.eventForm.eventInfo.timezone, this.eventForm.eventInfo.participants);
-      this.eventForm.submitSuccess = false;
+      if (this.eventForm.submitSuccess) {
+        console.log('AA second (a)');
+        this.gapiSession.createEvent(
+          this.eventForm.eventInfo.title,
+          this.eventForm.startDateTime,
+          this.eventForm.endDateTime,
+          this.eventForm.eventInfo.timezone,
+          this.eventForm.eventInfo.participants
+        );
+        this.eventForm.submitSuccess = false;
       }
-
     }
-     // User gives consent to the API for the first time in the current session
+    // User gives consent to the API for the first time in the current session
     else {
       this.gapiSession.signIn().then(() => {
         this.eventForm.submit();
-        console.log("BB first (b)");
+        console.log('BB first (b)');
 
-      if(this.eventForm.submitSuccess) {
-        console.log("BB second (b)");
-        this.gapiSession.createEvent(this.eventForm.eventInfo.title, this.eventForm.startDateTime, this.eventForm.endDateTime, this.eventForm.eventInfo.timezone, this.eventForm.eventInfo.participants);
-        this.eventForm.submitSuccess = false;
-      }
-
+        if (this.eventForm.submitSuccess) {
+          console.log('BB second (b)');
+          this.gapiSession.createEvent(
+            this.eventForm.eventInfo.title,
+            this.eventForm.startDateTime,
+            this.eventForm.endDateTime,
+            this.eventForm.eventInfo.timezone,
+            this.eventForm.eventInfo.participants
+          );
+          this.eventForm.submitSuccess = false;
+        }
       });
     }
-
-    
   }
-
 }

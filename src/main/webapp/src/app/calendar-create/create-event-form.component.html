@@ -2,69 +2,66 @@
 <h4>After creating your event, it will be available in your calendar</h4>
 
 <form [formGroup]="eventGroup">
-	<mat-form-field>
-		<mat-label>Title</mat-label>
-		<input formControlName="title" matInput placeholder="Enter a title" />
-		<mat-error *ngIf="
+  <mat-form-field>
+    <mat-label>Title</mat-label>
+    <input formControlName="title" matInput placeholder="Enter a title" />
+    <mat-error
+      *ngIf="
         eventGroup.controls.title.hasError('required') ||
         eventGroup.controls.title.hasError('minLength')
-      ">
-			Event title is <strong>required</strong>
-		</mat-error>
-	</mat-form-field>
+      "
+    >
+      Event title is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
 
   <br />
 
   <mat-form-field>
-  <mat-label>Date</mat-label>
-  <input
-    formControlName="dateTime"
-    matInput
-    [matDatepicker]="datepicker"
-    disabled
-  />
-  <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
-  <mat-datepicker #datepicker disabled="false"></mat-datepicker>
-  <mat-error *ngIf="
-      eventGroup.controls.dateTime.hasError('required')">
-    	Event date is <strong>required</strong>
-	</mat-error>
+    <mat-label>Date</mat-label>
+    <input
+      formControlName="dateTime"
+      matInput
+      [matDatepicker]="datepicker"
+      disabled
+    />
+    <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+    <mat-datepicker #datepicker disabled="false"></mat-datepicker>
+    <mat-error *ngIf="eventGroup.controls.dateTime.hasError('required')">
+      Event date is <strong>required</strong>
+    </mat-error>
   </mat-form-field>
 
-	<table>
-		<tr>
-			<td>
+  <table>
+    <tr>
+      <td>
         <mat-label>Start Time</mat-label>
-				<input formControlName="startTime" type="time">
-        <mat-error *ngIf="
-          eventGroup.controls.startTime.hasError('required')">
-    	    Starting time is <strong>required</strong>
-      	</mat-error>
+        <input formControlName="startTime" type="time" />
+        <mat-error *ngIf="eventGroup.controls.startTime.hasError('required')">
+          Starting time is <strong>required</strong>
+        </mat-error>
       </td>
-			<td>
-				<mat-label>End Time</mat-label>
-				<input formControlName="endTime" type="time">
-        <mat-error *ngIf="
-          eventGroup.controls.endTime.hasError('required')">
-    	    Ending time is <strong>required</strong>
-	      </mat-error>
+      <td>
+        <mat-label>End Time</mat-label>
+        <input formControlName="endTime" type="time" />
+        <mat-error *ngIf="eventGroup.controls.endTime.hasError('required')">
+          Ending time is <strong>required</strong>
+        </mat-error>
       </td>
-		</tr>
-	</table>
+    </tr>
+  </table>
 
   <br />
 
   <mat-label>Timezone</mat-label>
-    <select formControlName="timezone">
-     <option *ngFor="let tz of timezoneUS" [value]="tz">{{tz}}</option>
-    </select>
-    <mat-error *ngIf="
-        eventGroup.controls.timezone.hasError('required')
-      ">
-			Timezone is <strong>required</strong>
-		</mat-error>
-   
-	<!--
+  <select formControlName="timezone">
+    <option *ngFor="let tz of timezoneUS" [value]="tz">{{ tz }}</option>
+  </select>
+  <mat-error *ngIf="eventGroup.controls.timezone.hasError('required')">
+    Timezone is <strong>required</strong>
+  </mat-error>
+
+  <!--
   <mat-form-field class="div-center">
 		<mat-label>Members</mat-label>
 		<input formControlName="title" matInput placeholder="Enter a title" />
@@ -78,8 +75,12 @@
   -->
   <br />
 
-	<mat-form-field class="div-center">
-		<mat-label>Description</mat-label>
-		<input formControlName="description" matInput placeholder="(Optional) Enter a description" />
-	</mat-form-field>
+  <mat-form-field class="div-center">
+    <mat-label>Description</mat-label>
+    <input
+      formControlName="description"
+      matInput
+      placeholder="(Optional) Enter a description"
+    />
+  </mat-form-field>
 </form>

@@ -142,7 +142,7 @@ export class GapiSession {
     }
   }
 
-  /** 
+  /**
    * Inserts a new calendar event into the users' primary calendar
    * @param title - name of the event (known as summary in the calendar api)
    * @param startDateTime - start date and time of the event in ISO format
@@ -150,36 +150,43 @@ export class GapiSession {
    * @param timezone - set the timezone for the time
    * @param participants - members invited to event
    * @param description - (optional) description of the event
-  */
-  createEvent(title: string, startDateTime: string, endDateTime: string, timezone: string, participants: string[], description?: string) {
-    if(typeof description!='undefined' && description) {
+   */
+  createEvent(
+    title: string,
+    startDateTime: string,
+    endDateTime: string,
+    timezone: string,
+    participants: string[],
+    description?: string
+  ) {
+    if (typeof description !== 'undefined' && description) {
       description = ' ';
     }
 
     // Participants are added to the event in the following format
     let attendees = [];
 
-    participants.forEach((participant) => {
-       attendees.push({'email': participant});
+    participants.forEach(participant => {
+      attendees.push({email: participant});
     });
 
     const event = {
-      'summary': title,
-      'description': description,
-      'start': {
-        'dateTime': startDateTime,
-        'timeZone': timezone
+      summary: title,
+      description: description,
+      start: {
+        dateTime: startDateTime,
+        timeZone: timezone,
       },
-      'end': {
-        'dateTime': endDateTime,
-        'timeZone': timezone
+      end: {
+        dateTime: endDateTime,
+        timeZone: timezone,
       },
-      'attendees': attendees
+      attendees: attendees,
     };
 
     const request = gapi.client.calendar.events.insert({
-      'calendarId': 'primary',
-      'resource': event
+      calendarId: 'primary',
+      resource: event,
     });
 
     request.execute();

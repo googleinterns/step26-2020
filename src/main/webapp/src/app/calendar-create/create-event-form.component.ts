@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
-import { EventInfo }    from '../calendar-event/event-info';
-import { TIMEZONES } from './timezones'
+import {EventInfo} from '../calendar-event/event-info';
+import {TIMEZONES} from './timezones';
 
 @Component({
   selector: 'create-event-form',
   templateUrl: './create-event-form.component.html',
-  styleUrls: ['../common/growpod-page-styles.css']
+  styleUrls: ['../common/growpod-page-styles.css'],
 })
 
 /**
@@ -30,7 +30,7 @@ export class CreateEventComponent implements OnInit {
   timezoneUS = TIMEZONES;
 
   // Information available on the form
-  eventInfo : EventInfo = {
+  eventInfo: EventInfo = {
     title: undefined,
     dateTime: new Date(),
     startTime: undefined,
@@ -44,30 +44,23 @@ export class CreateEventComponent implements OnInit {
   startDateTime: string;
   endDateTime: string;
 
-  submitSuccess: boolean = false;
+  submitSuccess = false;
   eventGroup: FormGroup;
-  
 
   constructor() {}
 
-  ngOnInit():void {
+  ngOnInit(): void {
     this.eventGroup = new FormGroup({
       title: new FormControl(this.eventInfo.title, [
         Validators.required,
         Validators.minLength(1),
       ]),
-      dateTime: new FormControl(this.eventInfo.dateTime, [
+      dateTime: new FormControl(this.eventInfo.dateTime, [Validators.required]),
+      startTime: new FormControl(this.eventInfo.startTime, [
         Validators.required,
       ]),
-       startTime: new FormControl(this.eventInfo.startTime, [
-        Validators.required,
-      ]),
-      endTime: new FormControl(this.eventInfo.endTime, [
-        Validators.required,
-      ]),
-     timezone: new FormControl(this.eventInfo.timezone, [
-        Validators.required,
-      ]),
+      endTime: new FormControl(this.eventInfo.endTime, [Validators.required]),
+      timezone: new FormControl(this.eventInfo.timezone, [Validators.required]),
       description: new FormControl(this.eventInfo.description),
     });
   }
@@ -75,17 +68,23 @@ export class CreateEventComponent implements OnInit {
   /**
    *
    */
-  submit():void { 
+  submit(): void {
     if (this.eventGroup.valid) {
       this.submitSuccess = true;
       this.eventInfo = this.eventGroup.value;
       this.eventInfo.participants = ['some email'];
-      this.startDateTime = this.getDateTime(this.eventInfo.dateTime.toISOString(), this.eventInfo.startTime);
-      this.endDateTime = this.getDateTime(this.eventInfo.dateTime.toISOString(), this.eventInfo.endTime);
+      this.startDateTime = this.getDateTime(
+        this.eventInfo.dateTime.toISOString(),
+        this.eventInfo.startTime
+      );
+      this.endDateTime = this.getDateTime(
+        this.eventInfo.dateTime.toISOString(),
+        this.eventInfo.endTime
+      );
     }
   }
 
-  /** 
+  /**
    *
    */
   getDateTime(dateTime: string, time: string): string {

@@ -204,7 +204,8 @@ public class GardenDao {
             .setKind("ContainsPlant")
             .setFilter(
                 CompositeFilter.and(
-                    PropertyFilter.eq("garden-id", gardenId), PropertyFilter.eq("plant-id", plantId)))
+                    PropertyFilter.eq("garden-id", gardenId),
+                    PropertyFilter.eq("plant-id", plantId)))
             .build();
     QueryResults<Entity> results = datastore.run(query);
     if (!results.hasNext()) {

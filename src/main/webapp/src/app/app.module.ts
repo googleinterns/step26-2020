@@ -36,6 +36,7 @@ import {LoginComponent} from './login-signup-page/login-signup.component';
 import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
 import {DatepickerComponent} from './datepicker/datepicker.component';
 import {AdminPageComponent} from './admin-page/admin-page.component';
+import {AddPlantComponent} from './add-plant-form/add-plant-form.component';
 import {TaskComponent} from './calendar-task/task.component';
 import {GapiSession} from '../sessions/gapi.session';
 import {CLIENT_ID} from './SensitiveData';
@@ -57,6 +58,7 @@ export function initGapi(gapiSession: GapiSession) {
     CreateGardensComponent,
     DatepickerComponent,
     AdminPageComponent,
+    AddPlantComponent,
     TaskComponent,
   ],
   imports: [
@@ -91,6 +93,7 @@ export function initGapi(gapiSession: GapiSession) {
 
     GapiSession,
   ],
+  entryComponents: [AddPlantComponent],
 
   bootstrap: [AppComponent],
 })

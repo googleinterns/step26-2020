@@ -20,8 +20,6 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {MatDialog} from '@angular/material/dialog';
-import {AddPlantComponent} from '../add-plant-form/add-plant-form.component';
 import {Garden} from '../model/garden.model';
 import {Plant} from '../model/plant.model';
 import {User} from '../model/user.model';
@@ -56,7 +54,7 @@ export class AdminPageComponent implements OnInit {
   // Plant list
   gardenPlantIdList: Array<string> | null = null;
   gardenPlantNameMap: Map<string, string>;
-  gardenPlantIdListError = 'Plant list not loaded';
+  gardenPlantIdListError = '';
 
   // General Error Handling
   errorMessage = '';
@@ -66,11 +64,7 @@ export class AdminPageComponent implements OnInit {
    *
    * @param route Contains arguments.
    */
-  constructor(
-    private route: ActivatedRoute,
-    private httpClient: HttpClient,
-    private dialog: MatDialog
-  ) {}
+  constructor(private route: ActivatedRoute, private httpClient: HttpClient) {}
 
   ngOnInit(): void {
     const gardenIdArg = this.route.snapshot.paramMap.get('garden-id');
@@ -163,65 +157,6 @@ export class AdminPageComponent implements OnInit {
       observe: 'response',
       responseType: 'json',
     });
-  }
-
-  /**
-   * Posts a plant to a garden.
-   *
-   * Performs POST: /garden/{{gardenProfile.id}}/plant-list, with
-   * body plant.
-   * TODO validate login
-   *
-   * @param plant the plant to post.
-   * @return the http response.
-   */
-  postPlantToGarden(plant: Plant): Observable<HttpResponse<string>> {
-    return this.httpClient.post<string>(
-      '/garden/' + this.gardenProfile.id + '/plant-list',
-      plant,
-      {
-        observe: 'response',
-        responseType: 'json',
-      }
-    );
-  }
-
-  /**
-   * Deletes a plant from a garden.
-   *
-   * Performs GET: /garden/{{gardenProfile.id}}/plant-list/{id}
-   * TODO validate login
-   *
-   * @param id the plant id to delete.
-   * @return the http response.
-   */
-  deletePlant(id: string): Observable<HttpResponse<string>> {
-    return this.httpClient.delete<string>(
-      '/garden/' + this.gardenProfile.id + '/plant-list/' + id,
-      {
-        observe: 'response',
-        responseType: 'json',
-      }
-    );
-  }
-
-  /**
-   * Deletes a user from a garden.
-   *
-   * Performs GET: /garden/{{gardenProfile.id}}/user-list/{id}
-   * TODO validate login
-   *
-   * @param id the user id to delete.
-   * @return the http response.
-   */
-  deleteUser(id: string): Observable<HttpResponse<string>> {
-    return this.httpClient.delete<string>(
-      '/garden/' + this.gardenProfile.id + '/user-list/' + id,
-      {
-        observe: 'response',
-        responseType: 'json',
-      }
-    );
   }
 
   /**
@@ -405,72 +340,5 @@ export class AdminPageComponent implements OnInit {
    */
   createAdminPage(garden: string): void {
     this.createGardenSummary(garden);
-  }
-
-  /**
-   * Shows a modal to add a plant to the garden, then adds it.
-   *
-   */
-  addPlant(): void {
-    const inputModal = this.dialog.open(AddPlantComponent);
-    inputModal.afterClosed().subscribe((plant: Plant | undefined) => {
-      if (plant) {
-        this.postPlantToGarden(plant).subscribe({
-          next: () => {
-            this.createGardenPlantList(this.gardenProfile.id);
-          },
-          error: (error: HttpErrorResponse) => {
-            // Do nothing visible for errors, yet
-            if (error.error instanceof ErrorEvent) {
-              console.error('Network error: ' + error.error.message);
-              return;
-            }
-            console.error('Unexpected error: ' + error.statusText);
-          },
-        });
-      }
-    });
-  }
-
-  /**
-   * Removes a plant from a garden.
-   *
-   * @param id The plant id to delete.
-   */
-  removePlant(id: string): void {
-    this.deletePlant(id).subscribe({
-      next: () => {
-        this.createGardenPlantList(this.gardenProfile.id);
-      },
-      error: (error: HttpErrorResponse) => {
-        // Do nothing visible for errors, yet
-        if (error.error instanceof ErrorEvent) {
-          console.error('Network error: ' + error.error.message);
-          return;
-        }
-        console.error('Unexpected error: ' + error.statusText);
-      },
-    });
-  }
-
-  /**
-   * Removes a user from a garden.
-   *
-   * @param id The user id to delete.
-   */
-  removeUser(id: string): void {
-    this.deleteUser(id).subscribe({
-      next: () => {
-        this.createGardenUserList(this.gardenProfile.id);
-      },
-      error: (error: HttpErrorResponse) => {
-        // Do nothing visible for errors, yet
-        if (error.error instanceof ErrorEvent) {
-          console.error('Network error: ' + error.error.message);
-          return;
-        }
-        console.error('Unexpected error: ' + error.statusText);
-      },
-    });
   }
 }

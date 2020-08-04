@@ -56,14 +56,15 @@ public class PlantServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     /* uriList will have "" as element 0 */
     String[] uriList = request.getRequestURI().split("/");
-    assert (uriList[1].equals("plant"));
+    assert (uriList.length >= 2 && uriList[1].equals("plant"));
 
     // Dispatch based on method specified.
     // /plant/{id}
     if (uriList.length == 3) {
-      Plant plant = dao.getPlantById(uriList[2]);
+      String plantId = uriList[2];
+      Plant plant = dao.getPlantById(plantId);
       if (plant == null) {
-        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid plant id: " + uriList[2]);
+        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid plant id: " + plantId);
         return;
       }
       response.setContentType("application/json;");

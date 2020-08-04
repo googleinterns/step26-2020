@@ -214,25 +214,22 @@ export class MyGardensComponent implements OnInit {
         });
       },
       error: (error: HttpErrorResponse) => {
-        // Handle connection error
+        this.myGardenAdminIdList = null;
         if (error.error instanceof ErrorEvent) {
+          // Handle connection error
           console.error('Network error: ' + error.error.message);
-          this.myGardenAdminIdList = null;
           this.myGardenAdminIdListError = 'Cannot connect to GrowPod Server';
           return;
-        }
-        // Non-404 error codes
-        if (error.status !== 404) {
+        } if (error.status !== 404) {
+          // Non-404 error codes
           console.error('Unexpected error: ' + error.statusText);
-          this.myGardenAdminIdList = null;
-          this.myGardenIdListError =
+          this.myGardenAdminIdListError =
             'Unexpected error ' + error.status + ': ' + error.statusText;
-          return;
+        } else {
+          console.error('Error ' + error.status + ': ' + error.statusText);
+          this.myGardenAdminIdListError =
+            'Cannot see garden admin list for current user';
         }
-        console.error('Error ' + error.status + ': ' + error.statusText);
-        this.myGardenAdminIdList = null;
-        this.myGardenAdminIdListError =
-          'Cannot see garden list for current user';
         this.isLoaded = true;
       },
     });
@@ -273,24 +270,22 @@ export class MyGardensComponent implements OnInit {
         });
       },
       error: (error: HttpErrorResponse) => {
-        // Handle connection error
+        this.myGardenIdList = null;
         if (error.error instanceof ErrorEvent) {
+          // Handle connection error
           console.error('Network error: ' + error.error.message);
-          this.myGardenIdList = null;
           this.myGardenIdListError = 'Cannot connect to GrowPod Server';
           return;
-        }
-        // Non-404 error codes
-        if (error.status !== 404) {
+        } if (error.status !== 404) {
+          // Non-404 error codes
           console.error('Unexpected error: ' + error.statusText);
-          this.myGardenIdList = null;
           this.myGardenIdListError =
             'Unexpected error ' + error.status + ': ' + error.statusText;
-          return;
+        } else {
+          console.error('Error ' + error.status + ': ' + error.statusText);
+          this.myGardenIdListError =
+            'Cannot see garden list for current user';
         }
-        console.error('Error ' + error.status + ': ' + error.statusText);
-        this.myGardenIdList = null;
-        this.myGardenIdListError = 'Cannot see garden list for current user';
         this.isLoaded = true;
       },
     });

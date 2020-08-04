@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,18 +22,24 @@ import {FormControl} from '@angular/forms';
 })
 export class DatepickerComponent implements OnInit {
   date = new FormControl(new Date());
-  currDate: string = this.formatDate(this.date.value.toString());
+  selectedDateIso = this.date.value.toISOString();
+  formattedDate: string = this.formatDate(this.date.value.toString());
 
   constructor() {}
 
   ngOnInit(): void {}
 
-  /* Updates the displayed date whenever user chooses a date in the datepicker */
+  /**
+   * Updates the displayed date whenever user chooses a date in the datepicker
+   * @param event - selected date from the datepicker element
+   */
   updateCurrDate(event: MatDatepickerInputEvent<Date>): void {
     if (event.value) {
-      this.currDate = this.formatDate(`${event.value}`);
+      this.selectedDateIso = event.value.toISOString();
+      this.formattedDate = this.formatDate(`${event.value}`);
     } else {
-      this.currDate = '';
+      this.selectedDateIso = '';
+      this.formattedDate = '';
     }
   }
 
@@ -49,5 +55,21 @@ export class DatepickerComponent implements OnInit {
         splits[0] + ': ' + splits[1] + ' ' + splits[2] + ', ' + splits[3];
     }
     return formattedDate;
+  }
+
+  /**
+   * Return the selected date; the time is by default the start of the day
+   */
+  get selectedDate(): string {
+    return this.selectedDateIso;
+  }
+
+  /**
+   * Return the selected date with the time being the end of the day
+   */
+  get selectedDateMax(): string {
+    const date = this.selectedDateIso.split('T', 1);
+    const timeMax = 'T23:59:59Z';
+    return date + timeMax;
   }
 }

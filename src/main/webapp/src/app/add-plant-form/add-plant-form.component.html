@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>
+  Add Plant
+</h2>
+
+<form [formGroup]="plantGroup">
+  <mat-form-field class="div-center">
+    <mat-label>Plant Nickname</mat-label>
+    <input formControlName="nickname" matInput placeholder="Enter a name" />
+    <mat-error
+      *ngIf="
+        plantGroup.controls.nickname.hasError('required') ||
+        plantGroup.controls.nickname.hasError('minLength')
+      "
+    >
+      Nickname is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+
+  <br />
+
+  <mat-form-field class="div-center">
+    <mat-label>Number of Plants</mat-label>
+    <input formControlName="count" matInput placeholder="Enter a number" />
+    <mat-error
+      *ngIf="
+        plantGroup.controls.count.hasError('required') ||
+        plantGroup.controls.count.hasError('pattern') ||
+        plantGroup.controls.count.hasError('min')
+      "
+    >
+      Number of plants is <strong>required</strong> and must be a positive
+      number.
+    </mat-error>
+  </mat-form-field>
+</form>
+
+<table class="add-plant-form-table">
+  <tr>
+    <td><button mat-button class="button" (click)="close()">Cancel</button></td>
+    <td>
+      <button mat-button class="button" (click)="submit()">Add Plant</button>
+    </td>
+  </tr>
+</table>

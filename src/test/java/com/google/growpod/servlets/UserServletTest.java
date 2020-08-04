@@ -135,4 +135,35 @@ public final class UserServletTest {
 
     assertEquals(MockHttpServletResponse.SC_METHOD_NOT_ALLOWED, response.getStatus());
   }
+
+  /** Tests successful query for POST: /user/{uid}/garden-list/{gid} posting */
+  @Test
+  public void doPost_successfulPlantListQuery_successfulResult() throws IOException {
+    String testUrl = "/user/0/garden-list/0";
+
+    // Mocks
+    MockHttpServletRequest request = new MockHttpServletRequest("POST", testUrl);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    when(dao.addGarden("0", "0")).thenReturn(true);
+
+    servlet.doPost(request, response);
+
+    assertEquals("application/json;", response.getContentType());
+    assertEquals("{\"id\":0}", response.getContentAsString().trim());
+  }
+
+  /** Tests invalid method on POST. */
+  @Test
+  public void doPost_invalidUrlQuery_returns405() throws IOException {
+    String testUrl = "/user/peapod/cody-kayla-stephanie-caroline-jake";
+
+    // Mocks
+    MockHttpServletRequest request = new MockHttpServletRequest("POST", testUrl);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    servlet.doGet(request, response);
+
+    assertEquals(MockHttpServletResponse.SC_METHOD_NOT_ALLOWED, response.getStatus());
+  }
 }

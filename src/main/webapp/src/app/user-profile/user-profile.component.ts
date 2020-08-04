@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,7 +41,8 @@ import {User} from '../model/user.model';
  * /user/{id}, with the value of the string 'id' as {id}.
  */
 export class UserProfileComponent implements OnInit {
-  displayInfo: User | null;
+  isLoaded = false;
+  userProfile: User | null;
   errorMessage = '';
 
   /**
@@ -83,27 +84,31 @@ export class UserProfileComponent implements OnInit {
     this.getUserInfo(user).subscribe({
       next: (response: HttpResponse<User>) => {
         // Successful responses are handled here.
-        this.displayInfo = response.body;
+        this.userProfile = response.body;
+        this.isLoaded = true;
       },
       error: (error: HttpErrorResponse) => {
         // Handle connection error
         if (error.error instanceof ErrorEvent) {
           console.error('Network error: ' + error.error.message);
-          this.displayInfo = null;
+          this.userProfile = null;
           this.errorMessage = 'Cannot connect to GrowPod Server';
+          this.isLoaded = true;
           return;
         }
         // Non-404 error codes
         if (error.status !== 404) {
           console.error('Unexpected error: ' + error.statusText);
-          this.displayInfo = null;
+          this.userProfile = null;
           this.errorMessage =
             'Unexpected error ' + error.status + ': ' + error.statusText;
+          this.isLoaded = true;
           return;
         }
         console.error('Error ' + error.status + ': ' + error.statusText);
-        this.displayInfo = null;
+        this.userProfile = null;
         this.errorMessage = 'Cannot see user profile for user id: ' + user;
+        this.isLoaded = true;
       },
     });
   }

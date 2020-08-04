@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,18 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {NgModule} from '@angular/core';
+import {NgModule, APP_INITIALIZER} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 
 import {AppRoutingModule} from './app-routing.module';
-import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
-import {MatExpansionModule} from '@angular/material/expansion';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatNativeDateModule} from '@angular/material/core';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatInputModule} from '@angular/material/input';
 import {
   SocialLoginModule,
   SocialAuthServiceConfig,
@@ -38,12 +33,19 @@ import {UserProfileComponent} from './user-profile/user-profile.component';
 import {FindGardensComponent} from './find-gardens-page/find-gardens.component';
 import {SchedulePageComponent} from './schedule-page/schedule-page.component';
 import {LoginComponent} from './login-signup-page/login-signup.component';
+import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
+import {DatepickerComponent} from './datepicker/datepicker.component';
+import {AdminPageComponent} from './admin-page/admin-page.component';
+import {AddPlantComponent} from './add-plant-form/add-plant-form.component';
+import {TaskComponent} from './calendar-task/task.component';
+import {GapiSession} from '../sessions/gapi.session';
 import {CLIENT_ID} from './SensitiveData';
 
 const google_oauth_client_id = CLIENT_ID;
 
-import {CreateGardensComponent} from './create-gardens-form/create-gardens.component';
-import {DatepickerComponent} from './datepicker/datepicker.component';
+export function initGapi(gapiSession: GapiSession) {
+  return () => gapiSession.loadClient();
+}
 
 @NgModule({
   declarations: [
@@ -55,23 +57,21 @@ import {DatepickerComponent} from './datepicker/datepicker.component';
     LoginComponent,
     CreateGardensComponent,
     DatepickerComponent,
+    AdminPageComponent,
+    AddPlantComponent,
+    TaskComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     RouterModule,
-    MatExpansionModule,
     FormsModule,
     ReactiveFormsModule,
-    MatDatepickerModule,
-    MatInputModule,
-    MatNativeDateModule,
     SocialLoginModule,
     GrowpodUiModule,
   ],
   providers: [
-    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}},
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {
@@ -84,7 +84,16 @@ import {DatepickerComponent} from './datepicker/datepicker.component';
         ],
       } as SocialAuthServiceConfig,
     },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initGapi,
+      deps: [GapiSession],
+      multi: true,
+    },
+
+    GapiSession,
   ],
+  entryComponents: [AddPlantComponent],
 
   bootstrap: [AppComponent],
 })

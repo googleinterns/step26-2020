@@ -271,14 +271,21 @@ export class FindGardensComponent implements OnInit {
       next: () => {
         this.createUserGardenSet();
       },
-      error: (error: HttpErrorResponse) => {
-        // Silently log errors for now
-        if (error.error instanceof ErrorEvent) {
-          console.error('Network error: ' + error.error.message);
-          return;
-        }
-        console.error('Unexpected error: ' + error.statusText);
-      },
+      error: FindGardensComponent.logError,
     });
+  }
+
+  /**
+   * Simply logs HTTP error responses in the console.
+   *
+   * @param error the http error to log
+   */
+  static logError(error: HttpErrorResponse) {
+    // Do nothing visible for errors, yet
+    if (error.error instanceof ErrorEvent) {
+      console.error('Network error: ' + error.error.message);
+      return;
+    }
+    console.error('Unexpected error: ' + error.statusText);
   }
 }

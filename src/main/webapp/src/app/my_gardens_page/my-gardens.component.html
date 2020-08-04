@@ -1,129 +1,183 @@
-<h1>Gardens I Own</h1>
-<owl-carousel-o [options]="customOptions">
-  <ng-template carouselSlide>
-    <mat-card class="mat-elevation-z8 cards">
-      <mat-card-header>
-        <mat-card-title class="title"
-          ><h2>The Elm Street Garden</h2></mat-card-title
-        >
-      </mat-card-header>
+<div *ngIf="isLoaded">
+  <h1>Gardens I Joined</h1>
+  <div *ngIf="myGardenIdList; else myGardenErrorBlock">
+    <div *ngIf="myGardenIdList.length > 0; else myGardenEmptyBlock">
+      <owl-carousel-o [options]="customOptions">
+        <ng-template carouselSlide *ngFor="let gardenId of myGardenIdList">
+          <mat-card class="mat-elevation-z8 cards">
+            <div
+              *ngIf="
+                myGardenMap.get(gardenId) as garden;
+                else noGardenDataBlock
+              "
+            >
+              <mat-card-header>
+                <mat-card-title class="title"
+                  ><h2>{{ garden.name }}</h2></mat-card-title
+                >
+              </mat-card-header>
 
-      <img
-        class="garden-image"
-        src="https://images.unsplash.com/photo-1506277825598-341fc170b05a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-      />
+              <img
+                class="garden-image"
+                src="https://images.unsplash.com/photo-1515150144380-bca9f1650ed9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+              />
+              <div class="avatar-image">
+                <img
+                  mat-card-avatar
+                  class="avatar"
+                  src="https://images.unsplash.com/photo-1571442463800-1337d7af9d2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+                />
+              </div>
 
-      <div class="avatar-image">
-        <img
-          mat-card-avatar
-          class="avatar"
-          src="https://images.unsplash.com/photo-1552642986-ccb41e7059e7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-        />
-      </div>
+              <h3 class="name">{{ gardenAdminNames.get(garden.adminId) }}</h3>
+              <div></div>
+              <h4 class="name">
+                <mat-icon aria-label="Garden location:">location_on</mat-icon>
+                {{ garden.zipCode }}
+              </h4>
 
-      <h3 class="name">Dave Hogan</h3>
-
-      <mat-card-content>
-        <p>
-          Hey guys, our output this month has been great! Keep up the good
-          work.So far our yield is looking like this...
-        </p>
-        <ul>
-          <li>15 Onions</li>
-          <li>25 Tomatoes</li>
-          <li>30 Potatoes</li>
-        </ul>
-        <p>
-          Next time we meet let's try to set some goals for next month. Good job
-          guys!
-        </p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button class="button">View Schedule</button>
-      </mat-card-actions>
-    </mat-card>
-  </ng-template>
-
-  <ng-template carouselSlide>
-    <mat-card class="mat-elevation-z8 cards">
-      <mat-card-header>
-        <mat-card-title class="title"
-          ><h2>Dave's Veggie Palace</h2></mat-card-title
-        >
-      </mat-card-header>
-      <img
-        class="garden-image"
-        src="https://images.unsplash.com/photo-1568623970736-27bea63b4489?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-      />
-
-      <div class="avatar-image">
-        <img
-          mat-card-avatar
-          class="avatar"
-          src="https://images.unsplash.com/photo-1552642986-ccb41e7059e7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-        />
-      </div>
-      <h3 class="name">Dave Hogan</h3>
-      <mat-card-content>
-        <p>
-          Great news! Even though this garden has only been open for a month
-          we've seen great progress. We hit our yield goal! Here are some stats
-          about what we grew this month...
-        </p>
-        <ul>
-          <li>35 Cherry Tomatoes</li>
-          <li>10 Eggplants</li>
-          <li>27 Cabbages</li>
-        </ul>
-        <p>
-          Keep up the good work everyone!
-        </p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button class="button">View Schedule</button>
-      </mat-card-actions>
-    </mat-card>
-  </ng-template>
-</owl-carousel-o>
-
-<h1>Gardens I Joined</h1>
-
-<mat-card class="mat-elevation-z8 cards">
-  <mat-card-header>
-    <mat-card-title class="title"><h2>The Baily Garden</h2></mat-card-title>
-  </mat-card-header>
-
-  <img
-    class="garden-image"
-    src="https://images.unsplash.com/photo-1558070510-504a0db43997?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-  />
-
-  <div class="avatar-image">
-    <img
-      mat-card-avatar
-      class="avatar"
-      src="https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-    />
+              <mat-card-content>
+                <p>
+                  {{ garden.description }}
+                </p>
+              </mat-card-content>
+              <mat-card-actions>
+                <button
+                  mat-button
+                  class="button"
+                  [routerLink]="['/page/schedule', {'garden-id': garden.id}]"
+                >
+                  Garden Schedule
+                </button>
+                <button
+                  mat-button
+                  class="button"
+                  (click)="leaveGarden(garden.id)"
+                >
+                  Leave Garden
+                </button>
+              </mat-card-actions>
+            </div>
+            <ng-template #noGardenDataBlock>
+              Cannot load garden with garden id: {{ gardenId }}.
+            </ng-template>
+          </mat-card>
+        </ng-template>
+      </owl-carousel-o>
+    </div>
+    <ng-template #myGardenEmptyBlock>
+      <mat-card class="growpod-main-section growpod-card">
+        <mat-card-content>
+          <h4 class="text-center">
+            <mat-icon aria-label="No results" color="accent"
+              >search_off</mat-icon
+            >
+            You have not joined any gardens.
+          </h4>
+        </mat-card-content>
+      </mat-card>
+    </ng-template>
   </div>
+  <!-- Error case -->
+  <ng-template #myGardenErrorBlock>
+    <mat-card class="growpod-main-section growpod-card">
+      <mat-card-content>
+        <h4 class="text-center">
+          <mat-icon aria-label="Error" color="warn">error</mat-icon>
+          {{ myGardenIdListError }}
+        </h4>
+      </mat-card-content>
+    </mat-card>
+  </ng-template>
 
-  <h3 class="name">Eve Noble</h3>
+  <h1>Gardens I Administer</h1>
+  <div *ngIf="myGardenAdminIdList; else myGardenAdminErrorBlock">
+    <div *ngIf="myGardenAdminIdList.length > 0; else myGardenAdminEmptyBlock">
+      <owl-carousel-o [options]="customOptions">
+        <ng-template carouselSlide *ngFor="let gardenId of myGardenAdminIdList">
+          <mat-card class="mat-elevation-z8 cards">
+            <div
+              *ngIf="
+                myGardenAdminMap.get(gardenId) as garden;
+                else noGardenAdminDataBlock
+              "
+            >
+              <mat-card-header>
+                <mat-card-title class="title"
+                  ><h2>{{ garden.name }}</h2></mat-card-title
+                >
+              </mat-card-header>
 
-  <mat-card-content>
-    <p>
-      Hey guys, our output this month has been great! Keep up the good work.So
-      far our yeaild is looking like this...
-    </p>
-    <ul>
-      <li>15 onions</li>
-      <li>25 tomatoes</li>
-      <li>30 potatoes</li>
-    </ul>
-    <p>
-      Next time we meet lets try to set some goals for next month. Good job
-      guys!
-    </p>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-button class="button">View Schedule</button>
-  </mat-card-actions>
-</mat-card>
+              <img
+                class="garden-image"
+                src="https://images.unsplash.com/photo-1515150144380-bca9f1650ed9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+              />
+              <div class="avatar-image">
+                <img
+                  mat-card-avatar
+                  class="avatar"
+                  src="https://images.unsplash.com/photo-1571442463800-1337d7af9d2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+                />
+              </div>
+
+              <h3 class="name">{{ gardenAdminNames.get(garden.adminId) }}</h3>
+              <div></div>
+              <h4 class="name">
+                <mat-icon aria-label="Garden location:">location_on</mat-icon>
+                {{ garden.zipCode }}
+              </h4>
+
+              <mat-card-content>
+                <p>
+                  {{ garden.description }}
+                </p>
+              </mat-card-content>
+              <mat-card-actions>
+                <button
+                  mat-button
+                  class="button"
+                  [routerLink]="['/page/schedule', {'garden-id': garden.id}]"
+                >
+                  Garden Schedule
+                </button>
+                <button
+                  mat-button
+                  class="button"
+                  [routerLink]="['/page/admin-page', {'garden-id': garden.id}]"
+                >
+                  Admin Page
+                </button>
+              </mat-card-actions>
+            </div>
+            <ng-template #noGardenAdminDataBlock>
+              Cannot load garden with garden id: {{ gardenId }}.
+            </ng-template>
+          </mat-card>
+        </ng-template>
+      </owl-carousel-o>
+    </div>
+    <ng-template #myGardenAdminEmptyBlock>
+      <mat-card class="growpod-main-section growpod-card">
+        <mat-card-content>
+          <h4 class="text-center">
+            <mat-icon aria-label="No results" color="accent"
+              >search_off</mat-icon
+            >
+            You do not own any gardens.
+          </h4>
+        </mat-card-content>
+      </mat-card>
+    </ng-template>
+  </div>
+  <!-- Error case -->
+  <ng-template #myGardenAdminErrorBlock>
+    <mat-card class="growpod-main-section growpod-card">
+      <mat-card-content>
+        <h4 class="text-center">
+          <mat-icon aria-label="Error" color="warn">error</mat-icon>
+          {{ myGardenAdminIdListError }}
+        </h4>
+      </mat-card-content>
+    </mat-card>
+  </ng-template>
+</div>

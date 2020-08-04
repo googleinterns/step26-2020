@@ -142,10 +142,10 @@ public class GardenDao {
     // Then add relation
     keyFactory = datastore.newKeyFactory().setKind("ContainsPlant");
     incompleteKey = keyFactory.newKey();
-    key = datastore.allocateId(incompleteKey);
 
     String plantId = Long.toString(newEntity.getKey().getId());
     ContainsPlant relation = new ContainsPlant("1", gardenId, plantId);
+    key = datastore.allocateId(incompleteKey);
 
     newEntity = Entity.newBuilder(key, relation.toEntity(datastoreInstance)).build();
     datastore.add(newEntity);

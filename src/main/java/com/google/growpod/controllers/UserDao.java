@@ -23,6 +23,7 @@ import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery;
+import com.google.cloud.datastore.StructuredQuery.CompositeFilter;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.growpod.data.Garden;
 import com.google.growpod.data.HasMember;
@@ -171,6 +172,39 @@ public class UserDao {
 
     Entity newEntity = Entity.newBuilder(key, relation.toEntity(datastoreInstance)).build();
     datastore.add(newEntity);
+    return true;
+  }
+
+  /**
+   * Deletes a garden id from the user's garden list.
+   *
+   * @param userId the user's id
+   * @param gardenId the garden's id
+   * @return whether the query was successful.
+   */
+  public boolean deleteFromUserGardenList(String userId, String gardenId) {
+    // Existence check for key
+    User user = getUserById(userId);
+    if (user == null) {
+      return false;
+    }
+
+    // Match user and garden
+    StructuredQuery<Entity> query =
+        Query.newEntityQueryBuilder()
+            .setKind("HasMember")
+            .setFilter(
+                CompositeFilter.and(
+                    PropertyFilter.eq("garden-id", gardenId), PropertyFilter.eq("user-id", userId)))
+            .build();
+    QueryResults<Entity> results = datastore.run(query);
+    if (!results.hasNext()) {
+      return false;
+    }
+    Entity entity = results.next();
+    HasMember hasMember = HasMember.from(entity);
+
+    datastore.delete(entity.getKey());
     return true;
   }
 }

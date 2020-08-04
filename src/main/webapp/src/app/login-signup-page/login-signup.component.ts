@@ -16,8 +16,11 @@ import {Component} from '@angular/core';
 import {SocialAuthService} from 'angularx-social-login';
 import {GoogleLoginProvider} from 'angularx-social-login';
 import {HttpClient} from '@angular/common/http';
-import {HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpParams} from '@angular/common/http';
+import {FormControl, Validators, FormGroup} from '@angular/forms';
+
 import {Router} from '@angular/router';
+import {User} from '../model/user.model';
 
 @Component({
   selector: 'login',
@@ -29,12 +32,45 @@ import {Router} from '@angular/router';
 })
 export class LoginComponent {
   user: any;
+  bio: string;
+  zipCode: string;
+  newUser = false;
+  choice: string; //joining or creating a garden
+
+  userProfile: User = {
+    id: undefined,
+    email: undefined,
+    preferredName: undefined,
+    biography: undefined,
+    zipCode: undefined,
+  };
 
   constructor(
     private authService: SocialAuthService,
     private httpClient: HttpClient,
     private router: Router
   ) {}
+
+  userGroup: FormGroup;
+
+  ngOnInit(): void {
+    this.userGroup = new FormGroup({
+      zipCodeValidator: new FormControl(this.zipCode, [Validators.required]),
+      bioValidator: new FormControl(this.bio, [Validators.required]),
+      gardenValidator: new FormControl(this.choice, [Validators.required]),
+    });
+  }
+
+  buildUserProfile(): void {
+    this.userProfile = {
+      id: '1',
+      email: this.user.email,
+      preferredName: this.user.name,
+      biography: this.bio,
+      zipCode: this.zipCode,
+    };
+    this.postData(this.userProfile);
+  }
 
   /**
    * @param accountData user data taken from google account: email and name
@@ -64,6 +100,8 @@ export class LoginComponent {
       this.user = response;
       if (action === 'login') {
         this.router.navigate(['page/my-gardens']);
+      } else {
+        this.newUser = true;
       }
     });
   }
@@ -81,13 +119,12 @@ export class LoginComponent {
    *
    * @param data object holding user data that will be used as a param in the post request
    */
-  postData(data: any): void {
+  postData(data: User): void {
     const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
       params: new HttpParams().set('userData', JSON.stringify(data)),
     };
-    this.httpClient.post<any>('/user', null, httpOptions);
+    this.httpClient.post<User>('/user', null, httpOptions).subscribe(result => {
+      //will display a conformation/error message to user based on response (next pr)
+    });
   }
 }

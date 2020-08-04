@@ -367,7 +367,8 @@ export class AdminPageComponent implements OnInit {
           // Connection error
           console.error('Network error: ' + error.error.message);
           this.gardenPlantIdListError = 'Cannot connect to GrowPod Server';
-        } if (error.status !== 404) {
+        }
+        if (error.status !== 404) {
           // Non-404 errors
           console.error('Unexpected error: ' + error.statusText);
           this.gardenPlantIdListError =
@@ -402,14 +403,7 @@ export class AdminPageComponent implements OnInit {
           next: () => {
             this.createGardenPlantList(this.gardenProfile.id);
           },
-          error: (error: HttpErrorResponse) => {
-            // Do nothing visible for errors, yet
-            if (error.error instanceof ErrorEvent) {
-              console.error('Network error: ' + error.error.message);
-              return;
-            }
-            console.error('Unexpected error: ' + error.statusText);
-          },
+          error: AdminPageComponent.logError,
         });
       }
     });
@@ -425,14 +419,7 @@ export class AdminPageComponent implements OnInit {
       next: () => {
         this.createGardenPlantList(this.gardenProfile.id);
       },
-      error: (error: HttpErrorResponse) => {
-        // Do nothing visible for errors, yet
-        if (error.error instanceof ErrorEvent) {
-          console.error('Network error: ' + error.error.message);
-          return;
-        }
-        console.error('Unexpected error: ' + error.statusText);
-      },
+      error: AdminPageComponent.logError,
     });
   }
 
@@ -446,14 +433,21 @@ export class AdminPageComponent implements OnInit {
       next: () => {
         this.createGardenUserList(this.gardenProfile.id);
       },
-      error: (error: HttpErrorResponse) => {
-        // Do nothing visible for errors, yet
-        if (error.error instanceof ErrorEvent) {
-          console.error('Network error: ' + error.error.message);
-          return;
-        }
-        console.error('Unexpected error: ' + error.statusText);
-      },
+      error: AdminPageComponent.logError,
     });
+  }
+
+  /**
+   * Simply logs HTTP error responses in the console.
+   *
+   * @param error the http error to log
+   */
+  static logError(error: HttpErrorResponse) {
+    // Do nothing visible for errors, yet
+    if (error.error instanceof ErrorEvent) {
+      console.error('Network error: ' + error.error.message);
+      return;
+    }
+    console.error('Unexpected error: ' + error.statusText);
   }
 }

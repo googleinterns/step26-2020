@@ -202,14 +202,7 @@ export class MyGardensComponent implements OnInit {
               this.myGardenAdminMap.set(id, response.body);
               this.getGardenAdminName(response.body.adminId);
             },
-            error: (error: HttpErrorResponse) => {
-              // Handle connection error
-              if (error.error instanceof ErrorEvent) {
-                console.error('Network error: ' + error.error.message);
-                return;
-              }
-              console.error('Unexpected error: ' + error.statusText);
-            },
+            error: MyGardensComponent.logError,
           });
         });
       },
@@ -219,8 +212,7 @@ export class MyGardensComponent implements OnInit {
           // Handle connection error
           console.error('Network error: ' + error.error.message);
           this.myGardenAdminIdListError = 'Cannot connect to GrowPod Server';
-          return;
-        } if (error.status !== 404) {
+        } else if (error.status !== 404) {
           // Non-404 error codes
           console.error('Unexpected error: ' + error.statusText);
           this.myGardenAdminIdListError =
@@ -258,14 +250,7 @@ export class MyGardensComponent implements OnInit {
               this.myGardenMap.set(id, response.body);
               this.getGardenAdminName(response.body.adminId);
             },
-            error: (error: HttpErrorResponse) => {
-              // Handle connection error
-              if (error.error instanceof ErrorEvent) {
-                console.error('Network error: ' + error.error.message);
-                return;
-              }
-              console.error('Unexpected error: ' + error.statusText);
-            },
+            error: MyGardensComponent.logError,
           });
         });
       },
@@ -275,16 +260,14 @@ export class MyGardensComponent implements OnInit {
           // Handle connection error
           console.error('Network error: ' + error.error.message);
           this.myGardenIdListError = 'Cannot connect to GrowPod Server';
-          return;
-        } if (error.status !== 404) {
+        } else if (error.status !== 404) {
           // Non-404 error codes
           console.error('Unexpected error: ' + error.statusText);
           this.myGardenIdListError =
             'Unexpected error ' + error.status + ': ' + error.statusText;
         } else {
           console.error('Error ' + error.status + ': ' + error.statusText);
-          this.myGardenIdListError =
-            'Cannot see garden list for current user';
+          this.myGardenIdListError = 'Cannot see garden list for current user';
         }
         this.isLoaded = true;
       },
@@ -338,14 +321,21 @@ export class MyGardensComponent implements OnInit {
       next: () => {
         this.createMyGardensPage();
       },
-      error: (error: HttpErrorResponse) => {
-        // Do nothing visible for errors, yet
-        if (error.error instanceof ErrorEvent) {
-          console.error('Network error: ' + error.error.message);
-          return;
-        }
-        console.error('Unexpected error: ' + error.statusText);
-      },
+      error: MyGardensComponent.logError,
     });
+  }
+
+  /**
+   * Simply logs HTTP error responses in the console.
+   *
+   * @param error the http error to log
+   */
+  static logError(error: HttpErrorResponse) {
+    // Do nothing visible for errors, yet
+    if (error.error instanceof ErrorEvent) {
+      console.error('Network error: ' + error.error.message);
+      return;
+    }
+    console.error('Unexpected error: ' + error.statusText);
   }
 }

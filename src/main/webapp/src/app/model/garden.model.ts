@@ -12,15 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit} from '@angular/core';
-@Component({
-  selector: 'create-gardens',
-  templateUrl: './create-gardens.component.html',
-  styleUrls: [
-    './create-gardens.component.css',
-    '../common/growpod-page-styles.css',
-  ],
-})
-export class CreateGardensComponent implements OnInit {
-  ngOnInit() {}
+/**
+ * Garden interface that corresponds with design doc specs.
+ *
+ */
+export interface Garden {
+  id: string;
+  name: string;
+  description: string;
+  lat: number;
+  lng: number;
+  zipCode: string;
+  adminId: string;
 }

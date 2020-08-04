@@ -16,7 +16,7 @@ import {Component} from '@angular/core';
 import {SocialAuthService} from 'angularx-social-login';
 import {GoogleLoginProvider} from 'angularx-social-login';
 import {HttpClient} from '@angular/common/http';
-import {HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpParams} from '@angular/common/http';
 import {FormControl, Validators, FormGroup} from '@angular/forms';
 
 import {Router} from '@angular/router';
@@ -121,13 +121,10 @@ export class LoginComponent {
    */
   postData(data: User): void {
     const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
       params: new HttpParams().set('userData', JSON.stringify(data)),
     };
-    this.httpClient
-      .post<any>('/user', null, httpOptions)
-      .subscribe(result => {});
+    this.httpClient.post<User>('/user', null, httpOptions).subscribe(result => {
+      //will display a conformation/error message to user based on response (next pr)
+    });
   }
 }

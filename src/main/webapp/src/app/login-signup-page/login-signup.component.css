@@ -3,6 +3,7 @@
   text-align: center;
   padding: 20px;
 }
+
 body {
   background-color: var(--primary-darker-color);
   height: 100%;
@@ -15,10 +16,6 @@ body {
   padding: 350px 0;
   text-align: center;
 }
-.login,
-.signup {
-  margin: 20px auto;
-}
 
 .form {
   background-color: #00bb98;
@@ -27,6 +24,7 @@ body {
   margin: 0 auto;
   text-align: center;
 }
+
 .mat-card {
   padding: 50px;
   margin-top: 250px;
@@ -41,10 +39,18 @@ body {
   position: relative;
   width: 250px;
 }
+
 .button {
   width: 140px;
   font-size: 15px;
 }
+
 #createAccount {
   width: 200px;
+  margin: 20px auto;
+}
+
+#login {
+  padding-left: 52px;
+  padding-right: 0px;
 }

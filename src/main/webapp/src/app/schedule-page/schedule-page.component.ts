@@ -96,6 +96,7 @@ export class SchedulePageComponent implements OnInit {
     // User has already provided consent to the calendar API
     if (this.gapiSession.consent) {
       this.gapiSession.listEvents(
+        '[' + this.displayInfo.name + ']',
         this.datepickerElem.selectedDate,
         this.datepickerElem.selectedDateMax
       );
@@ -103,6 +104,7 @@ export class SchedulePageComponent implements OnInit {
     } else {
       this.gapiSession.signIn().then(() => {
         this.gapiSession.listEvents(
+          '[' + this.displayInfo.name + ']',
           this.datepickerElem.selectedDate,
           this.datepickerElem.selectedDateMax
         );

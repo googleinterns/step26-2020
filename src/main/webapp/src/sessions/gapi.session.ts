@@ -98,7 +98,7 @@ export class GapiSession {
    * @param selectedDate - start date and time (min)
    * @param selectedDateMax - end of the day of selected date (max)
    */
-  listEvents(selectedDate: string, selectedDateMax: string) {
+  listEvents(gardenName: string, selectedDate: string, selectedDateMax: string) {
     gapi.client.load('calendar', 'v3', () => {
       gapi.client.calendar.events
         .list({
@@ -114,13 +114,15 @@ export class GapiSession {
           if (events.length > 0) {
             for (let i = 0; i < events.length; i++) {
               const event = events[i];
-              const eventTime = this.getEventTime(event.start.dateTime);
-              this.tasks.createTaskElement(
-                eventTime,
-                event.summary,
-                event.attendees,
-                event.description
-              );
+              if(event.summary.indexOf(gardenName) !== -1) {
+                const eventTime = this.getEventTime(event.start.dateTime);
+                this.tasks.createTaskElement(
+                  eventTime,
+                  event.summary,
+                  event.attendees,
+                  event.description
+                );
+              }
             }
           }
         });

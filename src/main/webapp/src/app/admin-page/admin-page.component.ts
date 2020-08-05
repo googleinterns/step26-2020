@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import {Component, OnInit} from '@angular/core';
+import {OAuthSession} from '../../sessions/oauth.session';
 import {ActivatedRoute} from '@angular/router';
 import {
   HttpClient,
@@ -61,6 +62,7 @@ export class AdminPageComponent implements OnInit {
 
   // General Error Handling
   errorMessage = '';
+  oAuthToken: string;
 
   /**
    * Initializes the component based on provided arguments
@@ -68,12 +70,14 @@ export class AdminPageComponent implements OnInit {
    * @param route Contains arguments.
    */
   constructor(
+    private authService: OAuthSession,
     private route: ActivatedRoute,
     private httpClient: HttpClient,
     private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
+    this.oAuthToken = this.authService.userData.idToken;
     const gardenIdArg = this.route.snapshot.paramMap.get('garden-id');
     if (!gardenIdArg) {
       this.errorMessage = 'No garden-id argument in the query string.';
@@ -96,6 +100,9 @@ export class AdminPageComponent implements OnInit {
     return this.httpClient.get<Garden>('/garden/' + garden, {
       observe: 'response',
       responseType: 'json',
+      params: {
+        token: this.oAuthToken,
+      },
     });
   }
 
@@ -112,6 +119,9 @@ export class AdminPageComponent implements OnInit {
       {
         observe: 'response',
         responseType: 'json',
+        params: {
+          token: this.oAuthToken,
+        },
       }
     );
   }
@@ -129,6 +139,9 @@ export class AdminPageComponent implements OnInit {
       {
         observe: 'response',
         responseType: 'json',
+        params: {
+          token: this.oAuthToken,
+        },
       }
     );
   }
@@ -146,6 +159,9 @@ export class AdminPageComponent implements OnInit {
     return this.httpClient.get<User>('/user/' + user, {
       observe: 'response',
       responseType: 'json',
+      params: {
+        token: this.oAuthToken,
+      },
     });
   }
 
@@ -162,6 +178,9 @@ export class AdminPageComponent implements OnInit {
     return this.httpClient.get<Plant>('/plant/' + plant, {
       observe: 'response',
       responseType: 'json',
+      params: {
+        token: this.oAuthToken,
+      },
     });
   }
 
@@ -182,6 +201,9 @@ export class AdminPageComponent implements OnInit {
       {
         observe: 'response',
         responseType: 'json',
+        params: {
+          token: this.oAuthToken,
+        },
       }
     );
   }
@@ -201,6 +223,9 @@ export class AdminPageComponent implements OnInit {
       {
         observe: 'response',
         responseType: 'json',
+        params: {
+          token: this.oAuthToken,
+        },
       }
     );
   }
@@ -220,6 +245,9 @@ export class AdminPageComponent implements OnInit {
       {
         observe: 'response',
         responseType: 'json',
+        params: {
+          token: this.oAuthToken,
+        },
       }
     );
   }

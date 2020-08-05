@@ -40,6 +40,7 @@ import {AddPlantComponent} from './add-plant-form/add-plant-form.component';
 import {PlantModalComponent} from './plant-modal/plant-modal.component';
 import {TaskComponent} from './calendar-task/task.component';
 import {GapiSession} from '../sessions/gapi.session';
+import {OAuthSession} from '../sessions/oauth.session';
 import {CLIENT_ID} from './SensitiveData';
 
 const google_oauth_client_id = CLIENT_ID;
@@ -86,15 +87,16 @@ export function initGapi(gapiSession: GapiSession) {
           },
         ],
       } as SocialAuthServiceConfig,
-    },
+    } /*
     {
       provide: APP_INITIALIZER,
       useFactory: initGapi,
       deps: [GapiSession],
       multi: true,
-    },
+    },*/,
 
     GapiSession,
+    OAuthSession,
   ],
 
   bootstrap: [AppComponent],

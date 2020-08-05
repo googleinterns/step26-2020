@@ -15,6 +15,7 @@
 package com.google.growpod.servlets;
 
 import com.google.cloud.datastore.DatastoreOptions;
+import com.google.growpod.controllers.AuthController;
 import com.google.growpod.controllers.UserDao;
 import com.google.growpod.data.User;
 import com.google.gson.Gson;
@@ -33,6 +34,7 @@ public class UserServlet extends HttpServlet {
   static final long serialVersionUID = 1L;
 
   private UserDao dao;
+  private AuthController auth;
 
   private static final String CURRENT_USER_ARG = "current";
   private static final String GARDEN_LIST_ARG = "garden-list";
@@ -45,6 +47,7 @@ public class UserServlet extends HttpServlet {
   public void init() throws ServletException {
     DatastoreOptions datastoreInstance = DatastoreOptions.getDefaultInstance();
     this.dao = new UserDao(datastoreInstance);
+    this.auth = new AuthController(datastoreInstance);
   }
 
   /**
@@ -69,7 +72,16 @@ public class UserServlet extends HttpServlet {
     // Replace 'current' user with logged-in user.
     String userId = uriList[2];
     if (userId.equals(CURRENT_USER_ARG)) {
-      userId = CURRENT_USER_KEY;
+      String token = request.getParameter("token");
+      if (token == null) {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No OAuth Key");
+        return;
+      }
+      userId = auth.getUserId(token);
+      if (userId == null) {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization failure");
+        return;
+      }
     }
 
     // Dispatch based on method specified.

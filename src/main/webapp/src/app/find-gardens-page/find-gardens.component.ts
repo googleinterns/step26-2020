@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import {Component, OnInit} from '@angular/core';
+import {OAuthSession} from '../../sessions/oauth.session';
 import {ActivatedRoute} from '@angular/router';
 import {FormControl, Validators} from '@angular/forms';
 import {
@@ -50,6 +51,7 @@ export class FindGardensComponent implements OnInit {
   errorMessage = '';
   userGardenSet: Set<string>;
   zipCodeControl: FormControl;
+  oAuthToken: string;
 
   /**
    * Option to display a certian number of slides based off of browser window size along with
@@ -73,7 +75,11 @@ export class FindGardensComponent implements OnInit {
    *
    * @param route Contains arguments.
    */
-  constructor(private route: ActivatedRoute, private httpClient: HttpClient) {
+  constructor(
+    private authService: OAuthSession,
+    private route: ActivatedRoute,
+    private httpClient: HttpClient
+  ) {
     // Add simple regex zip code validation.
     this.zipCodeControl = new FormControl('', [
       Validators.pattern('^$|^([0-9]{5})$'),
@@ -81,6 +87,7 @@ export class FindGardensComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.oAuthToken = this.authService.userData.idToken;
     const zipCodeArg = this.route.snapshot.paramMap.get('zip-code');
     this.createNearbyGardenList(zipCodeArg);
     // Changes to zipCodeControl change nearby garden list.
@@ -115,7 +122,10 @@ export class FindGardensComponent implements OnInit {
       observe: 'response',
       responseType: 'json',
       // Conditionally include parameter on truthiness
-      ...(zipCode && {params: {'zip-code': zipCode}}),
+      params: {
+        token: this.oAuthToken,
+        ...(zipCode && {'zip-code': zipCode}),
+      },
     });
   }
 
@@ -130,6 +140,9 @@ export class FindGardensComponent implements OnInit {
     return this.httpClient.get<Array<String>>('/user/current/garden-list', {
       observe: 'response',
       responseType: 'json',
+      params: {
+        token: this.oAuthToken,
+      },
     });
   }
 
@@ -146,6 +159,9 @@ export class FindGardensComponent implements OnInit {
     return this.httpClient.get<User>('/user/' + user, {
       observe: 'response',
       responseType: 'json',
+      params: {
+        token: this.oAuthToken,
+      },
     });
   }
 
@@ -161,6 +177,9 @@ export class FindGardensComponent implements OnInit {
     return this.httpClient.post<string>('/user/current/garden-list/' + id, '', {
       observe: 'response',
       responseType: 'json',
+      params: {
+        token: this.oAuthToken,
+      },
     });
   }
 

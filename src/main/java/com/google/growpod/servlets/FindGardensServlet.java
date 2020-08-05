@@ -15,9 +15,9 @@
 package com.google.growpod.servlets;
 
 import com.google.cloud.datastore.DatastoreOptions;
+import com.google.growpod.controllers.AuthController;
 import com.google.growpod.controllers.FindGardensDao;
 import com.google.growpod.controllers.UserDao;
-import com.google.growpod.controllers.AuthController;
 import com.google.growpod.data.Garden;
 import com.google.growpod.data.User;
 import com.google.gson.Gson;

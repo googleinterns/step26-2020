@@ -54,8 +54,10 @@ public final class FindGardensServletTest {
     servlet.setDao(dao);
   }
 
-  /** Tests successful handling of GET: /find-gardens (no arguments) 
-      This test was removed because the auth implementation is not yet fixed. */
+  /**
+   * Tests successful handling of GET: /find-gardens (no arguments) This test was removed because
+   * the auth implementation is not yet fixed.
+   */
 
   /** Tests successful handling of GET: /find-gardens?zip-code=12345 */
   @Test

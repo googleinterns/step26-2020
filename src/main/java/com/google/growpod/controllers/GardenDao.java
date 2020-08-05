@@ -225,4 +225,19 @@ public class GardenDao {
 
     return true;
   }
+
+  public void addGardenToDatastore(Garden garden) {
+    // Generates key
+    KeyFactory keyFactory = datastore.newKeyFactory().setKind("Garden");
+    IncompleteKey incompleteKey = keyFactory.newKey();
+
+    Key key = datastore.allocateId(incompleteKey);
+
+    // placeholder id
+    garden.setId("1");
+
+    // Puts key into database
+    Entity newEntity = Entity.newBuilder(key, garden.toEntity(datastoreInstance)).build();
+    datastore.add(newEntity);
+  }
 }

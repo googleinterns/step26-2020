@@ -47,11 +47,8 @@ export function initGapi(gapiSession: GapiSession) {
     SchedulePageComponent,
     CreateGardensComponent,
     DatepickerComponent,
-<<<<<<< HEAD
-=======
     TaskComponent,
     CreateEventComponent,
->>>>>>> 558c9b9... Create Events API (Replace 'some email' with an email on the createevent ts
   ],
   imports: [
     BrowserModule,

@@ -18,7 +18,7 @@ import {CALENDAR_API_KEY} from '../app/SensitiveData';
 import {TaskComponent} from '../app/calendar-task/task.component';
 
 const GAPI_CLIENT_ID = CLIENT_ID;
-const API_KEY = CALENDAR_API_KEY
+const API_KEY = CALENDAR_API_KEY;
 
 const DISCOVERY_DOCS = [
   'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',

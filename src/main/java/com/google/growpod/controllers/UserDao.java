@@ -174,27 +174,21 @@ public class UserDao {
     return true;
   }
 
-  public String getKeyByEmail(String email){
-     String key = new String();
-    
-      StructuredQuery<Entity> query =
+  public String getKeyByEmail(String email) {
+    String key = new String();
+
+    StructuredQuery<Entity> query =
         Query.newEntityQueryBuilder()
             .setKind("User")
             .setFilter(PropertyFilter.eq("email", email))
             .build();
     QueryResults<Entity> results = datastore.run(query);
-    
-     
-     
-      Entity entity = results.next();
-      entity.getKey().getId().toString();
-     
 
-     key= entity.getKey().getId().toString();
+    Entity entity = results.next();
+    entity.getKey().getId().toString();
 
-  
-     return key;
-    }
+    key = entity.getKey().getId().toString();
 
+    return key;
   }
-
+}

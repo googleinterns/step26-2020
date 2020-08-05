@@ -46,7 +46,7 @@ public class GardenServlet extends HttpServlet {
   public void init() throws ServletException {
     DatastoreOptions datastoreInstance = DatastoreOptions.getDefaultInstance();
     this.dao = new GardenDao(datastoreInstance);
-    this.userDao= new UserDao(datastoreInstance);
+    this.userDao = new UserDao(datastoreInstance);
   }
 
   /**
@@ -121,7 +121,7 @@ public class GardenServlet extends HttpServlet {
     // /garden
     if (uriList.length == 2) {
       // TODO Add garden provided adminId = logged in user.
-      //response.setContentType("application/json");
+      // response.setContentType("application/json");
       String json = request.getParameter("gardenData");
       Garden gardenData = new Gson().fromJson(json, Garden.class);
       gardenData.setAdminId(userDao.getKeyByEmail(gardenData.getAdminId()));

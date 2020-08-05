@@ -18,7 +18,7 @@ import {GoogleLoginProvider} from 'angularx-social-login';
 import {HttpClient} from '@angular/common/http';
 import {HttpParams} from '@angular/common/http';
 import {FormControl, Validators, FormGroup} from '@angular/forms';
-import { Observable } from 'rxjs'
+import {Observable} from 'rxjs';
 
 import {Router} from '@angular/router';
 import {User} from '../model/user.model';
@@ -73,17 +73,13 @@ export class LoginComponent {
       zipCode: this.zipCode,
     };
 
-      if (this.choice === "create") {
+    if (this.choice === 'create') {
       this.admin = true;
       console.log(this.admin);
-      
-    }
-
-    else if (this.choice === "join"){
-        this.done = true;
-        console.log(this.done);
-        //this.router.navigate(['page/my-gardens']);
-        
+    } else if (this.choice === 'join') {
+      this.done = true;
+      console.log(this.done);
+      //this.router.navigate(['page/my-gardens']);
     }
     this.postData(this.userProfile);
   }
@@ -136,22 +132,20 @@ export class LoginComponent {
    * @param data object holding user data that will be used as a param in the post request
    */
   postData(data: User): void {
-           console.log(this.admin,this.done);
+    console.log(this.admin, this.done);
 
     const httpOptions = {
       params: new HttpParams().set('userData', JSON.stringify(data)),
     };
-    this.httpClient.post<User>('/user', null, httpOptions).subscribe(response => {
-      //will display a conformation/error message to user based on response (next pr)
-     
-  
-    });
+    this.httpClient
+      .post<User>('/user', null, httpOptions)
+      .subscribe(response => {
+        //will display a conformation/error message to user based on response (next pr)
+      });
     //console.log(this.user.getKey(this.user.email));
-    
-    
   }
-  redirect():void{
-      this.router.navigate(['page/my-gardens']);
+  redirect(): void {
+    this.router.navigate(['page/my-gardens']);
   }
   /**
   postPlantToGarden(plant: Plant): Observable<HttpResponse<string>> {

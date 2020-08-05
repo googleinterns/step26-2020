@@ -84,9 +84,7 @@ export class CreateGardensComponent implements OnInit {
       .subscribe(response => {
         //will display a conformation/error message to user based on response (next pr)
         console.log(response);
-        
       });
-      this.router.navigate(['page/my-gardens']);
-    
+    this.router.navigate(['page/my-gardens']);
   }
 }

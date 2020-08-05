@@ -64,7 +64,7 @@ export class CreateEventComponent implements OnInit {
       endTime: new FormControl(this.eventInfo.endTime, [Validators.required]),
       timezone: new FormControl(this.eventInfo.timezone, [Validators.required]),
       participants: new FormControl(this.eventInfo.participants, [
-        Validators.pattern('.+@gmail.com'),
+        Validators.pattern('.+@google.com'),
       ]),
       description: new FormControl(this.eventInfo.description),
     });

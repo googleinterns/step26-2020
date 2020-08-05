@@ -50,6 +50,7 @@ export class OAuthSession {
       GoogleLoginProvider.PROVIDER_ID
     );
     this.user = response;
+    this.signedIn = true;
     return response;
   }
 

@@ -16,8 +16,6 @@ import {Component} from '@angular/core';
 import {OAuthSession} from '../sessions/oauth.session';
 import {Router} from '@angular/router';
 
-const LOGIN_PAGE: String = '/page/login';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -27,7 +25,7 @@ export class AppComponent {
   constructor(public authService: OAuthSession, private router: Router) {}
 
   isLoggedIn(): boolean {
-    return this.router.url !== LOGIN_PAGE;
+    return this.authService.isSignedIn;
   }
 
   logOut(): void {

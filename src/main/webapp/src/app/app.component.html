@@ -19,7 +19,9 @@
       </button>
       <mat-menu #userMenu>
         <div #profilePic class="profile-pic-container-s"></div>
-        <h4 class="text-center">{{ authService.userData.name }}</h4>
+        <h4 class="text-center">
+          {{ authService.userData && authService.userData.name }}
+        </h4>
         <a routerLink="/page/user-profile">
           <button mat-menu-item>
             <mat-icon>assignment_ind</mat-icon>

@@ -143,7 +143,7 @@ public class GardenServlet extends HttpServlet {
         }
         String key = dao.addPlant(gardenId, plant);
         if (key == null) {
-          response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid user body");
+          response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid plant body");
           return;
         }
 

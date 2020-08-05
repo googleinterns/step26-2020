@@ -22,6 +22,7 @@ import {
 import {Observable} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {AddPlantComponent} from '../add-plant-form/add-plant-form.component';
+import {PlantModalComponent} from '../plant-modal/plant-modal.component';
 import {Garden} from '../model/garden.model';
 import {Plant} from '../model/plant.model';
 import {User} from '../model/user.model';
@@ -362,26 +363,22 @@ export class AdminPageComponent implements OnInit {
         });
       },
       error: (error: HttpErrorResponse) => {
-        // Handle connection error
+        this.gardenPlantIdList = null;
         if (error.error instanceof ErrorEvent) {
+          // Connection error
           console.error('Network error: ' + error.error.message);
-          this.gardenPlantIdList = null;
           this.gardenPlantIdListError = 'Cannot connect to GrowPod Server';
-          return;
         }
-        // Non-404 error codes
         if (error.status !== 404) {
+          // Non-404 errors
           console.error('Unexpected error: ' + error.statusText);
-          this.gardenPlantIdList = null;
           this.gardenPlantIdListError =
             'Unexpected error ' + error.status + ': ' + error.statusText;
-          return;
+        } else {
+          console.error('Error ' + error.status + ': ' + error.statusText);
+          this.gardenPlantIdListError =
+            'Cannot see plant list for garden id: ' + garden;
         }
-        console.error('Error ' + error.status + ': ' + error.statusText);
-        this.gardenPlantIdList = null;
-        this.gardenPlantIdListError =
-          'Cannot see plant list for garden id: ' + garden;
-        this.isLoaded = true;
       },
     });
   }
@@ -396,6 +393,31 @@ export class AdminPageComponent implements OnInit {
   }
 
   /**
+   * Opens a modal containing more information about a particular plant.
+   *
+   * @param id the plant id to show more information about.
+   */
+  showPlantDetails(id: string) {
+    this.getPlantInfo(id).subscribe({
+      // Obtain plant names
+      next: (response: HttpResponse<Plant>) => {
+        // Successful responses are handled here.
+        this.dialog.open(PlantModalComponent, {
+          data: response.body,
+        });
+      },
+      error: (error: HttpErrorResponse) => {
+        // Do nothing visible for errors yet
+        if (error.error instanceof ErrorEvent) {
+          console.error('Network error: ' + error.error.message);
+          return;
+        }
+        console.error('Unexpected error: ' + error.statusText);
+      },
+    });
+  }
+
+  /**
    * Shows a modal to add a plant to the garden, then adds it.
    *
    */
@@ -407,14 +429,7 @@ export class AdminPageComponent implements OnInit {
           next: () => {
             this.createGardenPlantList(this.gardenProfile.id);
           },
-          error: (error: HttpErrorResponse) => {
-            // Do nothing visible for errors, yet
-            if (error.error instanceof ErrorEvent) {
-              console.error('Network error: ' + error.error.message);
-              return;
-            }
-            console.error('Unexpected error: ' + error.statusText);
-          },
+          error: AdminPageComponent.logError,
         });
       }
     });
@@ -430,14 +445,7 @@ export class AdminPageComponent implements OnInit {
       next: () => {
         this.createGardenPlantList(this.gardenProfile.id);
       },
-      error: (error: HttpErrorResponse) => {
-        // Do nothing visible for errors, yet
-        if (error.error instanceof ErrorEvent) {
-          console.error('Network error: ' + error.error.message);
-          return;
-        }
-        console.error('Unexpected error: ' + error.statusText);
-      },
+      error: AdminPageComponent.logError,
     });
   }
 
@@ -451,14 +459,21 @@ export class AdminPageComponent implements OnInit {
       next: () => {
         this.createGardenUserList(this.gardenProfile.id);
       },
-      error: (error: HttpErrorResponse) => {
-        // Do nothing visible for errors, yet
-        if (error.error instanceof ErrorEvent) {
-          console.error('Network error: ' + error.error.message);
-          return;
-        }
-        console.error('Unexpected error: ' + error.statusText);
-      },
+      error: AdminPageComponent.logError,
     });
+  }
+
+  /**
+   * Simply logs HTTP error responses in the console.
+   *
+   * @param error the http error to log
+   */
+  static logError(error: HttpErrorResponse) {
+    // Do nothing visible for errors, yet
+    if (error.error instanceof ErrorEvent) {
+      console.error('Network error: ' + error.error.message);
+      return;
+    }
+    console.error('Unexpected error: ' + error.statusText);
   }
 }

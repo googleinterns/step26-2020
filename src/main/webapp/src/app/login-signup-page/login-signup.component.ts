@@ -104,6 +104,7 @@ export class LoginComponent {
         this.newUser = true;
       }
     });
+    console.log(this.user.getAuthResponse().id_token);
   }
 
   /**

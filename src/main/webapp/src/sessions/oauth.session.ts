@@ -15,7 +15,6 @@
 import {Injectable} from '@angular/core';
 import {SocialAuthService, SocialUser} from 'angularx-social-login';
 import {GoogleLoginProvider} from 'angularx-social-login';
-import {CLIENT_ID} from '../app/SensitiveData';
 
 /**
  * Wrapper service for SocialAuthService so it can be used across multiple pages.

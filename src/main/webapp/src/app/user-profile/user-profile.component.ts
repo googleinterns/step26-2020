@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import {Component, OnInit} from '@angular/core';
-import {SocialUser} from 'angularx-social-login';
 import {OAuthSession} from '../../sessions/oauth.session';
 import {ActivatedRoute} from '@angular/router';
 import {

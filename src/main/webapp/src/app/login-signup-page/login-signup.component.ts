@@ -14,8 +14,6 @@
 
 import {Component} from '@angular/core';
 import {OAuthSession} from '../../sessions/oauth.session';
-import {SocialAuthService} from 'angularx-social-login';
-import {GoogleLoginProvider} from 'angularx-social-login';
 import {HttpClient} from '@angular/common/http';
 import {HttpParams} from '@angular/common/http';
 import {FormControl, Validators, FormGroup} from '@angular/forms';

@@ -39,7 +39,7 @@ export class CreateEventComponent implements OnInit {
     participants: undefined,
     description: '',
   };
-  
+
   members: string[];
 
   // Values will be update after sucessfully calling this.submit
@@ -63,7 +63,9 @@ export class CreateEventComponent implements OnInit {
       ]),
       endTime: new FormControl(this.eventInfo.endTime, [Validators.required]),
       timezone: new FormControl(this.eventInfo.timezone, [Validators.required]),
-      participants: new FormControl(this.eventInfo.participants, [Validators.pattern('.+@gmail.com')]),
+      participants: new FormControl(this.eventInfo.participants, [
+        Validators.pattern('.+@gmail.com'),
+      ]),
       description: new FormControl(this.eventInfo.description),
     });
   }
@@ -76,9 +78,9 @@ export class CreateEventComponent implements OnInit {
     if (this.eventGroup.valid) {
       this.submitSuccess = true;
       this.eventInfo = this.eventGroup.value;
-      this.eventInfo.title = '[' + gardenName + '] ' + this.eventInfo.title; 
-      
-      if(this.eventInfo.participants) {
+      this.eventInfo.title = '[' + gardenName + '] ' + this.eventInfo.title;
+
+      if (this.eventInfo.participants) {
         this.members = this.eventInfo.participants.split(',');
       }
 

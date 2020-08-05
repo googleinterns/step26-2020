@@ -33,7 +33,7 @@ export class GapiSession {
   hasConsent = false;
   tasks = new TaskComponent();
 
-  constructor(private zone: NgZone) { }
+  constructor(private zone: NgZone) {}
 
   ngOnInit() {
     this.loadClient();
@@ -158,7 +158,6 @@ export class GapiSession {
     participants: string[],
     description?: string
   ) {
-
     if (typeof description === 'undefined') {
       description = '';
     }
@@ -166,14 +165,14 @@ export class GapiSession {
     // Participants are added to the event in the following format
     const attendees = [];
     // Current user
-    attendees.push({ email: this.getCurrUserEmail() });
+    attendees.push({email: this.getCurrUserEmail()});
 
-    if(participants) {
+    if (participants) {
       participants.forEach(participant => {
-      attendees.push({ email: participant.trim() });
+        attendees.push({email: participant.trim()});
       });
     }
-    
+
     const event = {
       summary: title,
       description: description,
@@ -189,21 +188,23 @@ export class GapiSession {
     };
 
     gapi.client.load('calendar', 'v3', () => {
-      gapi.client.calendar.events.insert({
-        calendarId: 'primary',
-        sendUpdates: 'all',
-        resource: event,
-      }).execute();
+      gapi.client.calendar.events
+        .insert({
+          calendarId: 'primary',
+          sendUpdates: 'all',
+          resource: event,
+        })
+        .execute();
     });
   }
 
-  /** 
-  * Returns the signed in user email
-  * @return - user's email
-  */
+  /**
+   * Returns the signed in user email
+   * @return - user's email
+   */
   getCurrUserEmail(): string {
     if (this.auth2.isSignedIn.get()) {
-      var profile = this.auth2.currentUser.get().getBasicProfile();
+      const profile = this.auth2.currentUser.get().getBasicProfile();
       return profile.getEmail();
     }
   }

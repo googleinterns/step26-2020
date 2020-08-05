@@ -63,12 +63,12 @@
 
   <br />
 
-	<mat-label>Members</mat-label>
-  <p> Invite others by entering their email separated by commas</p>
-  <input formControlName="participants" type="email" size="30" multiple>
-	<mat-error *ngIf="eventGroup.controls.participants.hasError('pattern')">
+  <mat-label>Members</mat-label>
+  <p>Invite others by entering their email separated by commas</p>
+  <input formControlName="participants" type="email" size="30" multiple />
+  <mat-error *ngIf="eventGroup.controls.participants.hasError('pattern')">
     Include valid emails and separate by commas
-	</mat-error>
+  </mat-error>
 
   <br />
 

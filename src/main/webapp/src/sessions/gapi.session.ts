@@ -16,7 +16,6 @@ import {NgZone, Injectable} from '@angular/core';
 import {CLIENT_ID} from '../app/SensitiveData';
 import {CALENDAR_API_KEY} from '../app/SensitiveData';
 import {TaskComponent} from '../app/calendar-task/task.component';
-import {CLIENT_ID} from '../app/SensitiveData';
 
 const GAPI_CLIENT_ID = CLIENT_ID;
 const API_KEY = CALENDAR_API_KEY
@@ -34,7 +33,7 @@ export class GapiSession {
   hasConsent = false;
   tasks = new TaskComponent();
 
-  constructor(private zone: NgZone) {}
+  constructor(private zone: NgZone) { }
 
   ngOnInit() {
     this.loadClient();
@@ -159,17 +158,22 @@ export class GapiSession {
     participants: string[],
     description?: string
   ) {
-    if (typeof description !== 'undefined' && description) {
-      description = ' ';
+
+    if (typeof description === 'undefined') {
+      description = '';
     }
 
     // Participants are added to the event in the following format
-    let attendees = [];
+    const attendees = [];
+    // Current user
+    attendees.push({ email: this.getCurrUserEmail() });
 
-    participants.forEach(participant => {
-      attendees.push({email: participant});
-    });
-
+    if(participants) {
+      participants.forEach(participant => {
+      attendees.push({ email: participant.trim() });
+      });
+    }
+    
     const event = {
       summary: title,
       description: description,
@@ -184,11 +188,23 @@ export class GapiSession {
       attendees: attendees,
     };
 
-    const request = gapi.client.calendar.events.insert({
-      calendarId: 'primary',
-      resource: event,
+    gapi.client.load('calendar', 'v3', () => {
+      gapi.client.calendar.events.insert({
+        calendarId: 'primary',
+        sendUpdates: 'all',
+        resource: event,
+      }).execute();
     });
+  }
 
-    request.execute();
+  /** 
+  * Returns the signed in user email
+  * @return - user's email
+  */
+  getCurrUserEmail(): string {
+    if (this.auth2.isSignedIn.get()) {
+      var profile = this.auth2.currentUser.get().getBasicProfile();
+      return profile.getEmail();
+    }
   }
 }

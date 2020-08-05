@@ -61,18 +61,15 @@
     Timezone is <strong>required</strong>
   </mat-error>
 
-  <!--
-  <mat-form-field class="div-center">
-		<mat-label>Members</mat-label>
-		<input formControlName="title" matInput placeholder="Enter a title" />
-		<mat-error *ngIf="
-        gardenGroup.controls.title.hasError('required') ||
-        gardenGroup.controls.title.hasError('minLength')
-      ">
-			Event title is <strong>required</strong>
-		</mat-error>
-	</mat-form-field>
-  -->
+  <br />
+
+	<mat-label>Members</mat-label>
+  <p> Invite others by entering their email separated by commas</p>
+  <input formControlName="participants" type="email" size="30" multiple>
+	<mat-error *ngIf="eventGroup.controls.participants.hasError('pattern')">
+    Include valid emails and separate by commas
+	</mat-error>
+
   <br />
 
   <mat-form-field class="div-center">

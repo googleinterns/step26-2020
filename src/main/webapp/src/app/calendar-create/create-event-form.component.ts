@@ -36,9 +36,11 @@ export class CreateEventComponent implements OnInit {
     startTime: undefined,
     endTime: undefined,
     timezone: undefined,
-    participants: ['user@example.com'],
+    participants: undefined,
     description: '',
   };
+  
+  members: string[];
 
   // Values will be update after sucessfully calling this.submit
   startDateTime: string;
@@ -61,18 +63,25 @@ export class CreateEventComponent implements OnInit {
       ]),
       endTime: new FormControl(this.eventInfo.endTime, [Validators.required]),
       timezone: new FormControl(this.eventInfo.timezone, [Validators.required]),
+      participants: new FormControl(this.eventInfo.participants, [Validators.pattern('.+@gmail.com')]),
       description: new FormControl(this.eventInfo.description),
     });
   }
 
   /**
-   *
+   * Updates the values to the ones selected on the form
+   * @param gardenName - current garden name; this wil help filter events when displaying
    */
-  submit(): void {
+  submit(gardenName: string): void {
     if (this.eventGroup.valid) {
       this.submitSuccess = true;
       this.eventInfo = this.eventGroup.value;
-      this.eventInfo.participants = ['some email'];
+      this.eventInfo.title = '[' + gardenName + '] ' + this.eventInfo.title; 
+      
+      if(this.eventInfo.participants) {
+        this.members = this.eventInfo.participants.split(',');
+      }
+
       this.startDateTime = this.getDateTime(
         this.eventInfo.dateTime.toISOString(),
         this.eventInfo.startTime
@@ -85,11 +94,14 @@ export class CreateEventComponent implements OnInit {
   }
 
   /**
-   *
+   * Combines the selected date with the assigned time
+   * @param dateTime - contains date and the default time 00:00:00
+   * @param time - contains time in a 24hr format
    */
   getDateTime(dateTime: string, time: string): string {
     const dateISO = dateTime.split('T', 1);
-    const result = dateISO + 'T' + time + ':00-07:00';
+    // TODO: Create test for timezones and time
+    const result = dateISO + 'T' + time + ':00-06:00';
     return result;
   }
 }

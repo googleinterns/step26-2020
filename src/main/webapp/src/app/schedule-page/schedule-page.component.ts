@@ -111,22 +111,21 @@ export class SchedulePageComponent implements OnInit {
   }
 
   /**
-   *
+   * After completing the form, create a calendar event on the assigned users
    */
   createCalendarEvent() {
     // User has already provided consent to the calendar API
     if (this.gapiSession.consent) {
-      this.eventForm.submit();
-      console.log('AA first (a)');
+      this.eventForm.submit(this.displayInfo.name);
 
       if (this.eventForm.submitSuccess) {
-        console.log('AA second (a)');
         this.gapiSession.createEvent(
           this.eventForm.eventInfo.title,
           this.eventForm.startDateTime,
           this.eventForm.endDateTime,
           this.eventForm.eventInfo.timezone,
-          this.eventForm.eventInfo.participants
+          this.eventForm.members,
+          this.eventForm.eventInfo.description
         );
         this.eventForm.submitSuccess = false;
       }
@@ -134,17 +133,16 @@ export class SchedulePageComponent implements OnInit {
     // User gives consent to the API for the first time in the current session
     else {
       this.gapiSession.signIn().then(() => {
-        this.eventForm.submit();
-        console.log('BB first (b)');
+        this.eventForm.submit(this.displayInfo.name);
 
         if (this.eventForm.submitSuccess) {
-          console.log('BB second (b)');
           this.gapiSession.createEvent(
             this.eventForm.eventInfo.title,
             this.eventForm.startDateTime,
             this.eventForm.endDateTime,
             this.eventForm.eventInfo.timezone,
-            this.eventForm.eventInfo.participants
+            this.eventForm.members,
+            this.eventForm.eventInfo.description
           );
           this.eventForm.submitSuccess = false;
         }

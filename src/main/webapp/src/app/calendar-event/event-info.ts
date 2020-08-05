@@ -5,7 +5,7 @@ export class EventInfo {
     public startTime: string,
     public endTime: string,
     public timezone: string,
-    public participants: string[],
+    public participants: string,
     public description?: string
   ) {}
 }

@@ -55,3 +55,19 @@
     </form></mat-card-content
   ></mat-card
 >
+ <ng-container *ngIf="done">
+    <mat-card class="mat-elevation-z8 form" id="done" >
+      <mat-card-title>
+        Your account was successfully created.
+      </mat-card-title>
+      <button
+        mat-button
+        class="button"
+        type="button"
+        id="accounutCreated"
+        [routerLink]="['/page/my-gardens']"
+      >
+        Thanks!
+      </button>
+    </mat-card>
+  </ng-container>

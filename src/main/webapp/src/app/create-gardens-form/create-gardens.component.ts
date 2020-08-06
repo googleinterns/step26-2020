@@ -33,6 +33,7 @@ export class CreateGardensComponent implements OnInit {
   gardenName: string;
   gardenDescription: string;
   gardenZip: string;
+  done =false;
 
   gardenProfile: Garden = {
     id: undefined,
@@ -72,6 +73,7 @@ export class CreateGardensComponent implements OnInit {
       zipCode: this.gardenZip,
       adminId: this.adminEmail,
     };
+     this.done = true;
     this.postGardenData(this.gardenProfile);
   }
 

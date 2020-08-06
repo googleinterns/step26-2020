@@ -78,7 +78,7 @@ export function initGapi(gapiSession: GapiSession) {
     GrowpodUiModule,
   ],
   entryComponents: [AddPlantComponent, PlantModalComponent],
-  
+
   providers: [
     /*
     {

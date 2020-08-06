@@ -239,6 +239,29 @@ public class GardenDao {
 
     // Puts key into database
     Entity newEntity = Entity.newBuilder(key, garden.toEntity(datastoreInstance)).build();
+    String gardenId = Long.toString(newEntity.getKey().getId());
+    addGardenToUserList(garden.getAdminId(), gardenId);
     datastore.add(newEntity);
+  }
+
+  public boolean addGardenToUserList(String userId, String gardenId) {
+    // Existence check for both parameters.
+    String projectId = datastoreInstance.getProjectId();
+    Key key = Key.newBuilder(projectId, "Garden", Long.parseLong(gardenId)).build();
+    Entity gardenEntity = datastore.get(key);
+    if (gardenEntity == null) {
+      return false;
+    }
+
+    // Then add relation
+    KeyFactory keyFactory = datastore.newKeyFactory().setKind("HasMember");
+    IncompleteKey incompleteKey = keyFactory.newKey();
+
+    key = datastore.allocateId(incompleteKey);
+    HasMember relation = new HasMember("1", gardenId, userId);
+
+    Entity newEntity = Entity.newBuilder(key, relation.toEntity(datastoreInstance)).build();
+    datastore.add(newEntity);
+    return true;
   }
 }

@@ -153,7 +153,7 @@ export class GapiSession {
    * @param startDateTime - start date and time of the event in ISO format
    * @param endDateTime - end date and time of the event in ISO format
    * @param timezone - set the timezone for the time
-   * @param participants - members invited to event
+   * @param participantsEmails - members invited to event
    * @param description - (optional) description of the event
    */
   createEvent(
@@ -161,7 +161,7 @@ export class GapiSession {
     startDateTime: string,
     endDateTime: string,
     timezone: string,
-    participants: string[],
+    participantsEmails: string[],
     description?: string
   ) {
    
@@ -172,8 +172,8 @@ export class GapiSession {
     // Current user
     attendees.push({email: this.getCurrUserEmail()});
 
-    participants.forEach(participant => {
-        attendees.push({email: participant.trim()});
+    participantsEmails.forEach(participantEmail => {
+        attendees.push({email: participantEmail.trim()});
     });
 
     const event = {

@@ -164,9 +164,8 @@ export class GapiSession {
     participants: string[],
     description?: string
   ) {
-    if (typeof description === 'undefined') {
-      description = '';
-    }
+   
+    description = description || '';
 
     // Participants are added to the event in the following format
     const attendees = [];

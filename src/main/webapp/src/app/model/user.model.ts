@@ -22,4 +22,5 @@ export interface User {
   preferredName: string;
   biography: string;
   zipCode: string;
+  imgSrc: string;
 }

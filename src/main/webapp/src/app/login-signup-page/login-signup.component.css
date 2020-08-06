@@ -53,3 +53,13 @@ body {
   width: 200px;
   margin: 20px auto;
 }
+
+#login {
+  padding-left: 2px;
+  padding-right: 0px;
+  margin-bottom: 25px;
+}
+
+#done {
+  margin-top: 250px;
+}

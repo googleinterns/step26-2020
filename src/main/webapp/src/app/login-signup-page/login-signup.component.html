@@ -19,10 +19,31 @@
       Sign Up
     </button>
   </div>
+
+  <ng-container *ngIf="admin">
+    <create-gardens [email]="user.email"></create-gardens>
+  </ng-container>
+
+  <ng-container *ngIf="done">
+    <mat-card class="mat-elevation-z8 form" id="done" *ngIf="done">
+      <mat-card-title>
+        Your account was successfully created.
+      </mat-card-title>
+      <button
+        mat-button
+        class="button"
+        type="button"
+        id="accounutCreated"
+        [routerLink]="['/page/my-gardens']"
+      >
+        Thanks!
+      </button>
+    </mat-card>
+  </ng-container>
 </body>
 
 <ng-template #newUserForm>
-  <mat-card class="mat-elevation-z8 form">
+  <mat-card class="mat-elevation-z8 form" *ngIf="!admin && !done">
     <mat-card-title>
       Tell us a little more about yourself!
     </mat-card-title>
@@ -59,9 +80,9 @@
 
         <mat-form-field appearance="fill">
           <mat-label>Are you joining or creating a garden?</mat-label>
-          <mat-select formControlName="gardenValidator">
-            <mat-option value="option">Joining</mat-option>
-            <mat-option value="option">Creating</mat-option>
+          <mat-select formControlName="gardenValidator" [(ngModel)]="choice">
+            <mat-option value="join">Joining</mat-option>
+            <mat-option value="create">Creating</mat-option>
           </mat-select>
           <mat-error
             *ngIf="userGroup.controls.gardenValidator.hasError('required')"
@@ -73,6 +94,7 @@
         <button
           mat-button
           class="button"
+          type="button"
           id="createAccount"
           on-click="buildUserProfile()"
         >

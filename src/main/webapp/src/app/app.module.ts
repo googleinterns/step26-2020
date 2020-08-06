@@ -88,6 +88,7 @@ export function initGapi(gapiSession: GapiSession) {
         ],
       } as SocialAuthServiceConfig,
     },
+<<<<<<< HEAD
     // Commented out as initGapi conflicts with SocialAuthService
     //{
     //  provide: APP_INITIALIZER,

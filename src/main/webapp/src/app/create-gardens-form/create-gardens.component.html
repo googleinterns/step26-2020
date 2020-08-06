@@ -1,32 +1,78 @@
 <mat-card class="mat-elevation-z8 form">
   <mat-card-title>
-    Create Garden Form
+    Tell us about your garden!
   </mat-card-title>
 
   <mat-card-content>
-    <mat-form-field>
-      <input matInput placeholder="Name of Garden" /></mat-form-field
-    ><br />
+    <form [formGroup]="gardenGroup">
+      <mat-form-field appearance="fill">
+        <input
+          matInput
+          placeholder="Garden Name"
+          [(ngModel)]="gardenName"
+          formControlName="gardenNameValidator"
+        />
+        <mat-error
+          *ngIf="gardenGroup.controls.gardenNameValidator.hasError('required')"
+        >
+          Name is required
+        </mat-error> </mat-form-field
+      ><br />
 
-    <mat-form-field>
-      <input matInput placeholder="Name of Admin" /></mat-form-field
-    ><br />
+      <mat-form-field appearance="fill">
+        <textarea
+          matInput
+          placeholder="Garden Description"
+          [(ngModel)]="gardenDescription"
+          formControlName="gardenDescriptionValidator"
+        ></textarea>
+        <mat-error
+          *ngIf="
+            gardenGroup.controls.gardenDescriptionValidator.hasError('required')
+          "
+        >
+          Description is required
+        </mat-error> </mat-form-field
+      ><br />
 
-    <mat-form-field>
-      <input matInput placeholder="Address of Garden" /></mat-form-field
-    ><br />
+      <mat-form-field appearance="fill">
+        <textarea
+          matInput
+          placeholder="Garden Zipcode"
+          [(ngModel)]="gardenZip"
+          formControlName="gardenZipValidator"
+        ></textarea>
+        <mat-error
+          *ngIf="gardenGroup.controls.gardenZipValidator.hasError('required')"
+        >
+          Zipcode is required
+        </mat-error> </mat-form-field
+      ><br />
 
-    <mat-form-field>
-      <textarea matInput placeholder="Garden Bio"></textarea></mat-form-field
-    ><br />
-
-    <mat-form-field>
-      <textarea
-        matInput
-        placeholder="Plants Currently In Garden"
-      ></textarea></mat-form-field
-    ><br />
-
-    <button mat-button class="button">Create Garden</button>
-  </mat-card-content>
-</mat-card>
+      <button
+        mat-button
+        class="button"
+        id="button"
+        on-click="buildGardenProfile()"
+      >
+        Create Garden
+      </button>
+    </form></mat-card-content
+  ></mat-card
+>
+<ng-container *ngIf="done">
+  <mat-card class="mat-elevation-z8 form" id="done">
+    <mat-card-title>
+      Your account was successfully created.
+    </mat-card-title>
+    <button
+      mat-button
+      class="button"
+      type="button"
+      id="accounutCreated"
+      [routerLink]="['/page/my-gardens']"
+    >
+      Thanks!
+    </button>
+  </mat-card>
+</ng-container>

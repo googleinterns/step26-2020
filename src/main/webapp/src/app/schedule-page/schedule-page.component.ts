@@ -44,9 +44,8 @@ export class SchedulePageComponent implements OnInit {
     private route: ActivatedRoute,
     private httpClient: HttpClient
   ) {
-    const idArg = route.snapshot.paramMap.get('id');
-    const id = idArg ?? 'current';
-    this.createGardenProfile(id);
+    const idArg = route.snapshot.paramMap.get('garden-id');
+    this.createGardenProfile(idArg);
   }
 
   ngOnInit(): void {}

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {NgModule} from '@angular/core';
+import {NgModule, APP_INITIALIZER} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
@@ -78,7 +78,9 @@ export function initGapi(gapiSession: GapiSession) {
     GrowpodUiModule,
   ],
   entryComponents: [AddPlantComponent, PlantModalComponent],
+  
   providers: [
+    /*
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {
@@ -90,14 +92,14 @@ export function initGapi(gapiSession: GapiSession) {
           },
         ],
       } as SocialAuthServiceConfig,
+    },*/
+
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initGapi,
+      deps: [GapiSession],
+      multi: true,
     },
-    // Commented out as initGapi conflicts with SocialAuthService
-    //{
-    //  provide: APP_INITIALIZER,
-    //  useFactory: initGapi,
-    //  deps: [GapiSession],
-    //  multi: true,
-    //},
 
     GapiSession,
     OAuthSession,

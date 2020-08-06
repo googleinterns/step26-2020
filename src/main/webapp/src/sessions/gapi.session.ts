@@ -215,4 +215,15 @@ export class GapiSession {
       return profile.getEmail();
     }
   }
+
+  /**
+   * Returns the current logged in user
+   *
+   */
+  get currUser() {
+    if (this.auth2.isSignedIn.get()) {
+      return this.auth2.currentUser.get();
+    }
+    return null;
+  }
 }

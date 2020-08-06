@@ -172,11 +172,9 @@ export class GapiSession {
     // Current user
     attendees.push({email: this.getCurrUserEmail()});
 
-    if (participants) {
-      participants.forEach(participant => {
+    participants.forEach(participant => {
         attendees.push({email: participant.trim()});
-      });
-    }
+    });
 
     const event = {
       summary: title,

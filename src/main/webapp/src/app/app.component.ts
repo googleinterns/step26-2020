@@ -27,7 +27,7 @@ export class AppComponent {
   constructor(public authService: OAuthSession, private router: Router) {}
 
   isLoggedIn(): boolean {
-    return this.authService.isSignedIn && this.router.url != LOGIN_PAGE;
+    return this.authService.isSignedIn && this.router.url !== LOGIN_PAGE;
   }
 
   logOut(): void {

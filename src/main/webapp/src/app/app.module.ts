@@ -45,6 +45,8 @@ import {CLIENT_ID} from './SensitiveData';
 
 const google_oauth_client_id = CLIENT_ID;
 
+import {CreateEventComponent} from './calendar-create/create-event-form.component';
+
 export function initGapi(gapiSession: GapiSession) {
   return () => gapiSession.loadClient();
 }
@@ -63,6 +65,7 @@ export function initGapi(gapiSession: GapiSession) {
     AddPlantComponent,
     PlantModalComponent,
     TaskComponent,
+    CreateEventComponent,
   ],
   imports: [
     BrowserModule,

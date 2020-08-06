@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Garden interface that corresponds with design doc specs.
+ * User interface that corresponds with design doc specs.
  *
  */
 export interface Garden {

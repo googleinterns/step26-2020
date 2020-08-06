@@ -13,8 +13,13 @@
 // limitations under the License.
 
 import {Component, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
 import {GapiSession} from '../../sessions/gapi.session';
+import {CreateEventComponent} from '../calendar-create/create-event-form.component';
 import {DatepickerComponent} from '../datepicker/datepicker.component';
+import {Garden} from '../model/garden.model';
 
 @Component({
   selector: 'schedule-page',
@@ -25,29 +30,124 @@ import {DatepickerComponent} from '../datepicker/datepicker.component';
   ],
 })
 export class SchedulePageComponent implements OnInit {
+  @ViewChild('eventForm', {static: false})
+  eventForm: CreateEventComponent;
+
   @ViewChild('datepickerElem', {static: false})
   datepickerElem: DatepickerComponent;
 
-  constructor(private gapiSession: GapiSession) {}
+  displayInfo: Garden | null;
+  errorMessage: string;
+
+  constructor(
+    private gapiSession: GapiSession,
+    private route: ActivatedRoute,
+    private httpClient: HttpClient
+  ) {
+    const idArg = route.snapshot.paramMap.get('id');
+    const id = idArg ?? 'current';
+    this.createGardenProfile(id);
+  }
 
   ngOnInit(): void {}
+
+  /**
+   * Populates component to create a garden, or shows an
+   * error message if profile does not exist.
+   *
+   * @param garden The garden requested.
+   */
+  createGardenProfile(garden: string): void {
+    this.getGardenInfo(garden).subscribe({
+      next: response => {
+        // Successful responses are handled here.
+        this.displayInfo = response.body;
+      },
+      error: error => {
+        // Error messages are handled here.
+        this.displayInfo = null;
+        this.errorMessage = 'Cannot see garden for garden id: ' + garden;
+        console.log(new Error(error));
+      },
+    });
+  }
+
+  /**
+   * Gets garden information for the specified garden from
+   * the server. Returns an observable HTTP response.
+   *
+   * Performs GET: /garden/{garden}
+   *
+   * @param garden - The garden requested from the server.
+   * @return - the http response.
+   */
+  getGardenInfo(garden: string): Observable<HttpResponse<Garden>> {
+    return this.httpClient.get<Garden>('/garden/' + garden, {
+      observe: 'response',
+      responseType: 'json',
+    });
+  }
 
   /**
    * Display consent popup for calendar API, list event based on selected date
    * Consent prompt only appears once per session
    */
   fetchCalendarEvents() {
+    // User has already provided consent to the calendar API
     if (this.gapiSession.consent) {
       this.gapiSession.listEvents(
+        '[' + this.displayInfo.name + ']',
         this.datepickerElem.selectedDate,
         this.datepickerElem.selectedDateMax
       );
+      // User gives consent to the API for the first time in the current session
     } else {
       this.gapiSession.signIn().then(() => {
         this.gapiSession.listEvents(
+          '[' + this.displayInfo.name + ']',
           this.datepickerElem.selectedDate,
           this.datepickerElem.selectedDateMax
         );
+      });
+    }
+  }
+
+  /**
+   * After completing the form, create a calendar event on the assigned users
+   */
+  createCalendarEvent() {
+    // User has already provided consent to the calendar API
+    if (this.gapiSession.consent) {
+      this.eventForm.submit(this.displayInfo.name);
+
+      if (this.eventForm.submitSuccess) {
+        this.gapiSession.createEvent(
+          this.eventForm.eventInfo.title,
+          this.eventForm.startDateTime,
+          this.eventForm.endDateTime,
+          this.eventForm.eventInfo.timezone,
+          this.eventForm.members,
+          this.eventForm.eventInfo.description
+        );
+        this.eventForm.submitSuccess = false;
+      }
+    }
+    // User gives consent to the API for the first time in the current session
+    else {
+      this.gapiSession.signIn().then(() => {
+        this.eventForm.submit(this.displayInfo.name);
+
+        if (this.eventForm.submitSuccess) {
+          this.gapiSession.createEvent(
+            this.eventForm.eventInfo.title,
+            this.eventForm.startDateTime,
+            this.eventForm.endDateTime,
+            this.eventForm.eventInfo.timezone,
+            this.eventForm.members,
+            this.eventForm.eventInfo.description
+          );
+          this.eventForm.submitSuccess = false;
+        }
       });
     }
   }

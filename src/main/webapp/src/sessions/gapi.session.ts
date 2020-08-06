@@ -13,12 +13,13 @@
 // limitations under the License.
 
 import {NgZone, Injectable} from '@angular/core';
-import {environment} from '../environments/environment';
-import {TaskComponent} from '../app/calendar-task/task.component';
+
 import {CLIENT_ID} from '../app/SensitiveData';
+import {CALENDAR_API_KEY} from '../app/SensitiveData';
+import {TaskComponent} from '../app/calendar-task/task.component';
 
 const GAPI_CLIENT_ID = CLIENT_ID;
-const API_KEY = environment.calendar_key;
+const API_KEY = CALENDAR_API_KEY;
 
 const DISCOVERY_DOCS = [
   'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
@@ -98,7 +99,11 @@ export class GapiSession {
    * @param selectedDate - start date and time (min)
    * @param selectedDateMax - end of the day of selected date (max)
    */
-  listEvents(selectedDate: string, selectedDateMax: string) {
+  listEvents(
+    gardenName: string,
+    selectedDate: string,
+    selectedDateMax: string
+  ) {
     gapi.client.load('calendar', 'v3', () => {
       gapi.client.calendar.events
         .list({
@@ -114,13 +119,15 @@ export class GapiSession {
           if (events.length > 0) {
             for (let i = 0; i < events.length; i++) {
               const event = events[i];
-              const eventTime = this.getEventTime(event.start.dateTime);
-              this.tasks.createTaskElement(
-                eventTime,
-                event.summary,
-                event.attendees,
-                event.description
-              );
+              if (event.summary.indexOf(gardenName) !== -1) {
+                const eventTime = this.getEventTime(event.start.dateTime);
+                this.tasks.createTaskElement(
+                  eventTime,
+                  event.summary,
+                  event.attendees,
+                  event.description
+                );
+              }
             }
           }
         });
@@ -138,6 +145,74 @@ export class GapiSession {
       return time[0];
     } else {
       return 'All Day';
+    }
+  }
+
+  /**
+   * Inserts a new calendar event into the users' primary calendar
+   * @param title - name of the event (known as summary in the calendar api)
+   * @param startDateTime - start date and time of the event in ISO format
+   * @param endDateTime - end date and time of the event in ISO format
+   * @param timezone - set the timezone for the time
+   * @param participants - members invited to event
+   * @param description - (optional) description of the event
+   */
+  createEvent(
+    title: string,
+    startDateTime: string,
+    endDateTime: string,
+    timezone: string,
+    participants: string[],
+    description?: string
+  ) {
+    if (typeof description === 'undefined') {
+      description = '';
+    }
+
+    // Participants are added to the event in the following format
+    const attendees = [];
+    // Current user
+    attendees.push({email: this.getCurrUserEmail()});
+
+    if (participants) {
+      participants.forEach(participant => {
+        attendees.push({email: participant.trim()});
+      });
+    }
+
+    const event = {
+      summary: title,
+      description: description,
+      start: {
+        dateTime: startDateTime,
+        timeZone: timezone,
+      },
+      end: {
+        dateTime: endDateTime,
+        timeZone: timezone,
+      },
+      attendees: attendees,
+    };
+
+    gapi.client.load('calendar', 'v3', () => {
+      gapi.client.calendar.events
+        .insert({
+          calendarId: 'primary',
+          sendUpdates: 'all',
+          resource: event,
+        })
+        .execute();
+    });
+  }
+
+  /**
+   * Returns the signed in user email
+   * @return - user's email
+   */
+  getCurrUserEmail(): string {
+    if (this.auth2.isSignedIn.get()) {
+      const profile = this.auth2.currentUser.get().getBasicProfile();
+      return profile.getEmail();
     }
   }
 }

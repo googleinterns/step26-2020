@@ -135,9 +135,9 @@ export class GapiSession {
 
   /**
    * Get the start time of the event otherwise return an All Day string
-   * @param dateTime: string containing date and time
+   * @param dateTime: string containing date and time as {Year}-{Month}-{Day}T{Hour:Minute:Seconds}-00:00:00Z
    */
-  getEventTime(dateTime: string): string {
+  getEventTime(dateTime: string | undefined): string {
     if (dateTime) {
       const dateTimeSplit = dateTime.split('T');
       const time = dateTimeSplit[1].split('-', 1);

@@ -20,6 +20,7 @@ import com.google.growpod.controllers.UserDao;
 import com.google.growpod.data.User;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -77,7 +78,11 @@ public class UserServlet extends HttpServlet {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No OAuth Key");
         return;
       }
-      userId = auth.getUserId(token);
+      try {
+        userId = auth.getUserId(token);
+      } catch (GeneralSecurityException e) {
+        userId = null;
+      }
       if (userId == null) {
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization failure");
         return;
@@ -163,7 +168,11 @@ public class UserServlet extends HttpServlet {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No OAuth Key");
         return;
       }
-      userId = auth.getUserId(token);
+      try {
+        userId = auth.getUserId(token);
+      } catch (GeneralSecurityException e) {
+        userId = null;
+      }
       if (userId == null) {
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization failure");
         return;
@@ -220,7 +229,11 @@ public class UserServlet extends HttpServlet {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No OAuth Key");
         return;
       }
-      userId = auth.getUserId(token);
+      try {
+        userId = auth.getUserId(token);
+      } catch (GeneralSecurityException e) {
+        userId = null;
+      }
       if (userId == null) {
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization failure");
         return;

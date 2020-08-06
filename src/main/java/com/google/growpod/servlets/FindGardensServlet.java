@@ -23,6 +23,7 @@ import com.google.growpod.data.User;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.List;
+import java.security.GeneralSecurityException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -67,7 +68,12 @@ public class FindGardensServlet extends HttpServlet {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No OAuth Key");
         return;
       }
-      String userId = auth.getUserId(token);
+      String userId = null;
+      try {
+        userId = auth.getUserId(token);
+      } catch (GeneralSecurityException e) {
+        userId = null;
+      }
       if (userId == null) {
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization failure");
         return;

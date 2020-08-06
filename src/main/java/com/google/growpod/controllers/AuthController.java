@@ -60,13 +60,9 @@ public class AuthController {
    * @param token OAuth token.
    * @return the user id or null if invalid user or ID.
    */
-  public String getUserId(String token) throws IOException {
+  public String getUserId(String token) throws GeneralSecurityException, IOException {
     String email = null;
-    try {
-      email = getUserEmail(token);
-    } catch (GeneralSecurityException e) {
-      return null;
-    }
+    email = getUserEmail(token);
 
     if (email == null) {
       return null;

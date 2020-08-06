@@ -176,6 +176,27 @@ public class UserDao {
   }
 
   /**
+   * Retrieve datastore key.
+   *
+   * @param email user email that will be used to find the id attached to it
+   */
+  public String getKeyByEmail(String email) {
+    String key = new String();
+
+    StructuredQuery<Entity> query =
+        Query.newEntityQueryBuilder()
+            .setKind("User")
+            .setFilter(PropertyFilter.eq("email", email))
+            .build();
+    QueryResults<Entity> results = datastore.run(query);
+
+    Entity entity = results.next();
+    key = entity.getKey().getId().toString();
+
+    return key;
+  }
+
+  /**
    * Deletes a garden id from the user's garden list.
    *
    * @param userId the user's id

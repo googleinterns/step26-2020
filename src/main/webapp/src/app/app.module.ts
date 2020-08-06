@@ -87,15 +87,18 @@ export function initGapi(gapiSession: GapiSession) {
         ],
       } as SocialAuthServiceConfig,
     },
+    /*
     {
       provide: APP_INITIALIZER,
       useFactory: initGapi,
-      deps: [GapiSession],
+    },*/
+  ],
+  /* deps: [GapiSession],
       multi: true,
     },
 
     GapiSession,
-  ],
+  ],*/
 
   bootstrap: [AppComponent],
 })

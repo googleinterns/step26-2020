@@ -39,7 +39,6 @@ const routes: Routes = [
   {path: 'page/create-garden', component: CreateGardensComponent},
   {path: '', redirectTo: '/page/login', pathMatch: 'full'},
   {path: 'page/admin-page', component: AdminPageComponent},
- 
 ];
 
 @NgModule({

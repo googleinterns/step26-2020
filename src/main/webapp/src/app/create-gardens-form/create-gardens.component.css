@@ -5,3 +5,16 @@
   margin: 20px auto;
   text-align: center;
 }
+
+#done {
+  margin-top: 250px;
+}
+
+.mat-card {
+  padding: 50px;
+  margin-top: 250px;
+}
+
+#button {
+  margin-top: 10px;
+}

@@ -33,9 +33,11 @@ import {User} from '../model/user.model';
 export class LoginComponent {
   user: any;
   bio: string;
+  done = false;
   zipCode: string;
   newUser = false;
   choice: string; //joining or creating a garden
+  admin = false; // if the user is done signing up
 
   userProfile: User = {
     id: undefined,
@@ -43,6 +45,7 @@ export class LoginComponent {
     preferredName: undefined,
     biography: undefined,
     zipCode: undefined,
+    imgSrc: undefined,
   };
 
   constructor(
@@ -68,7 +71,14 @@ export class LoginComponent {
       preferredName: this.user.name,
       biography: this.bio,
       zipCode: this.zipCode,
+      imgSrc: this.user.photoUrl,
     };
+
+    if (this.choice === 'create') {
+      this.admin = true;
+    } else if (this.choice === 'join') {
+      this.done = true;
+    }
     this.postData(this.userProfile);
   }
 
@@ -99,7 +109,7 @@ export class LoginComponent {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(response => {
       this.user = response;
       if (action === 'login') {
-        this.router.navigate(['page/my-gardens']);
+        this.redirect();
       } else {
         this.newUser = true;
       }
@@ -120,11 +130,19 @@ export class LoginComponent {
    * @param data object holding user data that will be used as a param in the post request
    */
   postData(data: User): void {
+    console.log(this.admin, this.done);
+
     const httpOptions = {
       params: new HttpParams().set('userData', JSON.stringify(data)),
     };
-    this.httpClient.post<User>('/user', null, httpOptions).subscribe(result => {
-      //will display a conformation/error message to user based on response (next pr)
-    });
+    this.httpClient
+      .post<User>('/user', null, httpOptions)
+      .subscribe(response => {
+        //will display a conformation/error message to user based on response (next pr)
+      });
+  }
+
+  redirect(): void {
+    this.router.navigate(['page/my-gardens']);
   }
 }

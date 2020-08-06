@@ -12,7 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {HttpParams} from '@angular/common/http';
+import {FormControl, Validators, FormGroup} from '@angular/forms';
+
+import {Router} from '@angular/router';
+import {Garden} from '../model/garden.model';
+
 @Component({
   selector: 'create-gardens',
   templateUrl: './create-gardens.component.html',
@@ -22,5 +29,64 @@ import {Component, OnInit} from '@angular/core';
   ],
 })
 export class CreateGardensComponent implements OnInit {
-  ngOnInit() {}
+  @Input('email') adminEmail: string;
+  gardenName: string;
+  gardenDescription: string;
+  gardenZip: string;
+  done = false;
+
+  gardenProfile: Garden = {
+    id: undefined,
+    name: undefined,
+    description: undefined,
+    lat: undefined,
+    lng: undefined,
+    zipCode: undefined,
+    adminId: undefined,
+  };
+
+  constructor(private httpClient: HttpClient, private router: Router) {}
+
+  gardenGroup: FormGroup;
+
+  ngOnInit(): void {
+    this.gardenGroup = new FormGroup({
+      gardenNameValidator: new FormControl(this.gardenName, [
+        Validators.required,
+      ]),
+      gardenDescriptionValidator: new FormControl(this.gardenDescription, [
+        Validators.required,
+      ]),
+      gardenZipValidator: new FormControl(this.gardenZip, [
+        Validators.required,
+      ]),
+    });
+  }
+
+  buildGardenProfile(): void {
+    this.gardenProfile = {
+      id: '2',
+      name: this.gardenName,
+      description: this.gardenDescription,
+      lat: 0.0,
+      lng: 0.0,
+      zipCode: this.gardenZip,
+      adminId: this.adminEmail,
+    };
+    this.done = true;
+    this.postGardenData(this.gardenProfile);
+  }
+
+  postGardenData(data: Garden): void {
+    const httpOptions = {
+      params: new HttpParams().set('gardenData', JSON.stringify(data)), //.set('isIdValid', this.isValidID.toString()),
+    };
+    this.httpClient
+      .post<Garden>('/garden', null, httpOptions)
+      .subscribe(response => {
+        //will display a conformation/error message to user based on response (next pr)
+        console.log(response);
+      });
+    this.router.navigate(['page/my-gardens']);
+  }
 }

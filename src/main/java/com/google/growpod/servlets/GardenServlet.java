@@ -16,6 +16,7 @@ package com.google.growpod.servlets;
 
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.growpod.controllers.GardenDao;
+import com.google.growpod.controllers.UserDao;
 import com.google.growpod.data.Garden;
 import com.google.growpod.data.Plant;
 import com.google.gson.Gson;
@@ -35,6 +36,7 @@ public class GardenServlet extends HttpServlet {
   static final long serialVersionUID = 1L;
 
   private GardenDao dao;
+  private UserDao userDao;
 
   private static final String USER_LIST_ARG = "user-list";
   private static final String PLANT_LIST_ARG = "plant-list";
@@ -44,6 +46,7 @@ public class GardenServlet extends HttpServlet {
   public void init() throws ServletException {
     DatastoreOptions datastoreInstance = DatastoreOptions.getDefaultInstance();
     this.dao = new GardenDao(datastoreInstance);
+    this.userDao = new UserDao(datastoreInstance);
   }
 
   /**
@@ -117,7 +120,11 @@ public class GardenServlet extends HttpServlet {
     // Dispatch based on method specified.
     // /garden
     if (uriList.length == 2) {
-      // TODO Add garden provided adminId = logged in user.
+      response.setContentType("application/json");
+      String json = request.getParameter("gardenData");
+      Garden gardenData = new Gson().fromJson(json, Garden.class);
+      gardenData.setAdminId(userDao.getKeyByEmail(gardenData.getAdminId()));
+      dao.addGardenToDatastore(gardenData);
       return;
     }
 

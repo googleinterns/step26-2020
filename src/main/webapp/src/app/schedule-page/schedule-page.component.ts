@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {GapiSession} from '../../sessions/gapi.session';
-import {CreateEventComponent} from '../calendar-create/create-event-form.component';
-import {DatepickerComponent} from '../datepicker/datepicker.component';
-import {Garden} from '../model/garden.model';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { GapiSession } from '../../sessions/gapi.session';
+import { CreateEventComponent } from '../calendar-create/create-event-form.component';
+import { DatepickerComponent } from '../datepicker/datepicker.component';
+import { Garden } from '../model/garden.model';
 
 @Component({
   selector: 'schedule-page',
@@ -30,10 +30,10 @@ import {Garden} from '../model/garden.model';
   ],
 })
 export class SchedulePageComponent implements OnInit {
-  @ViewChild('eventForm', {static: false})
+  @ViewChild('eventForm', { static: false })
   eventForm: CreateEventComponent;
 
-  @ViewChild('datepickerElem', {static: false})
+  @ViewChild('datepickerElem', { static: false })
   datepickerElem: DatepickerComponent;
 
   displayInfo: Garden | null;
@@ -49,7 +49,7 @@ export class SchedulePageComponent implements OnInit {
     this.createGardenProfile(id);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   /**
    * Populates component to create a garden, or shows an
@@ -113,42 +113,36 @@ export class SchedulePageComponent implements OnInit {
   }
 
   /**
-   * After completing the form, create a calendar event on the assigned users
+   * Verify consent to use calendar api then create calendar event
    */
-  createCalendarEvent() {
+  createCalendarConsent() {
     // User has already provided consent to the calendar API
     if (this.gapiSession.consent) {
-      this.eventForm.submit(this.displayInfo.name);
-
-      if (this.eventForm.submitSuccess) {
-        this.gapiSession.createEvent(
-          this.eventForm.eventInfo.title,
-          this.eventForm.startDateTime,
-          this.eventForm.endDateTime,
-          this.eventForm.eventInfo.timezone,
-          this.eventForm.members,
-          this.eventForm.eventInfo.description
-        );
-        this.eventForm.submitSuccess = false;
-      }
+     this.createCalendarEvent();
     }
     // User gives consent to the API for the first time in the current session
     else {
       this.gapiSession.signIn().then(() => {
-        this.eventForm.submit(this.displayInfo.name);
-
-        if (this.eventForm.submitSuccess) {
-          this.gapiSession.createEvent(
-            this.eventForm.eventInfo.title,
-            this.eventForm.startDateTime,
-            this.eventForm.endDateTime,
-            this.eventForm.eventInfo.timezone,
-            this.eventForm.members,
-            this.eventForm.eventInfo.description
-          );
-          this.eventForm.submitSuccess = false;
-        }
+        this.createCalendarEvent();
       });
+    }
+  }
+
+  /**
+   * Create and add a calendar event to the assigned users
+   */
+  createCalendarEvent() {
+    this.eventForm.submit(this.displayInfo.name);
+    if (this.eventForm.submitSuccess) {
+      this.gapiSession.createEvent(
+        this.eventForm.eventInfo.title,
+        this.eventForm.startDateTime,
+        this.eventForm.endDateTime,
+        this.eventForm.eventInfo.timezone,
+        this.eventForm.members,
+        this.eventForm.eventInfo.description
+      );
+      this.eventForm.submitSuccess = false;
     }
   }
 }

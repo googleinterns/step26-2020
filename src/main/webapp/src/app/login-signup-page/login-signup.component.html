@@ -1,12 +1,22 @@
 <body>
   <div class="content" *ngIf="!newUser; else newUserForm">
     <h1 class="greeting">Welcome To GrowPod</h1>
-    <button class="button" id="login" on-click="signInWithGoogle('login')">
-      Login
+    <button
+      mat-button
+      class="button after-button"
+      id="login"
+      on-click="signInWithGoogle('login')"
+    >
+      Log In
     </button>
     <br />
-    <button class="button" id="signup" on-click="signInWithGoogle('signup')">
-      Sign up
+    <button
+      mat-button
+      class="button"
+      id="signup"
+      on-click="signInWithGoogle('signup')"
+    >
+      Sign Up
     </button>
   </div>
 </body>

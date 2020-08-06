@@ -15,10 +15,14 @@
 package com.google.growpod.servlets;
 
 import com.google.cloud.datastore.DatastoreOptions;
+import com.google.growpod.controllers.AuthController;
 import com.google.growpod.controllers.FindGardensDao;
+import com.google.growpod.controllers.UserDao;
 import com.google.growpod.data.Garden;
+import com.google.growpod.data.User;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,12 +40,16 @@ public class FindGardensServlet extends HttpServlet {
   static final long serialVersionUID = 1L;
 
   private FindGardensDao dao;
+  private UserDao userDao;
+  private AuthController auth;
 
   /** Initializes the servlet. Connects it to Datastore. */
   @Override
   public void init() throws ServletException {
     DatastoreOptions datastoreInstance = DatastoreOptions.getDefaultInstance();
     this.dao = new FindGardensDao(datastoreInstance);
+    this.userDao = new UserDao(datastoreInstance);
+    this.auth = new AuthController(datastoreInstance);
   }
 
   /**
@@ -55,7 +63,24 @@ public class FindGardensServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String zipCode = request.getParameter("zip-code");
     if (zipCode == null) {
-      zipCode = "11201"; // TODO(Issue #34): Replace value once oauth works
+      String token = request.getParameter("token");
+      if (token == null) {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No OAuth Key");
+        return;
+      }
+      String userId = null;
+      try {
+        userId = auth.getUserId(token);
+      } catch (GeneralSecurityException e) {
+        userId = null;
+      }
+      if (userId == null) {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization failure");
+        return;
+      }
+
+      User user = userDao.getUserById(userId);
+      zipCode = user.getZipCode();
     }
 
     List<Garden> nearbyGardens = dao.getNearbyGardens(zipCode);

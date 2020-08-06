@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import {Component, OnInit} from '@angular/core';
+import {OAuthSession} from '../../sessions/oauth.session';
 import {
   HttpClient,
   HttpResponse,
@@ -49,6 +50,7 @@ export class MyGardensComponent implements OnInit {
 
   // General Error Handling
   errorMessage = '';
+  oAuthToken: string;
 
   /**
    * Option to display a certain number of slides based off of browser window size along with
@@ -67,9 +69,13 @@ export class MyGardensComponent implements OnInit {
     margin: 20,
   };
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private authService: OAuthSession,
+    private httpClient: HttpClient
+  ) {}
 
   ngOnInit() {
+    this.oAuthToken = this.authService.userData.idToken;
     this.createMyGardensPage();
   }
 
@@ -85,6 +91,9 @@ export class MyGardensComponent implements OnInit {
     return this.httpClient.get<Array<string>>('/user/current/garden-list', {
       observe: 'response',
       responseType: 'json',
+      params: {
+        token: this.oAuthToken,
+      },
     });
   }
 
@@ -102,6 +111,9 @@ export class MyGardensComponent implements OnInit {
       {
         observe: 'response',
         responseType: 'json',
+        params: {
+          token: this.oAuthToken,
+        },
       }
     );
   }
@@ -119,6 +131,9 @@ export class MyGardensComponent implements OnInit {
     return this.httpClient.get<Garden>('/garden/' + garden, {
       observe: 'response',
       responseType: 'json',
+      params: {
+        token: this.oAuthToken,
+      },
     });
   }
 
@@ -135,6 +150,9 @@ export class MyGardensComponent implements OnInit {
     return this.httpClient.get<User>('/user/' + user, {
       observe: 'response',
       responseType: 'json',
+      params: {
+        token: this.oAuthToken,
+      },
     });
   }
 
@@ -173,10 +191,13 @@ export class MyGardensComponent implements OnInit {
    * @param id the garden id to delete.
    * @return the http response.
    */
-  deleteFromUserGardenList(id: string): Observable<HttpResponse<string>> {
+  deleteGarden(id: string): Observable<HttpResponse<string>> {
     return this.httpClient.delete<string>('/user/current/garden-list/' + id, {
       observe: 'response',
       responseType: 'json',
+      params: {
+        token: this.oAuthToken,
+      },
     });
   }
 
@@ -317,7 +338,7 @@ export class MyGardensComponent implements OnInit {
    * @param id the id of the garden to leave.
    */
   leaveGarden(id: string): void {
-    this.deleteFromUserGardenList(id).subscribe({
+    this.deleteGarden(id).subscribe({
       next: () => {
         this.createMyGardensPage();
       },

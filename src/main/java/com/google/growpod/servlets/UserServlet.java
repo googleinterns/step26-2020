@@ -15,10 +15,12 @@
 package com.google.growpod.servlets;
 
 import com.google.cloud.datastore.DatastoreOptions;
+import com.google.growpod.controllers.AuthController;
 import com.google.growpod.controllers.UserDao;
 import com.google.growpod.data.User;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,6 +35,7 @@ public class UserServlet extends HttpServlet {
   static final long serialVersionUID = 1L;
 
   private UserDao dao;
+  private AuthController auth;
 
   private static final String CURRENT_USER_ARG = "current";
   private static final String GARDEN_LIST_ARG = "garden-list";
@@ -45,6 +48,7 @@ public class UserServlet extends HttpServlet {
   public void init() throws ServletException {
     DatastoreOptions datastoreInstance = DatastoreOptions.getDefaultInstance();
     this.dao = new UserDao(datastoreInstance);
+    this.auth = new AuthController(datastoreInstance);
   }
 
   /**
@@ -69,7 +73,20 @@ public class UserServlet extends HttpServlet {
     // Replace 'current' user with logged-in user.
     String userId = uriList[2];
     if (userId.equals(CURRENT_USER_ARG)) {
-      userId = CURRENT_USER_KEY;
+      String token = request.getParameter("token");
+      if (token == null) {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No OAuth Key");
+        return;
+      }
+      try {
+        userId = auth.getUserId(token);
+      } catch (GeneralSecurityException e) {
+        userId = null;
+      }
+      if (userId == null) {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization failure");
+        return;
+      }
     }
 
     // Dispatch based on method specified.
@@ -144,9 +161,22 @@ public class UserServlet extends HttpServlet {
     }
 
     // Replace 'current' user with logged-in user.
-    String userKey = uriList[2];
-    if (userKey.equals(CURRENT_USER_ARG)) {
-      userKey = CURRENT_USER_KEY;
+    String userId = uriList[2];
+    if (userId.equals(CURRENT_USER_ARG)) {
+      String token = request.getParameter("token");
+      if (token == null) {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No OAuth Key");
+        return;
+      }
+      try {
+        userId = auth.getUserId(token);
+      } catch (GeneralSecurityException e) {
+        userId = null;
+      }
+      if (userId == null) {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization failure");
+        return;
+      }
     }
 
     // Dispatch based on method specified.
@@ -154,11 +184,11 @@ public class UserServlet extends HttpServlet {
       if (uriList[3].equals(GARDEN_LIST_ARG)) {
         // /user/{uid}/garden-list/{gid}
         // TODO (Issue #34) Authenticate user.
-        boolean result = dao.addGarden(userKey, uriList[4]);
+        boolean result = dao.addGarden(userId, uriList[4]);
         if (!result) {
           response.sendError(
               HttpServletResponse.SC_NOT_FOUND,
-              "Not found - user: " + userKey + " garden: " + uriList[4]);
+              "Not found - user: " + userId + " garden: " + uriList[4]);
           return;
         }
         response.setStatus(HttpServletResponse.SC_CREATED);
@@ -192,9 +222,22 @@ public class UserServlet extends HttpServlet {
     }
 
     // Replace 'current' user with logged-in user.
-    String userKey = uriList[2];
-    if (userKey.equals(CURRENT_USER_ARG)) {
-      userKey = CURRENT_USER_KEY;
+    String userId = uriList[2];
+    if (userId.equals(CURRENT_USER_ARG)) {
+      String token = request.getParameter("token");
+      if (token == null) {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No OAuth Key");
+        return;
+      }
+      try {
+        userId = auth.getUserId(token);
+      } catch (GeneralSecurityException e) {
+        userId = null;
+      }
+      if (userId == null) {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization failure");
+        return;
+      }
     }
 
     // Dispatch based on method specified.
@@ -208,12 +251,12 @@ public class UserServlet extends HttpServlet {
       if (uriList[3].equals(GARDEN_LIST_ARG)) {
         // /user/{uid}/garden-list/{gid}
         // TODO (Issue #34) Verify user
-        boolean status = dao.deleteFromUserGardenList(userKey, uriList[4]);
+        boolean status = dao.deleteFromUserGardenList(userId, uriList[4]);
         if (!status) {
           // Nothing to delete
           response.sendError(
               HttpServletResponse.SC_NOT_FOUND,
-              "Invalid garden: " + uriList[4] + " of user: " + userKey);
+              "Invalid garden: " + uriList[4] + " of user: " + userId);
           return;
         }
         response.setContentType("application/json;");

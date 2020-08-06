@@ -35,7 +35,7 @@ body {
   font-weight: 500;
 }
 
-.mat-form-feild-wrapper {
+.mat-form-field-wrapper {
   position: relative;
   width: 250px;
 }
@@ -45,12 +45,11 @@ body {
   font-size: 15px;
 }
 
+.after-button {
+  margin-bottom: 16px;
+}
+
 #createAccount {
   width: 200px;
   margin: 20px auto;
-}
-
-#login {
-  padding-left: 52px;
-  padding-right: 0px;
 }

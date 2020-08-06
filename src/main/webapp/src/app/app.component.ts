@@ -13,9 +13,10 @@
 // limitations under the License.
 
 import {Component} from '@angular/core';
+import {OAuthSession} from '../sessions/oauth.session';
 import {Router} from '@angular/router';
 
-const LOGIN_PAGE: String = '/page/login';
+const LOGIN_PAGE = '/page/login';
 
 @Component({
   selector: 'app-root',
@@ -23,9 +24,14 @@ const LOGIN_PAGE: String = '/page/login';
   styleUrls: ['./app.component.css', './common/growpod-page-styles.css'],
 })
 export class AppComponent {
-  constructor(private router: Router) {}
+  constructor(public authService: OAuthSession, private router: Router) {}
 
   isLoggedIn(): boolean {
-    return this.router.url !== LOGIN_PAGE;
+    return this.authService.isSignedIn && this.router.url !== LOGIN_PAGE;
+  }
+
+  logOut(): void {
+    this.authService.signOut();
+    this.router.navigate(['page/login']);
   }
 }

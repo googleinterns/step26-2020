@@ -13,8 +13,7 @@
 // limitations under the License.
 
 import {Component} from '@angular/core';
-import {SocialAuthService} from 'angularx-social-login';
-import {GoogleLoginProvider} from 'angularx-social-login';
+import {OAuthSession} from '../../sessions/oauth.session';
 import {HttpClient} from '@angular/common/http';
 import {HttpParams} from '@angular/common/http';
 import {FormControl, Validators, FormGroup} from '@angular/forms';
@@ -46,7 +45,7 @@ export class LoginComponent {
   };
 
   constructor(
-    private authService: SocialAuthService,
+    private authService: OAuthSession,
     private httpClient: HttpClient,
     private router: Router
   ) {}
@@ -96,7 +95,7 @@ export class LoginComponent {
    * @param action string that represents if the user is logging in or signing up
    */
   signInWithGoogle(action: String): void {
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(response => {
+    this.authService.signIn().then(response => {
       this.user = response;
       if (action === 'login') {
         this.router.navigate(['page/my-gardens']);

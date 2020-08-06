@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import {Component, OnInit} from '@angular/core';
+import {OAuthSession} from '../../sessions/oauth.session';
 import {ActivatedRoute} from '@angular/router';
 import {
   HttpClient,
@@ -44,15 +45,22 @@ export class UserProfileComponent implements OnInit {
   isLoaded = false;
   userProfile: User | null;
   errorMessage = '';
+  oAuthToken: string;
 
   /**
    * Initializes the component based on provided arguments
    *
    * @param route Contains arguments.
    */
-  constructor(private route: ActivatedRoute, private httpClient: HttpClient) {}
+  constructor(
+    private authService: OAuthSession,
+    private route: ActivatedRoute,
+    private httpClient: HttpClient
+  ) {}
 
   ngOnInit(): void {
+    // Page load depends on oAuth Token
+    this.oAuthToken = this.authService.userData.idToken;
     const idArg = this.route.snapshot.paramMap.get('id');
     const id = idArg ?? 'current';
     this.createUserProfile(id);
@@ -71,6 +79,9 @@ export class UserProfileComponent implements OnInit {
     return this.httpClient.get<User>('/user/' + user, {
       observe: 'response',
       responseType: 'json',
+      params: {
+        token: this.oAuthToken,
+      },
     });
   }
 

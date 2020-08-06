@@ -51,8 +51,9 @@ body {
 }
 
 #login {
-  padding-left: 52px;
+  padding-left: 2px;
   padding-right: 0px;
+  margin-bottom: 25px;
 }
 
 #done {

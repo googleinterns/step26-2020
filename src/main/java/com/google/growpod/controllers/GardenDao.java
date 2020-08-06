@@ -226,6 +226,7 @@ public class GardenDao {
     return true;
   }
 
+  /** @param garden garden object holding all garden data */
   public void addGardenToDatastore(Garden garden) {
     // Generates key
     KeyFactory keyFactory = datastore.newKeyFactory().setKind("Garden");

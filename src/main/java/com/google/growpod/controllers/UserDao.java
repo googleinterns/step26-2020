@@ -175,9 +175,11 @@ public class UserDao {
     return true;
   }
 
-/**
-* @param email user email that will be used to find the id attached to it
-*/
+  /**
+   * Retrieve datastore key.
+   *
+   * @param email user email that will be used to find the id attached to it
+   */
   public String getKeyByEmail(String email) {
     String key = new String();
 

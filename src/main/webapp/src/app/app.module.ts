@@ -99,9 +99,6 @@ export function initGapi(gapiSession: GapiSession) {
 
     GapiSession,
   ],*/
-  
-  
-
 
   bootstrap: [AppComponent],
 })

@@ -19,7 +19,6 @@ import {HttpClient} from '@angular/common/http';
 import {HttpParams} from '@angular/common/http';
 import {FormControl, Validators, FormGroup} from '@angular/forms';
 
-
 import {Router} from '@angular/router';
 import {User} from '../model/user.model';
 
@@ -46,7 +45,7 @@ export class LoginComponent {
     preferredName: undefined,
     biography: undefined,
     zipCode: undefined,
-    imgSrc:undefined
+    imgSrc: undefined,
   };
 
   constructor(
@@ -146,5 +145,4 @@ export class LoginComponent {
   redirect(): void {
     this.router.navigate(['page/my-gardens']);
   }
-
 }

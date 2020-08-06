@@ -122,11 +122,10 @@ public class GardenServlet extends HttpServlet {
     if (uriList.length == 2) {
       response.setContentType("application/json");
       String json = request.getParameter("gardenData");
-            Garden gardenData = new Gson().fromJson(json, Garden.class);  
-            gardenData.setAdminId(userDao.getKeyByEmail(gardenData.getAdminId()));         
-            dao.addGardenToDatastore(gardenData);
-            return;
-        
+      Garden gardenData = new Gson().fromJson(json, Garden.class);
+      gardenData.setAdminId(userDao.getKeyByEmail(gardenData.getAdminId()));
+      dao.addGardenToDatastore(gardenData);
+      return;
     }
 
     if (uriList.length == 4) {

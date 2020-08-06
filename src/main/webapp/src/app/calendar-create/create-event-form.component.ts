@@ -75,7 +75,10 @@ export class CreateEventComponent implements OnInit {
    * @param gardenName - current garden name; this wil help filter events when displaying
    */
   submit(gardenName: string): void {
-    if (this.eventGroup.valid) {
+    if (!this.eventGroup.valid) {
+      return; 
+    } 
+    else {
       this.submitSuccess = true;
       this.eventInfo = this.eventGroup.value;
       this.eventInfo.title = '[' + gardenName + '] ' + this.eventInfo.title;

@@ -33,6 +33,7 @@ import {User} from '../model/user.model';
 })
 export class MyGardensComponent implements OnInit {
   isLoaded = false;
+  
 
   // Garden Id List
   myGardenIdList: Array<string> | null = null;

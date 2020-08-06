@@ -18,7 +18,7 @@ import {GoogleLoginProvider} from 'angularx-social-login';
 import {HttpClient} from '@angular/common/http';
 import {HttpParams} from '@angular/common/http';
 import {FormControl, Validators, FormGroup} from '@angular/forms';
-import {Observable} from 'rxjs';
+
 
 import {Router} from '@angular/router';
 import {User} from '../model/user.model';
@@ -46,6 +46,7 @@ export class LoginComponent {
     preferredName: undefined,
     biography: undefined,
     zipCode: undefined,
+    imgSrc:undefined
   };
 
   constructor(
@@ -71,15 +72,13 @@ export class LoginComponent {
       preferredName: this.user.name,
       biography: this.bio,
       zipCode: this.zipCode,
+      imgSrc: this.user.photoUrl,
     };
 
     if (this.choice === 'create') {
       this.admin = true;
-      console.log(this.admin);
     } else if (this.choice === 'join') {
       this.done = true;
-      console.log(this.done);
-      //this.router.navigate(['page/my-gardens']);
     }
     this.postData(this.userProfile);
   }
@@ -111,7 +110,7 @@ export class LoginComponent {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(response => {
       this.user = response;
       if (action === 'login') {
-        this.router.navigate(['page/my-gardens']);
+        this.redirect();
       } else {
         this.newUser = true;
       }
@@ -142,19 +141,10 @@ export class LoginComponent {
       .subscribe(response => {
         //will display a conformation/error message to user based on response (next pr)
       });
-    //console.log(this.user.getKey(this.user.email));
   }
+
   redirect(): void {
     this.router.navigate(['page/my-gardens']);
   }
-  /**
-  postPlantToGarden(plant: Plant): Observable<HttpResponse<string>> {
-    return this.httpClient.post<string>(
-      '/garden/' + this.gardenProfile.id + '/plant-list',
-      plant,
-      {
-        observe: 'response',
-        responseType: 'json',
-      }
-    ); */
+
 }

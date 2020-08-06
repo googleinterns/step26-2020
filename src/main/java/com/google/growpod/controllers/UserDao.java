@@ -175,6 +175,9 @@ public class UserDao {
     return true;
   }
 
+/**
+* @param email user email that will be used to find the id attached to it
+*/
   public String getKeyByEmail(String email) {
     String key = new String();
 
@@ -186,11 +189,10 @@ public class UserDao {
     QueryResults<Entity> results = datastore.run(query);
 
     Entity entity = results.next();
-    entity.getKey().getId().toString();
-
     key = entity.getKey().getId().toString();
 
     return key;
+  }
 
   /**
    * Deletes a garden id from the user's garden list.

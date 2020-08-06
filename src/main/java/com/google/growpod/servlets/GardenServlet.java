@@ -120,13 +120,13 @@ public class GardenServlet extends HttpServlet {
     // Dispatch based on method specified.
     // /garden
     if (uriList.length == 2) {
-      // TODO Add garden provided adminId = logged in user.
-      // response.setContentType("application/json");
+      response.setContentType("application/json");
       String json = request.getParameter("gardenData");
-      Garden gardenData = new Gson().fromJson(json, Garden.class);
-      gardenData.setAdminId(userDao.getKeyByEmail(gardenData.getAdminId()));
-      dao.addGardenToDatastore(gardenData);
-      return;
+            Garden gardenData = new Gson().fromJson(json, Garden.class);  
+            gardenData.setAdminId(userDao.getKeyByEmail(gardenData.getAdminId()));         
+            dao.addGardenToDatastore(gardenData);
+            return;
+        
     }
 
     if (uriList.length == 4) {

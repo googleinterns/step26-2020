@@ -77,7 +77,7 @@ export class CreateGardensComponent implements OnInit {
 
   postGardenData(data: Garden): void {
     const httpOptions = {
-      params: new HttpParams().set('gardenData', JSON.stringify(data)),
+      params: new HttpParams().set('gardenData', JSON.stringify(data)), //.set('isIdValid', this.isValidID.toString()),
     };
     this.httpClient
       .post<Garden>('/garden', null, httpOptions)
